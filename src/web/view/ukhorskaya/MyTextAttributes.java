@@ -9,7 +9,6 @@ import java.awt.*;
  * User: Natalia.Ukhorskaya
  * Date: 8/9/11
  * Time: 5:18 PM
- * To change this template use File | Settings | File Templates.
  */
 public class MyTextAttributes {
     private Color foregroundColor;
@@ -42,28 +41,20 @@ public class MyTextAttributes {
         return foregroundColor;
     }
 
-    public void setForegroundColor(Color foregroundColor) {
-        this.foregroundColor = foregroundColor;
-    }
-
     public int getFontType() {
         return fontType;
     }
 
-    public void setFontType(int fontType) {
-        this.fontType = fontType;
-    }
-
     @Override
     //TODO add return false when o isn't MyTextAttributes
-    public boolean equals(Object o) {
-        MyTextAttributes newTextAttributes = (MyTextAttributes) o;
-        if ((this.fontType == newTextAttributes.fontType) &&
-                (this.foregroundColor.equals(newTextAttributes.foregroundColor)) &&
-                (this.backgroundColor.equals(newTextAttributes.backgroundColor))) {
-            return true;
+    public boolean equals(Object object) {
+        if (!(object instanceof MyTextAttributes)) {
+            return false;
         }
-        return false;
+        MyTextAttributes newTextAttributes = (MyTextAttributes) object;
+        return (this.fontType == newTextAttributes.fontType) &&
+                (this.foregroundColor.equals(newTextAttributes.foregroundColor)) &&
+                (this.backgroundColor.equals(newTextAttributes.backgroundColor));
     }
 
     @Override
