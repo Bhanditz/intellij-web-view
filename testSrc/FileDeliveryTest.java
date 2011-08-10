@@ -53,14 +53,14 @@ public class FileDeliveryTest extends IdeaTestCase {
     public void testAbsentProject() throws IOException {
         String absentProjectName = "myProject" + RandomUtils.nextInt();
         String urlPath = absentProjectName + "/Foo.java";
-        String expectedResult = "project " + absentProjectName + " not found. Check that the project is opened in Intellij IDEA.";
+        String expectedResult = "Project " + absentProjectName + " not found. Check that the project is opened in Intellij IDEA.";
 
         compareResults(urlPath, expectedResult);
     }
 
     public void testAbsentFile() throws IOException, InterruptedException {
         String urlPath = myProject.getName() + "/AbsentFile.java";
-        String expectedResult = "file /AbsentFile.java not found at project " + myProject.getName();
+        String expectedResult = "File /AbsentFile.java not found at project " + myProject.getName();
 
         compareResults(urlPath, expectedResult);
     }
@@ -135,9 +135,11 @@ public class FileDeliveryTest extends IdeaTestCase {
         urlPath = LOCALHOST + urlPath;
         URL url = new URL(urlPath);
         HttpURLConnection urlConnection = null;
-        BufferedReader in = null;
+        BufferedReader in;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.getInputStream();
+            int t = 0;
             in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 
         } catch (FileNotFoundException e) {
@@ -145,15 +147,13 @@ public class FileDeliveryTest extends IdeaTestCase {
         }
 
         String str;
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         while ((str = in.readLine()) != null) {
             result.append(str);
         }
         in.close();
 
-        String actualResult = result.toString();
-
-        return actualResult;
+        return result.toString();
     }
 
     private File getProjectDir() {

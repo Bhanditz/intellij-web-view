@@ -34,7 +34,17 @@ import java.util.HashMap;
  */
 class MyHandler implements HttpHandler {
 
+    HashMap<MyTextAttributes, Integer> mapAttributes;
+
     public void handle(HttpExchange exchange) {
+        if (!exchange.getRequestURI().toString().contains("____.css")) {
+            sendOtherFile(exchange);
+        } else {
+            sendCssFile(exchange);
+        }
+    }
+
+    private void sendOtherFile(HttpExchange exchange) {
         String requestURI = exchange.getRequestURI().toString();
         String response = "";
 
@@ -47,7 +57,7 @@ class MyHandler implements HttpHandler {
 
         final Project currentProject = getProjectByProjectName(projectName);
         if (currentProject == null) {
-            response = "project " + projectName + " not found. Check that the project is opened in Intellij IDEA.";
+            response = "Project " + projectName + " not found. Check that the project is opened in Intellij IDEA.";
             writeResponse(exchange, response, 404);
             return;
         }
@@ -57,7 +67,7 @@ class MyHandler implements HttpHandler {
         final VirtualFile currentFile = getFileByRelPath(currentProject, relPath);
 
         if (currentFile == null) {
-            response = "file " + relPath + " not found at project " + projectName;
+            response = "File " + relPath + " not found at project " + projectName;
             writeResponse(exchange, response, 404);
             return;
         }
@@ -81,27 +91,29 @@ class MyHandler implements HttpHandler {
         writeResponse(exchange, response, 200);
     }
 
+    private void sendCssFile(HttpExchange exchange) {
+        String response = generateCssStyles();
+        writeResponse(exchange, response, 200, true);
+    }
+
     //Add highlighting for file
     private String addHighLighting(final VirtualFile currentFile, final Project currentProject, String response) {
         final Ref<IterationState> stateRef = new Ref<IterationState>();
-        final Ref<Editor> editorRef = new Ref<Editor>();
         final Ref<Integer> intPositionRef = new Ref<Integer>();
         ApplicationManager.getApplication().invokeAndWait(new Runnable() {
             public void run() {
                 PsiFile psiFile = PsiManager.getInstance(currentProject).findFile(currentFile);
                 Document document = PsiDocumentManager.getInstance(currentProject).getDocument(psiFile);
                 Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, currentFile, true);
-                editorRef.set(editor);
                 stateRef.set(new IterationState((EditorEx) editor, 0, false));
                 intPositionRef.set(editor.getCaretModel().getVisualLineEnd());
             }
         }, ModalityState.defaultModalityState());
 
 
-        HashMap<MyTextAttributes, Integer> attributesMap = new HashMap<MyTextAttributes, Integer>();
+        mapAttributes = new HashMap<MyTextAttributes, Integer>();
 
         MyTextAttributes defaultTextAttributes = new MyTextAttributes();
-        //HashMap<Color, Integer> attributesMap = new HashMap<Color, Integer>();
         int id = 0;
         StringBuilder result = new StringBuilder();
         while (stateRef.get().getEndOffset() < response.length()) {
@@ -113,12 +125,12 @@ class MyHandler implements HttpHandler {
             String tmp = response.substring(stateRef.get().getStartOffset(), stateRef.get().getEndOffset());
             if (!attr.equals(defaultTextAttributes)) {
                 int className = 0;
-                if (attributesMap.containsKey(attr)) {
-                    if (attributesMap.get(attr) != null) {
-                        className = attributesMap.get(attr);
+                if (mapAttributes.containsKey(attr)) {
+                    if (mapAttributes.get(attr) != null) {
+                        className = mapAttributes.get(attr);
                     }
                 } else {
-                    attributesMap.put(attr, id);
+                    mapAttributes.put(attr, id);
                     className = id;
                 }
                 tmp = addClassForElement(tmp, className);
@@ -127,16 +139,18 @@ class MyHandler implements HttpHandler {
             stateRef.get().advance();
             id++;
         }
-        return generateCssStyles(attributesMap) + result.toString();
+        //return generateCssStyles(attributesMap) + result.toString();
+        return result.toString();
     }
 
-    //Generate <style> tag
-    private String generateCssStyles(HashMap<MyTextAttributes, Integer> map) {
+    //Generate css-file
+    private String generateCssStyles() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("<style type=\"text/css\">");
-        for (MyTextAttributes attr : map.keySet()) {
-            buffer.append(" span.class");
-            buffer.append(map.get(attr)).append("{");
+        //buffer.append("<style type=\"text/css\">");
+        buffer.append("body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;}");
+        for (MyTextAttributes attr : mapAttributes.keySet()) {
+            buffer.append("\nspan.class");
+            buffer.append(mapAttributes.get(attr)).append("{");
             String tmp = getColor(attr.getForegroundColor());
             if (!tmp.equals("#000000")) {
                 buffer.append("color: ").append(tmp).append("; ");
@@ -149,17 +163,17 @@ class MyHandler implements HttpHandler {
             buffer.append("}");
 
             //Cut empty styles
-            tmp = " span.class" + map.get(attr) + "{ }";
+            tmp = "\nspan.class" + mapAttributes.get(attr) + "{ }";
             int position = buffer.toString().indexOf(tmp);
             if (position != -1) {
                 buffer = buffer.delete(position, buffer.length());
             }
         }
-        buffer.append("</style>");
+        //buffer.append("</style>");
         return buffer.toString();
     }
 
-    //Add <span tag with class name for the element
+    //Add <span> tag with class name for the element
     private String addClassForElement(String string, int id) {
         StringBuilder buffer = new StringBuilder();
         buffer.append("<span class=\"class");
@@ -170,25 +184,35 @@ class MyHandler implements HttpHandler {
         return buffer.toString();
     }
 
-    //Send Response
     private void writeResponse(HttpExchange exchange, String responseBody, int errorCode) {
+        writeResponse(exchange, responseBody, errorCode, false);
+    }
+
+    //Send Response
+    private void writeResponse(HttpExchange exchange, String responseBody, int errorCode, boolean isCssFile) {
         OutputStream os = null;
-        String response = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n" +
-                "<html>\n" +
-                "<head>\n" +
-                "<title>IDEA PLUGIN</title>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "<div style=\"font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;\">\n";
-        response += responseBody;
-        response += "</div>\n" +
-                "</body>\n" +
-                "</html>\n";
+        StringBuffer response = new StringBuffer();
+        if (!isCssFile) {
+            response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
+            response.append("<html>\n");
+            response.append("<head>\n");
+            response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\" />");
+            response.append("<title>Web View</title>\n");
+            response.append("</head>\n");
+            response.append("<body>\n");
+            response.append("<div>\n");
+            response.append(responseBody);
+            response.append("</div>\n");
+            response.append("</body>\n");
+            response.append("</html>\n");
+        } else {
+            response.append(responseBody);
+        }
 
         try {
             exchange.sendResponseHeaders(errorCode, response.length());
             os = exchange.getResponseBody();
-            os.write(response.getBytes());
+            os.write(response.toString().getBytes());
         } catch (IOException e) {
             System.err.println("Error while work with file system");
             e.printStackTrace();

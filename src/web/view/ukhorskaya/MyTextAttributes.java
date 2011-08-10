@@ -46,7 +46,6 @@ public class MyTextAttributes {
     }
 
     @Override
-    //TODO add return false when o isn't MyTextAttributes
     public boolean equals(Object object) {
         if (!(object instanceof MyTextAttributes)) {
             return false;
