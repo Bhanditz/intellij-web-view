@@ -1,16 +1,27 @@
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.EditorFactory;
+import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.util.Computable;
+import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 import com.intellij.testFramework.IdeaTestCase;
 import org.apache.commons.lang.math.RandomUtils;
 import org.jetbrains.annotations.NonNls;
 import web.view.ukhorskaya.IdeaHttpServer;
+import web.view.ukhorskaya.MyTestHandler;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -24,10 +35,16 @@ import java.net.URL;
  */
 public class FileDeliveryTest extends IdeaTestCase {
 
+
     private final String LOCALHOST = "http://localhost/";
 
     public void testServerStarted() {
         assertTrue("Server didn't start", IdeaHttpServer.getInstance().isServerRunning());
+    }
+
+    @Override
+    protected boolean isRunInWriteAction() {
+        return false;
     }
 
     @Override
@@ -47,7 +64,7 @@ public class FileDeliveryTest extends IdeaTestCase {
         String urlPath = "incorrectUrlFormat";
         String expectedResult = "Path to the file is incorrect.<br/>URL format is [localhost]/[project name]/[path to the file]";
 
-        compareResults(urlPath, expectedResult);
+        compareResults(urlPath, addHtmlHeader(expectedResult));
     }
 
     public void testAbsentProject() throws IOException {
@@ -55,14 +72,14 @@ public class FileDeliveryTest extends IdeaTestCase {
         String urlPath = absentProjectName + "/Foo.java";
         String expectedResult = "Project " + absentProjectName + " not found. Check that the project is opened in Intellij IDEA.";
 
-        compareResults(urlPath, expectedResult);
+        compareResults(urlPath, addHtmlHeader(expectedResult));
     }
 
     public void testAbsentFile() throws IOException, InterruptedException {
         String urlPath = myProject.getName() + "/AbsentFile.java";
         String expectedResult = "File /AbsentFile.java not found at project " + myProject.getName();
 
-        compareResults(urlPath, expectedResult);
+        compareResults(urlPath, addHtmlHeader(expectedResult));
     }
 
     public void testFooRoot() throws IOException, InterruptedException {
@@ -90,16 +107,17 @@ public class FileDeliveryTest extends IdeaTestCase {
 
         }
 
+
         String expectedFilePath = getProjectDir().getPath() + "/testData/" + fileName + ".html";
 
         VirtualFile expectedFile = LocalFileSystem.getInstance().findFileByPath(expectedFilePath);
-        String expectedResult = substringHtml(VfsUtil.loadText(expectedFile));
+        String expectedResult = processString(VfsUtil.loadText(expectedFile));
         compareResults(urlPath, expectedResult);
     }
 
-    private void compareResults(String urlToInputFile, String expectedResult) throws IOException {
+    private void compareResults(final String urlToInputFile, String expectedResult) throws IOException {
         String actualResult = getFileContentFromUrl(urlToInputFile);
-        actualResult = substringHtml(actualResult);
+
         assertEquals("Wrong result", expectedResult, actualResult);
     }
 
@@ -113,7 +131,15 @@ public class FileDeliveryTest extends IdeaTestCase {
             baseDir = ProjectRootManager.getInstance(myProject).getContentRoots()[0];
 
         } else {
-            baseDir = ProjectRootManager.getInstance(myProject).getContentRoots()[0].createChildDirectory(this, "testData");
+            baseDir = ApplicationManager.getApplication().runWriteAction(new Computable<VirtualFile>() {
+                public VirtualFile compute() {
+                    try {
+                        return ProjectRootManager.getInstance(myProject).getContentRoots()[0].createChildDirectory(this, "testData");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
         }
 
         String inputFilePath = getProjectDir().getPath() + "/testData/" + fileName + ".java";
@@ -123,7 +149,6 @@ public class FileDeliveryTest extends IdeaTestCase {
             public void run() {
                 try {
                     VfsUtil.copyFile(this, inputFile, baseDir);
-
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -131,15 +156,38 @@ public class FileDeliveryTest extends IdeaTestCase {
         });
     }
 
-    private String getFileContentFromUrl(String urlPath) throws IOException {
-        urlPath = LOCALHOST + urlPath;
+    private String getFileContentFromUrl(String urlPathWoLocalhost) throws IOException {
+
+
+        String urlPath = LOCALHOST + urlPathWoLocalhost;
         URL url = new URL(urlPath);
         HttpURLConnection urlConnection = null;
         BufferedReader in;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.getInputStream();
-            int t = 0;
+
+            String relPath = "";
+            if (urlPathWoLocalhost.indexOf("/") != -1) {
+                relPath = urlPathWoLocalhost.substring(urlPathWoLocalhost.indexOf("/"));
+            }
+
+            final VirtualFile currentFile = getFileByRelPath(relPath);
+            if (currentFile == null) {
+                urlConnection.getInputStream();
+            }
+            final Ref<IterationState> stateRef = new Ref<IterationState>();
+            final Ref<Integer> intPositionRef = new Ref<Integer>();
+            ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                public void run() {
+                    PsiFile psiFile = PsiManager.getInstance(myProject).findFile(currentFile);
+                    Document document = PsiDocumentManager.getInstance(myProject).getDocument(psiFile);
+                    Editor editor = EditorFactory.getInstance().createEditor(document, myProject, currentFile, true);
+                    stateRef.set(new IterationState((EditorEx) editor, 0, false));
+                    intPositionRef.set(editor.getCaretModel().getVisualLineEnd());
+                }
+            });
+
+            IdeaHttpServer.getInstance().setMyHandler(new MyTestHandler(stateRef.get(), intPositionRef.get()));
             in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 
         } catch (FileNotFoundException e) {
@@ -156,6 +204,16 @@ public class FileDeliveryTest extends IdeaTestCase {
         return result.toString();
     }
 
+    private VirtualFile getFileByRelPath(String relPath) {
+        for (VirtualFile file : ProjectRootManager.getInstance(myProject).getContentRoots()) {
+            VirtualFile currentFile = file.findFileByRelativePath(relPath);
+            if (currentFile != null) {
+                return currentFile;
+            }
+        }
+        return null;
+    }
+
     private File getProjectDir() {
         File dir = new File(getClass().getResource("").getPath());
         while (dir != null && !isProjectDir(dir)) {
@@ -169,11 +227,25 @@ public class FileDeliveryTest extends IdeaTestCase {
         return new File(path).isDirectory() && new File(path + "\\" + ProjectUtil.DIRECTORY_BASED_PROJECT_DIR).exists();
     }
 
-    private String substringHtml(String inputString) {
-        if ((inputString.indexOf("<body><div>") != -1) && (inputString.indexOf("</div></body>") != -1)) {
-            inputString = inputString.substring(inputString.indexOf("<body><div>") + 11, inputString.indexOf("</div></body>"));
-        }
-        return inputString;
+    private String addHtmlHeader(String inputString) {
+        StringBuilder response = new StringBuilder();
+        response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
+        response.append("<html>");
+        response.append("<head>");
+        response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\" />");
+        response.append("<title>Web View</title>");
+        response.append("</head>");
+        response.append("<body>");
+        response.append("<div>");
+        response.append(inputString);
+        response.append("</div>");
+        response.append("</body>");
+        response.append("</html>");
+        return response.toString();
+    }
+
+    private String processString(String inputString) {
+        return inputString.replaceAll("\\r\\n", "");
     }
 
 

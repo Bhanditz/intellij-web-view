@@ -1,23 +1,15 @@
 package web.view.ukhorskaya;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.EditorFactory;
-import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,13 +20,28 @@ import java.util.HashMap;
 /**
  * Created by IntelliJ IDEA.
  * User: Natalia.Ukhorskaya
- * Date: 8/3/11
- * Time: 2:10 PM
+ * Date: 8/10/11
+ * Time: 1:16 PM
  */
-class MyHandler implements HttpHandler {
+
+public abstract class MyBaseHandler implements HttpHandler {
+    protected IterationState iterationState;
+    protected int intPositionState;
+
+    protected Project currentProject;
+    protected VirtualFile currentFile;
+
+    HashMap<MyTextAttributes, Integer> mapAttributes;
 
     public void handle(HttpExchange exchange) {
+        if (!exchange.getRequestURI().toString().contains("____.css")) {
+            sendOtherFile(exchange);
+        } else {
+            sendCssFile(exchange);
+        }
+    }
 
+    private void sendOtherFile(HttpExchange exchange) {
         String requestURI = exchange.getRequestURI().toString();
         String response = "";
 
@@ -45,28 +52,26 @@ class MyHandler implements HttpHandler {
             return;
         }
 
-        final Project currentProject = getProjectByProjectName(projectName);
+        currentProject = getProjectByProjectName(projectName);
         if (currentProject == null) {
-            response = "project " + projectName + " not found. Check that the project is opened in Intellij IDEA.";
+            response = "Project " + projectName + " not found. Check that the project is opened in Intellij IDEA.";
             writeResponse(exchange, response, 404);
             return;
         }
 
         String relPath = requestURI.substring(requestURI.indexOf(projectName) + projectName.length());
 
-        final VirtualFile currentFile = getFileByRelPath(currentProject, relPath);
+        currentFile = getFileByRelPath(relPath);
 
         if (currentFile == null) {
-            response = "file " + relPath + " not found at project " + projectName;
+            response = "File " + relPath + " not found at project " + projectName;
             writeResponse(exchange, response, 404);
             return;
         }
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(currentFile.getInputStream()));
-
             String tmp;
-
             while ((tmp = bufferedReader.readLine()) != null) {
                 response += tmp + "\n";
             }
@@ -75,7 +80,7 @@ class MyHandler implements HttpHandler {
             writeResponse(exchange, response, 400);
         }
 
-        response = addHighLighting(currentFile, currentProject, response);
+        response = addHighLighting(response);
 
         response = response.replaceAll("    ", "&nbsp;&nbsp;&nbsp;&nbsp;");
         response = response.replaceAll("\\n", "<br/>");
@@ -83,29 +88,26 @@ class MyHandler implements HttpHandler {
         writeResponse(exchange, response, 200);
     }
 
-    private String addHighLighting(final VirtualFile currentFile, final Project currentProject, String response) {
+    private void sendCssFile(HttpExchange exchange) {
+        String response = generateCssStyles();
+        writeResponse(exchange, response, 200, true);
+    }
+
+    //Add highlighting for file
+    private String addHighLighting(String response) {
         final Ref<IterationState> stateRef = new Ref<IterationState>();
-        final Ref<Editor> editorRef = new Ref<Editor>();
         final Ref<Integer> intPositionRef = new Ref<Integer>();
-        ApplicationManager.getApplication().invokeAndWait(new Runnable() {
-            public void run() {
-                PsiFile psiFile = PsiManager.getInstance(currentProject).findFile(currentFile);
-                Document document = PsiDocumentManager.getInstance(currentProject).getDocument(psiFile);
-                Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, currentFile, true);
-                editorRef.set(editor);
-                stateRef.set(new IterationState((EditorEx) editor, 0, false));
-                intPositionRef.set(editor.getCaretModel().getVisualLineEnd());
-            }
-        }, ModalityState.defaultModalityState());
+        setVariables();
+        stateRef.set(iterationState);
+        intPositionRef.set(intPositionState);
 
 
-        HashMap<MyTextAttributes, Integer> attributesMap = new HashMap<MyTextAttributes, Integer>();
+        mapAttributes = new HashMap<MyTextAttributes, Integer>();
 
         MyTextAttributes defaultTextAttributes = new MyTextAttributes();
-        //HashMap<Color, Integer> attributesMap = new HashMap<Color, Integer>();
         int id = 0;
         StringBuilder result = new StringBuilder();
-        while (stateRef.get().getEndOffset() < response.length()) {
+        while (stateRef.get().getEndOffset() != stateRef.get().getStartOffset()) {
             MyTextAttributes attr = new MyTextAttributes(stateRef.get().getMergedAttributes());
             if ((stateRef.get().getEndOffset() < intPositionRef.get()) && (getColor(attr.getBackgroundColor()).equals("#ffffd7"))) {
                 attr.setBackgroundColor(Color.white);
@@ -113,30 +115,33 @@ class MyHandler implements HttpHandler {
 
             String tmp = response.substring(stateRef.get().getStartOffset(), stateRef.get().getEndOffset());
             if (!attr.equals(defaultTextAttributes)) {
-                if (attributesMap.containsKey(attr)) {
-                    int className;
-                    if (attributesMap.get(attr) != null) {
-                        className = attributesMap.get(attr);
-                        tmp = addClassForElement(tmp, className);
+                int className = 0;
+                if (mapAttributes.containsKey(attr)) {
+                    if (mapAttributes.get(attr) != null) {
+                        className = mapAttributes.get(attr);
                     }
                 } else {
-                    attributesMap.put(attr, id);
+                    mapAttributes.put(attr, id);
+                    className = id;
                 }
+                tmp = addClassForElement(tmp, className);
             }
             result.append(tmp);
             stateRef.get().advance();
             id++;
         }
-
-        return generateCssStyles(attributesMap) + result.toString();
+        //return generateCssStyles(attributesMap) + result.toString();
+        return result.toString();
     }
 
-    private String generateCssStyles(HashMap<MyTextAttributes, Integer> map) {
+    //Generate css-file
+    private String generateCssStyles() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("<style type=\"text/css\">");
-        for (MyTextAttributes attr : map.keySet()) {
-            buffer.append(" span.class");
-            buffer.append(map.get(attr)).append("{");
+        //buffer.append("<style type=\"text/css\">");
+        buffer.append("body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;}");
+        for (MyTextAttributes attr : mapAttributes.keySet()) {
+            buffer.append("\nspan.class");
+            buffer.append(mapAttributes.get(attr)).append("{");
             String tmp = getColor(attr.getForegroundColor());
             if (!tmp.equals("#000000")) {
                 buffer.append("color: ").append(tmp).append("; ");
@@ -149,16 +154,17 @@ class MyHandler implements HttpHandler {
             buffer.append("}");
 
             //Cut empty styles
-            tmp = " span.class" + map.get(attr) + "{ }";
+            tmp = "\nspan.class" + mapAttributes.get(attr) + "{ }";
             int position = buffer.toString().indexOf(tmp);
             if (position != -1) {
                 buffer = buffer.delete(position, buffer.length());
             }
         }
-        buffer.append("</style>");
+        //buffer.append("</style>");
         return buffer.toString();
     }
 
+    //Add <span> tag with class name for the element
     private String addClassForElement(String string, int id) {
         StringBuilder buffer = new StringBuilder();
         buffer.append("<span class=\"class");
@@ -170,23 +176,34 @@ class MyHandler implements HttpHandler {
     }
 
     private void writeResponse(HttpExchange exchange, String responseBody, int errorCode) {
+        writeResponse(exchange, responseBody, errorCode, false);
+    }
+
+    //Send Response
+    private void writeResponse(HttpExchange exchange, String responseBody, int errorCode, boolean isCssFile) {
         OutputStream os = null;
-        String response = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n" +
-                "<html>\n" +
-                "<head>\n" +
-                "<title>IDEA PLUGIN</title>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "<div style=\"font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;\">\n";
-        response += responseBody;
-        response += "</div>\n" +
-                "</body>\n" +
-                "</html>\n";
+        StringBuilder response = new StringBuilder();
+        if (!isCssFile) {
+            response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
+            response.append("<html>\n");
+            response.append("<head>\n");
+            response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\" />");
+            response.append("<title>Web View</title>\n");
+            response.append("</head>\n");
+            response.append("<body>\n");
+            response.append("<div>\n");
+            response.append(responseBody);
+            response.append("</div>\n");
+            response.append("</body>\n");
+            response.append("</html>\n");
+        } else {
+            response.append(responseBody);
+        }
 
         try {
             exchange.sendResponseHeaders(errorCode, response.length());
             os = exchange.getResponseBody();
-            os.write(response.getBytes());
+            os.write(response.toString().getBytes());
         } catch (IOException e) {
             System.err.println("Error while work with file system");
             e.printStackTrace();
@@ -201,6 +218,7 @@ class MyHandler implements HttpHandler {
         }
     }
 
+    //Change some special symbols from file to show in browser
     private String processString(String string) {
         if (string.contains("<")) {
             string = string.replaceAll("<", "&lt;");
@@ -220,7 +238,7 @@ class MyHandler implements HttpHandler {
         return null;
     }
 
-    private VirtualFile getFileByRelPath(Project currentProject, String relPath) {
+    private VirtualFile getFileByRelPath(String relPath) {
         for (VirtualFile file : ProjectRootManager.getInstance(currentProject).getContentRoots()) {
             VirtualFile currentFile = file.findFileByRelativePath(relPath);
             if (currentFile != null) {
@@ -241,6 +259,8 @@ class MyHandler implements HttpHandler {
         }
     }
 
+
+    //Get Color as String
     private String getColor(Color color) {
         ArrayList<String> colors = new ArrayList<String>();
         colors.add(Long.toHexString(color.getRed()));
@@ -257,8 +277,9 @@ class MyHandler implements HttpHandler {
         return ("#" + buffer.toString());
     }
 
-    private String getFontType(int fontStyle) {
-        switch (fontStyle) {
+    //Get fontType as String
+    private String getFontType(int fontType) {
+        switch (fontType) {
             default:
                 return "";
             case 1:
@@ -267,4 +288,8 @@ class MyHandler implements HttpHandler {
                 return "font-style: italic;";
         }
     }
+
+    //Set IterationState and intPosition
+    public abstract void setVariables();
+
 }

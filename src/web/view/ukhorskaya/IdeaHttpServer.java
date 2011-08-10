@@ -17,6 +17,7 @@ import java.net.InetSocketAddress;
 public class IdeaHttpServer implements ApplicationComponent {
     private boolean isServerRunning = false;
     private HttpServer server;
+    private MyBaseHandler myHandler;
 
 
     public static IdeaHttpServer getInstance() {
@@ -24,10 +25,20 @@ public class IdeaHttpServer implements ApplicationComponent {
     }
 
     public void initComponent() {
-        try {
+        startServer();
+    }
 
+    public void disposeComponent() {
+        stopServer();
+    }
+
+    private void startServer() {
+        try {
             server = HttpServer.create(new InetSocketAddress(80), 10);
-            server.createContext("/", new MyHandler());
+            if (myHandler == null) {
+                myHandler = new MyMainHandler();
+            }
+            server.createContext("/", myHandler);
             server.setExecutor(null);
             server.start();
 
@@ -41,8 +52,8 @@ public class IdeaHttpServer implements ApplicationComponent {
         }
     }
 
-    public void disposeComponent() {
-        server.stop(server.hashCode());
+    private void stopServer() {
+        server.stop(10);
         System.out.println("Server is stopped");
         isServerRunning = false;
     }
@@ -54,5 +65,12 @@ public class IdeaHttpServer implements ApplicationComponent {
 
     public boolean isServerRunning() {
         return isServerRunning;
+    }
+
+    public void setMyHandler(MyBaseHandler myHandler) {
+        stopServer();
+
+        this.myHandler = myHandler;
+        startServer();
     }
 }
