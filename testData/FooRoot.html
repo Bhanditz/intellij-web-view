@@ -1,37 +1,69 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head><title>IDEA PLUGIN</title></head>
-<link rel="stylesheet" type="text/css" href="____.css"/>
-<title>Web View</title>
-
+<head>
+    <link rel="stylesheet" type="text/css" href="____.css"/>
+    <title>Web View</title>
+</head>
 <body>
-<div>package com.jetbrains.ukhorskaya;<br/><br/>import com.intellij.openapi.application.ApplicationManager;<br/>import
-    com.intellij.openapi.components.ApplicationComponent;<br/>import com.sun.net.httpserver.HttpServer;<br/><br/>import
-    java.io.IOException;<br/>import java.net.InetSocketAddress;<br/><br/>/**<br/> * Created by IntelliJ IDEA.<br/> *
-    User: Natalia.Ukhorskaya<br/> * Date: 8/5/11<br/> * Time: 10:05 AM<br/> * To change this template use File |
-    Settings | File Templates.<br/> */<br/>public class IdeaHttpServer implements ApplicationComponent {<br/>&nbsp;&nbsp;&nbsp;&nbsp;private
-    boolean isServerRunning = false;<br/>&nbsp;&nbsp;&nbsp;&nbsp;private HttpServer server;<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;public
-    static void main(String[] args) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpServer
-    server = HttpServer.create(new InetSocketAddress(80), 0);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.createContext("/",
-    new MyHandler());<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.setExecutor(null);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.start();<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Server
-    is started");<br/><br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} catch (IOException e) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.err.println("Server
-    didn't
-    start");<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;public
-    static IdeaHttpServer getInstance() {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return
-    ApplicationManager.getApplication().getComponent(IdeaHttpServer.class);<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;public
-    void initComponent() {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server
-    = HttpServer.create(new InetSocketAddress(80), 10);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.createContext("/",
-    new MyHandler());<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.setExecutor(null);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.start();<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isServerRunning
-    = true;<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Server is
-    started");<br/><br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} catch (IOException e) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isServerRunning
-    = false;<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.err.println("Server
-    didn't
-    start");<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;public
-    void disposeComponent() {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.stop(server.hashCode());<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Server
-    is stopped");<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isServerRunning = false;<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;@NotNull<br/>&nbsp;&nbsp;&nbsp;&nbsp;public
-    String getComponentName() {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return
-    IdeaHttpServer.class.getName();<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;public boolean
-    isServerRunning() {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return isServerRunning; //To change body of
-    created methods use File | Settings | File Templates.<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/>}<br/></div>
+<div>
+    <span class="class0">package</span> com.jetbrains.ukhorskaya;<span class="class8"><br/></span><br/><span
+        class="class0">import</span> com.intellij.openapi.application.ApplicationManager;<br/><span class="class0">import</span>
+    com.intellij.openapi.components.ApplicationComponent;<br/><span class="class0">import</span>
+    com.sun.net.httpserver.HttpServer;<br/><br/><span class="class0">import</span> java.io.IOException;<br/><span
+        class="class0">import</span> java.net.InetSocketAddress;<br/><br/><span class="class67">/**</span><span
+        class="class67"><br/> </span><span class="class67">*</span><span class="class67"> </span><span class="class67">Created</span><span
+        class="class67"> </span><span class="class67">by</span><span class="class67"> </span><span class="class67">IntelliJ</span><span
+        class="class67"> </span><span class="class67">IDEA.</span><span class="class67"><br/> </span><span
+        class="class67">*</span><span class="class67"> </span><span class="class67">User:</span><span
+        class="class67"> </span><span class="class67">Natalia.Ukhorskaya</span><span class="class67"><br/> </span><span
+        class="class67">*</span><span class="class67"> </span><span class="class67">Date:</span><span
+        class="class67"> </span><span class="class67">8/5/11</span><span class="class67"><br/> </span><span
+        class="class67">*</span><span class="class67"> </span><span class="class67">Time:</span><span
+        class="class67"> </span><span class="class67">10:05</span><span class="class67"> </span><span
+        class="class67">AM</span><span class="class67"><br/> </span><span class="class67">*</span><span
+        class="class67"> </span><span class="class67">To</span><span class="class67"> </span><span class="class67">change</span><span
+        class="class67"> </span><span class="class67">this</span><span class="class67"> </span><span class="class67">template</span><span
+        class="class67"> </span><span class="class67">use</span><span class="class67"> </span><span
+        class="class67">File</span><span class="class67"> </span><span class="class67">|</span><span
+        class="class67"> </span><span class="class67">Settings</span><span class="class67"> </span><span
+        class="class67">|</span><span class="class67"> </span><span class="class67">File</span><span
+        class="class67"> </span><span class="class67">Templates.</span><span class="class67"><br/> </span><span
+        class="class67">*/</span><br/><span class="class0">public</span> <span class="class0">class</span>
+    IdeaHttpServer <span class="class0">implements</span> ApplicationComponent {<br/>&nbsp;&nbsp;&nbsp;&nbsp;<span
+        class="class0">private</span> <span class="class0">boolean</span> isServerRunning = <span
+        class="class0">false</span>;<br/>&nbsp;&nbsp;&nbsp;&nbsp;<span class="class0">private</span> HttpServer
+    server;<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<span class="class0">public</span> <span class="class0">static</span> <span
+        class="class0">void</span> main(String[] args) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+        class="class0">try</span> {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpServer
+    server = HttpServer.create(<span class="class0">new</span> InetSocketAddress(<span class="class190">80</span>),
+    <span class="class190">0</span>);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.createContext(<span
+        class="class202">"/"</span>, <span class="class0">new</span> MyHandler());<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.setExecutor(<span
+        class="class0">null</span>);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.start();<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+        class="class202">"Server is started"</span>);<br/><br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+    <span class="class0">catch</span> (IOException e) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.err.println(<span
+        class="class202">"Server didn't start"</span>);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<span
+        class="class0">public</span> <span class="class0">static</span> IdeaHttpServer getInstance() {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+        class="class0">return</span> ApplicationManager.getApplication().getComponent(IdeaHttpServer.<span
+        class="class0">class</span>);<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<span
+        class="class0">public</span> <span class="class0">void</span> initComponent() {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+        class="class0">try</span> {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server =
+    HttpServer.create(<span class="class0">new</span> InetSocketAddress(<span class="class190">80</span>), <span
+        class="class190">10</span>);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.createContext(<span
+        class="class202">"/"</span>, <span class="class0">new</span> MyHandler());<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.setExecutor(<span
+        class="class0">null</span>);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.start();<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isServerRunning
+    = <span class="class0">true</span>;<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+        class="class202">"Server is started"</span>);<br/><br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+    <span class="class0">catch</span> (IOException e) {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isServerRunning
+    = <span class="class0">false</span>;<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.err.println(<span
+        class="class202">"Server didn't start"</span>);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<span
+        class="class0">public</span> <span class="class0">void</span> disposeComponent() {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.stop(server.hashCode());<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+        class="class202">"Server is stopped"</span>);<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isServerRunning
+    = <span class="class0">false</span>;<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;@NotNull<br/>&nbsp;&nbsp;&nbsp;&nbsp;<span
+        class="class0">public</span> String getComponentName()
+    {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="class0">return</span> IdeaHttpServer.<span
+        class="class0">class</span>.getName();<br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;<span
+        class="class0">public</span> <span class="class0">boolean</span> isServerRunning() {<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+        class="class0">return</span> isServerRunning; <span class="class67">//To change body of created methods use File | Settings | File Templates.</span><br/>&nbsp;&nbsp;&nbsp;&nbsp;}<br/>}<br/>
+</div>
 </body>
 </html>

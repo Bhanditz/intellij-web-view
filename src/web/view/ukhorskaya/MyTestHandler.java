@@ -10,9 +10,11 @@ import com.intellij.openapi.editor.impl.IterationState;
  */
 public class MyTestHandler extends MyBaseHandler {
 
+    public void setIterationState(IterationState state) {
+        this.iterationState = state;
+    }
 
-    public MyTestHandler(IterationState iterationState, int position) {
-        this.iterationState = iterationState;
+    public void setIntPosition(int position) {
         this.intPositionState = position;
     }
 

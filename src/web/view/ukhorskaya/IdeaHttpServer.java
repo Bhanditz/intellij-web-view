@@ -20,23 +20,17 @@ public class IdeaHttpServer implements ApplicationComponent {
     private MyBaseHandler myHandler;
 
 
+    public static Class<? extends MyBaseHandler> ourHandlerClass = MyMainHandler.class;
+
     public static IdeaHttpServer getInstance() {
         return ApplicationManager.getApplication().getComponent(IdeaHttpServer.class);
     }
 
     public void initComponent() {
-        startServer();
-    }
-
-    public void disposeComponent() {
-        stopServer();
-    }
-
-    private void startServer() {
         try {
             server = HttpServer.create(new InetSocketAddress(80), 10);
             if (myHandler == null) {
-                myHandler = new MyMainHandler();
+                myHandler = ourHandlerClass.newInstance();
             }
             server.createContext("/", myHandler);
             server.setExecutor(null);
@@ -49,13 +43,22 @@ public class IdeaHttpServer implements ApplicationComponent {
             isServerRunning = false;
             System.err.println("Server didn't start");
             e.printStackTrace();
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private void stopServer() {
-        server.stop(10);
+    public void disposeComponent() {
+        server.stop(0);
         System.out.println("Server is stopped");
         isServerRunning = false;
+    }
+
+
+    public MyBaseHandler getMyHandler() {
+        return myHandler;
     }
 
     @NotNull
@@ -67,10 +70,4 @@ public class IdeaHttpServer implements ApplicationComponent {
         return isServerRunning;
     }
 
-    public void setMyHandler(MyBaseHandler myHandler) {
-        stopServer();
-
-        this.myHandler = myHandler;
-        startServer();
-    }
 }

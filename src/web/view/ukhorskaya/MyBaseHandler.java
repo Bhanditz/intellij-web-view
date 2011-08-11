@@ -4,7 +4,6 @@ import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -95,39 +94,34 @@ public abstract class MyBaseHandler implements HttpHandler {
 
     //Add highlighting for file
     private String addHighLighting(String response) {
-        final Ref<IterationState> stateRef = new Ref<IterationState>();
-        final Ref<Integer> intPositionRef = new Ref<Integer>();
         setVariables();
-        stateRef.set(iterationState);
-        intPositionRef.set(intPositionState);
-
 
         mapAttributes = new HashMap<MyTextAttributes, Integer>();
 
         MyTextAttributes defaultTextAttributes = new MyTextAttributes();
         int id = 0;
         StringBuilder result = new StringBuilder();
-        while (stateRef.get().getEndOffset() != stateRef.get().getStartOffset()) {
-            MyTextAttributes attr = new MyTextAttributes(stateRef.get().getMergedAttributes());
-            if ((stateRef.get().getEndOffset() < intPositionRef.get()) && (getColor(attr.getBackgroundColor()).equals("#ffffd7"))) {
-                attr.setBackgroundColor(Color.white);
+        while (iterationState.getEndOffset() != iterationState.getStartOffset()) {
+            MyTextAttributes myTextAttributes = new MyTextAttributes(iterationState.getMergedAttributes());
+            if ((iterationState.getEndOffset() < intPositionState) && (getColor(myTextAttributes.getBackgroundColor()).equals("#ffffd7"))) {
+                myTextAttributes.setBackgroundColor(Color.white);
             }
 
-            String tmp = response.substring(stateRef.get().getStartOffset(), stateRef.get().getEndOffset());
-            if (!attr.equals(defaultTextAttributes)) {
+            String tmp = response.substring(iterationState.getStartOffset(), iterationState.getEndOffset());
+            if (!myTextAttributes.equals(defaultTextAttributes)) {
                 int className = 0;
-                if (mapAttributes.containsKey(attr)) {
-                    if (mapAttributes.get(attr) != null) {
-                        className = mapAttributes.get(attr);
+                if (mapAttributes.containsKey(myTextAttributes)) {
+                    if (mapAttributes.get(myTextAttributes) != null) {
+                        className = mapAttributes.get(myTextAttributes);
                     }
                 } else {
-                    mapAttributes.put(attr, id);
+                    mapAttributes.put(myTextAttributes, id);
                     className = id;
                 }
                 tmp = addClassForElement(tmp, className);
             }
             result.append(tmp);
-            stateRef.get().advance();
+            iterationState.advance();
             id++;
         }
         //return generateCssStyles(attributesMap) + result.toString();
@@ -187,7 +181,7 @@ public abstract class MyBaseHandler implements HttpHandler {
             response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
             response.append("<html>\n");
             response.append("<head>\n");
-            response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\" />");
+            response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\"/>");
             response.append("<title>Web View</title>\n");
             response.append("</head>\n");
             response.append("<body>\n");
@@ -258,7 +252,6 @@ public abstract class MyBaseHandler implements HttpHandler {
             return uri.substring(0, position);
         }
     }
-
 
     //Get Color as String
     private String getColor(Color color) {

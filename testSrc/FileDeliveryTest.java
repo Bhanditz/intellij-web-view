@@ -37,9 +37,17 @@ public class FileDeliveryTest extends IdeaTestCase {
 
 
     private final String LOCALHOST = "http://localhost/";
+    private Editor myEditor;
 
     public void testServerStarted() {
         assertTrue("Server didn't start", IdeaHttpServer.getInstance().isServerRunning());
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        IdeaHttpServer.ourHandlerClass = MyTestHandler.class;
+        super.setUp();
+        IdeaHttpServer.getInstance().isServerRunning();
     }
 
     @Override
@@ -157,41 +165,42 @@ public class FileDeliveryTest extends IdeaTestCase {
     }
 
     private String getFileContentFromUrl(String urlPathWoLocalhost) throws IOException {
-
-
         String urlPath = LOCALHOST + urlPathWoLocalhost;
         URL url = new URL(urlPath);
         HttpURLConnection urlConnection = null;
-        BufferedReader in;
-        try {
-            urlConnection = (HttpURLConnection) url.openConnection();
+        BufferedReader in = null;
+        urlConnection = (HttpURLConnection) url.openConnection();
 
-            String relPath = "";
-            if (urlPathWoLocalhost.indexOf("/") != -1) {
-                relPath = urlPathWoLocalhost.substring(urlPathWoLocalhost.indexOf("/"));
-            }
+        String relPath = "";
+        if (urlPathWoLocalhost.contains("/")) {
+            relPath = urlPathWoLocalhost.substring(urlPathWoLocalhost.indexOf("/"));
+        } else {
+            relPath = urlPathWoLocalhost;
+        }
 
-            final VirtualFile currentFile = getFileByRelPath(relPath);
-            if (currentFile == null) {
+        final VirtualFile currentFile = getFileByRelPath(relPath);
+        if (currentFile == null) {
+            try {
                 urlConnection.getInputStream();
+            } catch (FileNotFoundException e) {
+                in = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
             }
+        } else {
             final Ref<IterationState> stateRef = new Ref<IterationState>();
             final Ref<Integer> intPositionRef = new Ref<Integer>();
             ApplicationManager.getApplication().runWriteAction(new Runnable() {
                 public void run() {
                     PsiFile psiFile = PsiManager.getInstance(myProject).findFile(currentFile);
                     Document document = PsiDocumentManager.getInstance(myProject).getDocument(psiFile);
-                    Editor editor = EditorFactory.getInstance().createEditor(document, myProject, currentFile, true);
-                    stateRef.set(new IterationState((EditorEx) editor, 0, false));
-                    intPositionRef.set(editor.getCaretModel().getVisualLineEnd());
+                    myEditor = EditorFactory.getInstance().createEditor(document, myProject, currentFile, true);
+                    stateRef.set(new IterationState((EditorEx) myEditor, 0, false));
+                    intPositionRef.set(myEditor.getCaretModel().getVisualLineEnd());
                 }
             });
 
-            IdeaHttpServer.getInstance().setMyHandler(new MyTestHandler(stateRef.get(), intPositionRef.get()));
+            ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIterationState(stateRef.get());
+            ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIntPosition(intPositionRef.get());
             in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
-        } catch (FileNotFoundException e) {
-            in = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream()));
         }
 
         String str;
@@ -202,6 +211,14 @@ public class FileDeliveryTest extends IdeaTestCase {
         in.close();
 
         return result.toString();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        if (myEditor != null) {
+            EditorFactory.getInstance().releaseEditor(myEditor);
+        }
+        super.tearDown();
     }
 
     private VirtualFile getFileByRelPath(String relPath) {
@@ -232,7 +249,7 @@ public class FileDeliveryTest extends IdeaTestCase {
         response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
         response.append("<html>");
         response.append("<head>");
-        response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\" />");
+        response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\"/>");
         response.append("<title>Web View</title>");
         response.append("</head>");
         response.append("<body>");
@@ -245,6 +262,7 @@ public class FileDeliveryTest extends IdeaTestCase {
     }
 
     private String processString(String inputString) {
+        inputString = inputString.replaceAll("    ", " ");
         return inputString.replaceAll("\\r\\n", "");
     }
 
