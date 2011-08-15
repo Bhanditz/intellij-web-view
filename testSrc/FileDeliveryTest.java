@@ -21,7 +21,7 @@ import com.intellij.testFramework.IdeaTestCase;
 import org.apache.commons.lang.math.RandomUtils;
 import org.jetbrains.annotations.NonNls;
 import web.view.ukhorskaya.IdeaHttpServer;
-import web.view.ukhorskaya.MyTestHandler;
+import web.view.ukhorskaya.handlers.MyTestHandler;
 
 import java.io.*;
 import java.net.HttpURLConnection;

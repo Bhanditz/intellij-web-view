@@ -4,6 +4,8 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.sun.net.httpserver.HttpServer;
 import org.jetbrains.annotations.NotNull;
+import web.view.ukhorskaya.handlers.MyBaseHandler;
+import web.view.ukhorskaya.handlers.MyMainHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

@@ -22,6 +22,7 @@ public class MyTextAttributes {
 
     }
 
+
     public MyTextAttributes(TextAttributes attributes) {
         foregroundColor = attributes.getForegroundColor();
         backgroundColor = attributes.getBackgroundColor();
@@ -60,4 +61,5 @@ public class MyTextAttributes {
     public int hashCode() {
         return (foregroundColor.hashCode() + backgroundColor.hashCode() + fontType);
     }
+
 }

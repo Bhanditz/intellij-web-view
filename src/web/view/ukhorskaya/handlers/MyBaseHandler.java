@@ -1,17 +1,19 @@
-package web.view.ukhorskaya;
+package web.view.ukhorskaya.handlers;
 
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiFile;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import web.view.ukhorskaya.MyRecursiveVisitor;
+import web.view.ukhorskaya.MyTextAttributes;
+import web.view.ukhorskaya.Pair;
 
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,11 +28,13 @@ import java.util.HashMap;
 public abstract class MyBaseHandler implements HttpHandler {
     protected IterationState iterationState;
     protected int intPositionState;
+    protected PsiFile psiFile;
 
     protected Project currentProject;
     protected VirtualFile currentFile;
 
-    HashMap<MyTextAttributes, Integer> mapAttributes;
+    private HashMap<MyTextAttributes, Integer> mapAttributes = new HashMap<MyTextAttributes, Integer>();
+    private ArrayList<Pair> arrayLinks = new ArrayList<Pair>();
 
     public void handle(HttpExchange exchange) {
         if (!exchange.getRequestURI().toString().contains("____.css")) {
@@ -68,18 +72,7 @@ public abstract class MyBaseHandler implements HttpHandler {
             return;
         }
 
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(currentFile.getInputStream()));
-            String tmp;
-            while ((tmp = bufferedReader.readLine()) != null) {
-                response += tmp + "\n";
-            }
-        } catch (IOException e) {
-            response = "Error while reading from file";
-            writeResponse(exchange, response, 400);
-        }
-
-        response = addHighLighting(response);
+        response = getContentWithDecoration();
 
         response = response.replaceAll("    ", "&nbsp;&nbsp;&nbsp;&nbsp;");
         response = response.replaceAll("\\n", "<br/>");
@@ -87,45 +80,29 @@ public abstract class MyBaseHandler implements HttpHandler {
         writeResponse(exchange, response, 200);
     }
 
+
+    private String getContentWithDecoration() {
+        setVariables();
+
+        MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, currentProject, iterationState, intPositionState);
+        psiFile.accept(visitor);
+        mapAttributes = visitor.getMapAttributes();
+        arrayLinks = visitor.getArrayLinks();
+        return visitor.getResult();
+    }
+
+    private VirtualFile getFileByRelPathInLib(String relPath) {
+        VirtualFile sdkDir = ProjectRootManager.getInstance(currentProject).getProjectSdk().getHomeDirectory();
+        sdkDir.findFileByRelativePath(relPath);
+        if (currentFile != null) {
+            return currentFile;
+        }
+        return null;
+    }
+
     private void sendCssFile(HttpExchange exchange) {
         String response = generateCssStyles();
         writeResponse(exchange, response, 200, true);
-    }
-
-    //Add highlighting for file
-    private String addHighLighting(String response) {
-        setVariables();
-
-        mapAttributes = new HashMap<MyTextAttributes, Integer>();
-
-        MyTextAttributes defaultTextAttributes = new MyTextAttributes();
-        int id = 0;
-        StringBuilder result = new StringBuilder();
-        while (iterationState.getEndOffset() != iterationState.getStartOffset()) {
-            MyTextAttributes myTextAttributes = new MyTextAttributes(iterationState.getMergedAttributes());
-            if ((iterationState.getEndOffset() < intPositionState) && (getColor(myTextAttributes.getBackgroundColor()).equals("#ffffd7"))) {
-                myTextAttributes.setBackgroundColor(Color.white);
-            }
-
-            String tmp = response.substring(iterationState.getStartOffset(), iterationState.getEndOffset());
-            if (!myTextAttributes.equals(defaultTextAttributes)) {
-                int className = 0;
-                if (mapAttributes.containsKey(myTextAttributes)) {
-                    if (mapAttributes.get(myTextAttributes) != null) {
-                        className = mapAttributes.get(myTextAttributes);
-                    }
-                } else {
-                    mapAttributes.put(myTextAttributes, id);
-                    className = id;
-                }
-                tmp = addClassForElement(tmp, className);
-            }
-            result.append(tmp);
-            iterationState.advance();
-            id++;
-        }
-        //return generateCssStyles(attributesMap) + result.toString();
-        return result.toString();
     }
 
     //Generate css-file
@@ -133,6 +110,7 @@ public abstract class MyBaseHandler implements HttpHandler {
         StringBuffer buffer = new StringBuffer();
         //buffer.append("<style type=\"text/css\">");
         buffer.append("body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;}");
+        buffer.append(" a {text-decoration: none; color: #000000;} a:hover {color: blue; text-decoration: underline;}");
         for (MyTextAttributes attr : mapAttributes.keySet()) {
             buffer.append("\nspan.class");
             buffer.append(mapAttributes.get(attr)).append("{");
@@ -155,17 +133,6 @@ public abstract class MyBaseHandler implements HttpHandler {
             }
         }
         //buffer.append("</style>");
-        return buffer.toString();
-    }
-
-    //Add <span> tag with class name for the element
-    private String addClassForElement(String string, int id) {
-        StringBuilder buffer = new StringBuilder();
-        buffer.append("<span class=\"class");
-        buffer.append(id);
-        buffer.append("\">");
-        buffer.append(processString(string));
-        buffer.append("</span>");
         return buffer.toString();
     }
 
@@ -213,7 +180,7 @@ public abstract class MyBaseHandler implements HttpHandler {
     }
 
     //Change some special symbols from file to show in browser
-    private String processString(String string) {
+    public static String processString(String string) {
         if (string.contains("<")) {
             string = string.replaceAll("<", "&lt;");
         }
@@ -254,7 +221,7 @@ public abstract class MyBaseHandler implements HttpHandler {
     }
 
     //Get Color as String
-    private String getColor(Color color) {
+    public static String getColor(Color color) {
         ArrayList<String> colors = new ArrayList<String>();
         colors.add(Long.toHexString(color.getRed()));
         colors.add(Long.toHexString(color.getGreen()));
@@ -262,16 +229,23 @@ public abstract class MyBaseHandler implements HttpHandler {
 
         StringBuilder buffer = new StringBuilder();
         for (String c : colors) {
-            if (c.equals("0")) {
-                c = "00";
+            if (c.length() == 1) {
+                if (c.equals("0")) {
+                    c = "00";
+                } else if (c.equals("e")) {
+                    c = "0e";
+                } else {
+                    System.out.println("WARNING: css color can be incorrect :" + color);
+                }
             }
+
             buffer.append(c);
         }
         return ("#" + buffer.toString());
     }
 
     //Get fontType as String
-    private String getFontType(int fontType) {
+    public static String getFontType(int fontType) {
         switch (fontType) {
             default:
                 return "";

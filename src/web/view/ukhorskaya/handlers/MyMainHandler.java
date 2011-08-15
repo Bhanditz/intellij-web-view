@@ -1,4 +1,4 @@
-package web.view.ukhorskaya;
+package web.view.ukhorskaya.handlers;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
@@ -24,17 +24,21 @@ public class MyMainHandler extends MyBaseHandler {
     public void setVariables() {
         final Ref<IterationState> stateRef = new Ref<IterationState>();
         final Ref<Integer> intPositionRef = new Ref<Integer>();
+        final Ref<PsiFile> psiFileRef = new Ref<PsiFile>();
+
         ApplicationManager.getApplication().invokeAndWait(new Runnable() {
             public void run() {
 
-                PsiFile psiFile = PsiManager.getInstance(currentProject).findFile(currentFile);
-                Document document = PsiDocumentManager.getInstance(currentProject).getDocument(psiFile);
+                psiFileRef.set(PsiManager.getInstance(currentProject).findFile(currentFile));
+
+                Document document = PsiDocumentManager.getInstance(currentProject).getDocument(psiFileRef.get());
                 Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, currentFile, true);
                 stateRef.set(new IterationState((EditorEx) editor, 0, false));
                 intPositionRef.set(editor.getCaretModel().getVisualLineEnd());
             }
         }, ModalityState.defaultModalityState());
 
+        psiFile = psiFileRef.get();
         iterationState = stateRef.get();
         intPositionState = intPositionRef.get();
     }

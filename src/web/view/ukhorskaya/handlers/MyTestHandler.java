@@ -1,4 +1,4 @@
-package web.view.ukhorskaya;
+package web.view.ukhorskaya.handlers;
 
 import com.intellij.openapi.editor.impl.IterationState;
 
