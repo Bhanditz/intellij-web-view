@@ -10,10 +10,11 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import web.view.ukhorskaya.MyRecursiveVisitor;
 import web.view.ukhorskaya.MyTextAttributes;
-import web.view.ukhorskaya.Pair;
 
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,19 +35,40 @@ public abstract class MyBaseHandler implements HttpHandler {
     protected VirtualFile currentFile;
 
     private HashMap<MyTextAttributes, Integer> mapAttributes = new HashMap<MyTextAttributes, Integer>();
-    private ArrayList<Pair> arrayLinks = new ArrayList<Pair>();
 
     public void handle(HttpExchange exchange) {
-        if (!exchange.getRequestURI().toString().contains("____.css")) {
-            sendOtherFile(exchange);
-        } else {
+        if (exchange.getRequestURI().toString().contains("____.css")) {
             sendCssFile(exchange);
+        } else if (exchange.getRequestURI().toString().contains("highlighting.js")) {
+            sendJsFile(exchange);
+        } else {
+            sendOtherFile(exchange);
         }
+    }
+
+    private void sendJsFile(HttpExchange exchange) {
+        StringBuilder response = new StringBuilder();
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(MyBaseHandler.class.getResourceAsStream("/highlighting.js")));
+
+            String tmp;
+            while ((tmp = bufferedReader.readLine()) != null) {
+                response.append(tmp);
+                response.append("\n");
+            }
+        } catch (NullPointerException e) {
+            response.append("Js file (highlighting.js) not found");
+            writeResponse(exchange, response.toString(), 404);
+        } catch (IOException e) {
+            response.append("Error while reading from file");
+            writeResponse(exchange, response.toString(), 400);
+        }
+        writeResponse(exchange, response.toString(), 200, true);
     }
 
     private void sendOtherFile(HttpExchange exchange) {
         String requestURI = exchange.getRequestURI().toString();
-        String response = "";
+        String response;
 
         String projectName = getProjectName(requestURI);
         if (projectName == null) {
@@ -63,9 +85,7 @@ public abstract class MyBaseHandler implements HttpHandler {
         }
 
         String relPath = requestURI.substring(requestURI.indexOf(projectName) + projectName.length());
-
         currentFile = getFileByRelPath(relPath);
-
         if (currentFile == null) {
             response = "File " + relPath + " not found at project " + projectName;
             writeResponse(exchange, response, 404);
@@ -84,20 +104,10 @@ public abstract class MyBaseHandler implements HttpHandler {
     private String getContentWithDecoration() {
         setVariables();
 
-        MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, currentProject, iterationState, intPositionState);
+        MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentProject, iterationState, intPositionState);
         psiFile.accept(visitor);
         mapAttributes = visitor.getMapAttributes();
-        arrayLinks = visitor.getArrayLinks();
         return visitor.getResult();
-    }
-
-    private VirtualFile getFileByRelPathInLib(String relPath) {
-        VirtualFile sdkDir = ProjectRootManager.getInstance(currentProject).getProjectSdk().getHomeDirectory();
-        sdkDir.findFileByRelativePath(relPath);
-        if (currentFile != null) {
-            return currentFile;
-        }
-        return null;
     }
 
     private void sendCssFile(HttpExchange exchange) {
@@ -110,7 +120,7 @@ public abstract class MyBaseHandler implements HttpHandler {
         StringBuffer buffer = new StringBuffer();
         //buffer.append("<style type=\"text/css\">");
         buffer.append("body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;}");
-        buffer.append(" a {text-decoration: none; color: #000000;} a:hover {color: blue; text-decoration: underline;}");
+        buffer.append(" a {text-decoration: none; color: #000000;} a:hover {color: blue; text-decoration: underline;} span.highlighting { background-color: yellow !important;}");
         for (MyTextAttributes attr : mapAttributes.keySet()) {
             buffer.append("\nspan.class");
             buffer.append(mapAttributes.get(attr)).append("{");
@@ -151,6 +161,8 @@ public abstract class MyBaseHandler implements HttpHandler {
             response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\"/>");
             response.append("<title>Web View</title>\n");
             response.append("</head>\n");
+            response.append("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js\"></script>\n");
+            response.append("<script src=\"highlighting.js\"></script>\n");
             response.append("<body>\n");
             response.append("<div>\n");
             response.append(responseBody);
@@ -238,7 +250,6 @@ public abstract class MyBaseHandler implements HttpHandler {
                     System.out.println("WARNING: css color can be incorrect :" + color);
                 }
             }
-
             buffer.append(c);
         }
         return ("#" + buffer.toString());
