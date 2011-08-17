@@ -1,9 +1,12 @@
 package web.view.ukhorskaya.handlers;
 
+import com.intellij.ide.util.gotoByName.GotoFileModel;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.sun.net.httpserver.HttpExchange;
@@ -34,22 +37,93 @@ public abstract class MyBaseHandler implements HttpHandler {
     protected Project currentProject;
     protected VirtualFile currentFile;
 
+    private enum FileType {
+        HL_JS, HTML, JS
+    }
+
     private HashMap<MyTextAttributes, Integer> mapAttributes = new HashMap<MyTextAttributes, Integer>();
 
     public void handle(HttpExchange exchange) {
         if (exchange.getRequestURI().toString().contains("____.css")) {
             sendCssFile(exchange);
-        } else if (exchange.getRequestURI().toString().contains("highlighting.js")) {
-            sendJsFile(exchange);
+        } else if (exchange.getRequestURI().toString().contains("jquery")) {
+            sendResourceFile(exchange, FileType.JS);
+        } else if ((exchange.getRequestURI().toString().contains("highlighting.js"))) {
+            sendResourceFile(exchange, FileType.HL_JS);
+        } else if (exchange.getRequestURI().toString().contains("autocomplete")) {
+            sendJsonData(exchange);
         } else {
             sendOtherFile(exchange);
         }
     }
 
-    private void sendJsFile(HttpExchange exchange) {
+    private void sendJsonData(HttpExchange exchange) {
         StringBuilder response = new StringBuilder();
+        //response.append("[{label:\"Pete Freitag\", \"value\":1}, {\"label\":\"Pete Doe\", \"value\":2}]");
+
+        String requestUri = exchange.getRequestURI().toString();
+        String term = requestUri.substring(requestUri.indexOf("term=") + 5);
+        response.append(getAllFilesInProjectWithTerm(term));
+
+        writeResponse(exchange, response.toString(), 200, true);
+
+    }
+
+    private String getAllFilesInProjectWithTerm(final String term) {
+        StringBuilder response = new StringBuilder();
+
+        final GotoFileModel fileModel = new GotoFileModel(currentProject);
+        response.append("[");
+        for (final String name : fileModel.getNames(false)) {
+            if (name.contains(term)) {
+                final Ref<String> refStr = new Ref<String>();
+                ApplicationManager.getApplication().runReadAction(new Runnable() {
+                    public void run() {
+                        final Object[] elements = fileModel.getElementsByName(name, false, term);
+                        if ((elements.length != 0) && (elements[0] instanceof PsiFile)) {
+                            refStr.set(((PsiFile) elements[0]).getVirtualFile().getPath());
+                        }
+                    }
+                });
+
+                response.append("{\"label\":\"");
+                response.append(name);
+                response.append("\", \"url\":\"");
+                if (refStr.get() != null) {
+                    String path = refStr.get();
+                    String projectDir = currentProject.getBaseDir().getPath();
+                    if (path.contains(projectDir)) {
+                        path = path.substring(path.indexOf(currentProject.getName()) - 1);
+                        response.append(path);
+                    }
+                }
+                response.append("\"},");
+            }
+        }
+        response.delete(response.length() - 1, response.length());
+        response.append("]");
+
+        return response.toString();
+    }
+
+
+    private void sendResourceFile(HttpExchange exchange, FileType type) {
+        StringBuilder response = new StringBuilder();
+
+        InputStreamReader reader;
+        if (type == FileType.HTML) {
+            reader = new InputStreamReader(MyBaseHandler.class.getResourceAsStream("/index.html"));
+        } else if (type == FileType.HL_JS) {
+            reader = new InputStreamReader(MyBaseHandler.class.getResourceAsStream("/highlighting.js"));
+        } else {
+            String path = exchange.getRequestURI().getPath();
+            String projectName = getProjectName(path);
+            path = path.substring(path.indexOf(projectName) + projectName.length());
+            reader = new InputStreamReader(MyBaseHandler.class.getResourceAsStream(path));
+        }
+
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(MyBaseHandler.class.getResourceAsStream("/highlighting.js")));
+            BufferedReader bufferedReader = new BufferedReader(reader);
 
             String tmp;
             while ((tmp = bufferedReader.readLine()) != null) {
@@ -57,7 +131,7 @@ public abstract class MyBaseHandler implements HttpHandler {
                 response.append("\n");
             }
         } catch (NullPointerException e) {
-            response.append("Js file (highlighting.js) not found");
+            response.append("Resource file not found");
             writeResponse(exchange, response.toString(), 404);
         } catch (IOException e) {
             response.append("Error while reading from file");
@@ -85,6 +159,10 @@ public abstract class MyBaseHandler implements HttpHandler {
         }
 
         String relPath = requestURI.substring(requestURI.indexOf(projectName) + projectName.length());
+        if (relPath.length() <= 1) {
+            sendResourceFile(exchange, FileType.HTML);
+            return;
+        }
         currentFile = getFileByRelPath(relPath);
         if (currentFile == null) {
             response = "File " + relPath + " not found at project " + projectName;
@@ -105,6 +183,7 @@ public abstract class MyBaseHandler implements HttpHandler {
         setVariables();
 
         MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentProject, iterationState, intPositionState);
+
         psiFile.accept(visitor);
         mapAttributes = visitor.getMapAttributes();
         return visitor.getResult();
