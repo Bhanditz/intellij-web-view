@@ -47,7 +47,7 @@ public class FileDeliveryTest extends IdeaTestCase {
     protected void setUp() throws Exception {
         IdeaHttpServer.ourHandlerClass = MyTestHandler.class;
         super.setUp();
-        IdeaHttpServer.getInstance().isServerRunning();
+        //IdeaHttpServer.getInstance().isServerRunning();
     }
 
     @Override
@@ -119,7 +119,7 @@ public class FileDeliveryTest extends IdeaTestCase {
         String expectedFilePath = getProjectDir().getPath() + "/testData/" + fileName + ".html";
 
         VirtualFile expectedFile = LocalFileSystem.getInstance().findFileByPath(expectedFilePath);
-        String expectedResult = processString(VfsUtil.loadText(expectedFile));
+        String expectedResult = processString(VfsUtil.loadText(expectedFile)).replaceAll("PROJECT_NAME", myProject.getName());
         compareResults(urlPath, expectedResult);
     }
 
@@ -187,17 +187,19 @@ public class FileDeliveryTest extends IdeaTestCase {
             }
         } else {
             final Ref<IterationState> stateRef = new Ref<IterationState>();
+            final Ref<PsiFile> psiFileRef = new Ref<PsiFile>();
             final Ref<Integer> intPositionRef = new Ref<Integer>();
             ApplicationManager.getApplication().runWriteAction(new Runnable() {
                 public void run() {
-                    PsiFile psiFile = PsiManager.getInstance(myProject).findFile(currentFile);
-                    Document document = PsiDocumentManager.getInstance(myProject).getDocument(psiFile);
+                    psiFileRef.set(PsiManager.getInstance(myProject).findFile(currentFile));
+                    Document document = PsiDocumentManager.getInstance(myProject).getDocument(psiFileRef.get());
                     myEditor = EditorFactory.getInstance().createEditor(document, myProject, currentFile, true);
                     stateRef.set(new IterationState((EditorEx) myEditor, 0, false));
                     intPositionRef.set(myEditor.getCaretModel().getVisualLineEnd());
                 }
             });
 
+            ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setPsiFile(psiFileRef.get());
             ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIterationState(stateRef.get());
             ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIntPosition(intPositionRef.get());
             in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -252,6 +254,8 @@ public class FileDeliveryTest extends IdeaTestCase {
         response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\"/>");
         response.append("<title>Web View</title>");
         response.append("</head>");
+        response.append("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js\"></script>");
+        response.append("<script src=\"highlighting.js\"></script>");
         response.append("<body>");
         response.append("<div>");
         response.append(inputString);

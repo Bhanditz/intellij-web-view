@@ -2,17 +2,26 @@ package web.view.ukhorskaya.handlers;
 
 import com.intellij.ide.util.gotoByName.GotoFileModel;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.EditorFactory;
+import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import web.view.ukhorskaya.MyChooseByNameBase;
 import web.view.ukhorskaya.MyRecursiveVisitor;
 import web.view.ukhorskaya.MyTextAttributes;
+import web.view.ukhorskaya.Pair;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -34,7 +43,7 @@ public abstract class MyBaseHandler implements HttpHandler {
     protected int intPositionState;
     protected PsiFile psiFile;
 
-    protected Project currentProject;
+    protected static Project currentProject;
     protected VirtualFile currentFile;
 
     private enum FileType {
@@ -73,33 +82,48 @@ public abstract class MyBaseHandler implements HttpHandler {
         StringBuilder response = new StringBuilder();
 
         final GotoFileModel fileModel = new GotoFileModel(currentProject);
+
+        final MyChooseByNameBase chooser = new MyChooseByNameBase(currentProject, fileModel, null, false);
+        final ArrayList<String> list = new ArrayList<String>();
+
+
+        //final HashSet<Object> array = new HashSet<Object>();
+
+        ApplicationManager.getApplication().runReadAction(new Runnable() {
+            public void run() {
+                chooser.getNamesByPattern(list, term);
+                //    chooser.addElementsByPattern(array, term);
+            }
+        });
+
+
         response.append("[");
-        for (final String name : fileModel.getNames(false)) {
-            if (name.contains(term)) {
-                final Ref<String> refStr = new Ref<String>();
-                ApplicationManager.getApplication().runReadAction(new Runnable() {
-                    public void run() {
-                        final Object[] elements = fileModel.getElementsByName(name, false, term);
-                        if ((elements.length != 0) && (elements[0] instanceof PsiFile)) {
-                            refStr.set(((PsiFile) elements[0]).getVirtualFile().getPath());
+        for (final String name : list) {
+            final Ref<String> refStr = new Ref<String>();
+            ApplicationManager.getApplication().runReadAction(new Runnable() {
+                public void run() {
+                    for (Object object : fileModel.getElementsByName(name, false, term)) {
+                        if ((object instanceof PsiFile)) {
+                            refStr.set(((PsiFile) object).getVirtualFile().getPath());
                         }
                     }
-                });
-
-                response.append("{\"label\":\"");
-                response.append(name);
-                response.append("\", \"url\":\"");
-                if (refStr.get() != null) {
-                    String path = refStr.get();
-                    String projectDir = currentProject.getBaseDir().getPath();
-                    if (path.contains(projectDir)) {
-                        path = path.substring(path.indexOf(currentProject.getName()) - 1);
-                        response.append(path);
-                    }
                 }
-                response.append("\"},");
+            });
+
+            response.append("{\"label\":\"");
+            response.append(name);
+            response.append("\", \"url\":\"");
+            if (refStr.get() != null) {
+                String path = refStr.get();
+                String projectDir = currentProject.getBaseDir().getPath();
+                if (path.contains(projectDir)) {
+                    path = path.substring(path.indexOf(currentProject.getName()) - 1);
+                    response.append(path);
+                }
             }
+            response.append("\"},");
         }
+
         response.delete(response.length() - 1, response.length());
         response.append("]");
 
@@ -182,9 +206,9 @@ public abstract class MyBaseHandler implements HttpHandler {
     private String getContentWithDecoration() {
         setVariables();
 
-        MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentProject, iterationState, intPositionState);
-
-        psiFile.accept(visitor);
+        MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, currentProject, iterationState, intPositionState);
+        visitor.visitFile(psiFile);
+        //psiFile.accept(visitor);
         mapAttributes = visitor.getMapAttributes();
         return visitor.getResult();
     }
@@ -198,8 +222,9 @@ public abstract class MyBaseHandler implements HttpHandler {
     private String generateCssStyles() {
         StringBuffer buffer = new StringBuffer();
         //buffer.append("<style type=\"text/css\">");
-        buffer.append("body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;}");
-        buffer.append(" a {text-decoration: none; color: #000000;} a:hover {color: blue; text-decoration: underline;} span.highlighting { background-color: yellow !important;}");
+        buffer.append("body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF; line-height: 1.2em; } ");
+        buffer.append(" a {text-decoration: none; color: #000000;} a:hover  {color: blue; text-decoration: underline;} span.highlighting { background-color: yellow !important;}");
+        buffer.append(" a span {text-decoration: none; color: #000000;} a:hover span {color: blue; text-decoration: underline;}");
         for (MyTextAttributes attr : mapAttributes.keySet()) {
             buffer.append("\nspan.class");
             buffer.append(mapAttributes.get(attr)).append("{");
@@ -257,8 +282,7 @@ public abstract class MyBaseHandler implements HttpHandler {
             os = exchange.getResponseBody();
             os.write(response.toString().getBytes());
         } catch (IOException e) {
-            System.err.println("Error while work with file system");
-            e.printStackTrace();
+            //This is an exception we can't to send data to client
         } finally {
             try {
                 if (os != null) {
@@ -348,5 +372,53 @@ public abstract class MyBaseHandler implements HttpHandler {
 
     //Set IterationState and intPosition
     public abstract void setVariables();
+
+    public static IterationState getIterationStateByPsiFile(final PsiFile currentFile, final int position) {
+        final Ref<IterationState> stateRef = new Ref<IterationState>();
+        final Ref<Integer> intPositionRef = new Ref<Integer>();
+        final Ref<PsiFile> psiFileRef = new Ref<PsiFile>();
+
+        ApplicationManager.getApplication().invokeAndWait(new Runnable() {
+            public void run() {
+
+                Document document = PsiDocumentManager.getInstance(currentProject).getDocument(currentFile);
+                Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, currentFile.getFileType(), true);
+                stateRef.set(new IterationState((EditorEx) editor, position, false));
+                intPositionRef.set(editor.getCaretModel().getVisualLineEnd());
+            }
+        }, ModalityState.defaultModalityState());
+
+        return stateRef.get();
+    }
+
+    public static Pair<PsiFile, Integer> getFileAndTextRangeByElement(final PsiElement element) {
+        final Ref<PsiFile> resolvedRefFile = new Ref<PsiFile>();
+        final Ref<Integer> resolvedRefStartOffset = new Ref<Integer>();
+
+        ApplicationManager.getApplication().runReadAction(new Runnable() {
+            @Override
+            public void run() {
+                resolvedRefFile.set(element.getContainingFile());
+                resolvedRefStartOffset.set(element.getTextRange().getStartOffset());
+            }
+        });
+
+        return new Pair<PsiFile, Integer>(resolvedRefFile.get(), resolvedRefStartOffset.get());
+    }
+
+    public static Pair<String, Integer> getFilePathAndTextOffsetByElement(final PsiElement element) {
+        final Ref<String> resolvedRefFile = new Ref<String>();
+        final Ref<Integer> resolvedRefStartOffset = new Ref<Integer>();
+
+        ApplicationManager.getApplication().runReadAction(new Runnable() {
+            @Override
+            public void run() {
+                resolvedRefFile.set(element.getContainingFile().getVirtualFile().getPath());
+                resolvedRefStartOffset.set(element.getTextOffset());
+            }
+        });
+
+        return new Pair<String, Integer>(resolvedRefFile.get(), resolvedRefStartOffset.get());
+    }
 
 }

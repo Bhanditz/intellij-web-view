@@ -7,29 +7,29 @@ package web.view.ukhorskaya;
  * Time: 6:52 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Pair {
-    private int field1;
-    private int field2;
+public class Pair<S, T> {
+    private S field1;
+    private T field2;
 
-    public Pair(int field1, int field2) {
+    public Pair(S field1, T field2) {
         this.field1 = field1;
         this.field2 = field2;
     }
 
 
-    public int getField1() {
+    public S getField1() {
         return field1;
     }
 
-    public void setField1(int field1) {
+    public void setField1(S field1) {
         this.field1 = field1;
     }
 
-    public int getField2() {
+    public T getField2() {
         return field2;
     }
 
-    public void setField2(int field2) {
+    public void setField2(T field2) {
         this.field2 = field2;
     }
 
@@ -45,6 +45,6 @@ public class Pair {
 
     @Override
     public int hashCode() {
-        return (field1 + field2);
+        return (field1.hashCode() + field2.hashCode());
     }
 }

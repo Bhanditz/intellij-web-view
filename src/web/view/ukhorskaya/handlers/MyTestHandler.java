@@ -1,6 +1,7 @@
 package web.view.ukhorskaya.handlers;
 
 import com.intellij.openapi.editor.impl.IterationState;
+import com.intellij.psi.PsiFile;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,6 +17,10 @@ public class MyTestHandler extends MyBaseHandler {
 
     public void setIntPosition(int position) {
         this.intPositionState = position;
+    }
+
+    public void setPsiFile(PsiFile file) {
+        this.psiFile = file;
     }
 
     @Override
