@@ -1,6 +1,8 @@
 package web.view.ukhorskaya.handlers;
 
 import com.intellij.ide.util.gotoByName.GotoFileModel;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ShortcutSet;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.editor.Document;
@@ -8,26 +10,25 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.IterationState;
+import com.intellij.openapi.editor.markup.EffectType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import web.view.ukhorskaya.MyChooseByNameBase;
 import web.view.ukhorskaya.MyRecursiveVisitor;
 import web.view.ukhorskaya.MyTextAttributes;
-import web.view.ukhorskaya.Pair;
+import web.view.ukhorskaya.providers.BaseHighlighterProvider;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -40,6 +41,9 @@ import java.util.HashMap;
 
 public abstract class MyBaseHandler implements HttpHandler {
     protected IterationState iterationState;
+
+    protected BaseHighlighterProvider provider;
+
     protected int intPositionState;
     protected PsiFile psiFile;
 
@@ -47,7 +51,7 @@ public abstract class MyBaseHandler implements HttpHandler {
     protected VirtualFile currentFile;
 
     private enum FileType {
-        HL_JS, HTML, JS
+        HL_JS, HTML, JS, DIALOG_JS
     }
 
     private HashMap<MyTextAttributes, Integer> mapAttributes = new HashMap<MyTextAttributes, Integer>();
@@ -55,14 +59,47 @@ public abstract class MyBaseHandler implements HttpHandler {
     public void handle(HttpExchange exchange) {
         if (exchange.getRequestURI().toString().contains("____.css")) {
             sendCssFile(exchange);
+        } else if (exchange.getRequestURI().toString().contains(".png")) {
+            sendImageFile(exchange);
         } else if (exchange.getRequestURI().toString().contains("jquery")) {
             sendResourceFile(exchange, FileType.JS);
         } else if ((exchange.getRequestURI().toString().contains("highlighting.js"))) {
             sendResourceFile(exchange, FileType.HL_JS);
+        } else if ((exchange.getRequestURI().toString().contains("dialog.js"))) {
+            sendResourceFile(exchange, FileType.DIALOG_JS);
         } else if (exchange.getRequestURI().toString().contains("autocomplete")) {
             sendJsonData(exchange);
         } else {
             sendOtherFile(exchange);
+        }
+    }
+
+    private void sendImageFile(HttpExchange exchange) {
+        String path = exchange.getRequestURI().getPath();
+        String projectName = getProjectName(path);
+        path = path.substring(path.indexOf(projectName) + projectName.length());
+        BufferedImage bi;
+        OutputStream out = null;
+        try {
+            bi = ImageIO.read(MyBaseHandler.class.getResourceAsStream(path));
+            ByteArrayOutputStream tmp = new ByteArrayOutputStream();
+            ImageIO.write(bi, "png", tmp);
+            tmp.close();
+            Integer contentLength = tmp.size();
+            exchange.sendResponseHeaders(200, contentLength);
+            out = exchange.getResponseBody();
+            out.write(tmp.toByteArray());
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -98,7 +135,8 @@ public abstract class MyBaseHandler implements HttpHandler {
 
 
         response.append("[");
-        for (final String name : list) {
+        for (int i = 0; i < 50 && i < list.size(); i++) {
+            final String name = list.get(i);
             final Ref<String> refStr = new Ref<String>();
             ApplicationManager.getApplication().runReadAction(new Runnable() {
                 public void run() {
@@ -134,18 +172,17 @@ public abstract class MyBaseHandler implements HttpHandler {
     private void sendResourceFile(HttpExchange exchange, FileType type) {
         StringBuilder response = new StringBuilder();
 
-        InputStreamReader reader;
+
+        InputStreamReader reader = null;
         if (type == FileType.HTML) {
             reader = new InputStreamReader(MyBaseHandler.class.getResourceAsStream("/index.html"));
-        } else if (type == FileType.HL_JS) {
-            reader = new InputStreamReader(MyBaseHandler.class.getResourceAsStream("/highlighting.js"));
+
         } else {
             String path = exchange.getRequestURI().getPath();
             String projectName = getProjectName(path);
             path = path.substring(path.indexOf(projectName) + projectName.length());
             reader = new InputStreamReader(MyBaseHandler.class.getResourceAsStream(path));
         }
-
         try {
             BufferedReader bufferedReader = new BufferedReader(reader);
 
@@ -204,14 +241,17 @@ public abstract class MyBaseHandler implements HttpHandler {
 
 
     private String getContentWithDecoration() {
-        setVariables();
+        setVariables(currentFile);
 
-        MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, currentProject, iterationState, intPositionState);
+        MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, currentProject, iterationState, intPositionState, getProvider());
+
         visitor.visitFile(psiFile);
         //psiFile.accept(visitor);
         mapAttributes = visitor.getMapAttributes();
         return visitor.getResult();
     }
+
+    protected abstract BaseHighlighterProvider getProvider();
 
     private void sendCssFile(HttpExchange exchange) {
         String response = generateCssStyles();
@@ -222,8 +262,8 @@ public abstract class MyBaseHandler implements HttpHandler {
     private String generateCssStyles() {
         StringBuffer buffer = new StringBuffer();
         //buffer.append("<style type=\"text/css\">");
-        buffer.append("body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF; line-height: 1.2em; } ");
-        buffer.append(" a {text-decoration: none; color: #000000;} a:hover  {color: blue; text-decoration: underline;} span.highlighting { background-color: yellow !important;}");
+        buffer.append("body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;} ");
+        buffer.append(" a {text-decoration: none; color: #000000;} span.highlighting { background-color: yellow !important;}");
         buffer.append(" a span {text-decoration: none; color: #000000;} a:hover span {color: blue; text-decoration: underline;}");
         for (MyTextAttributes attr : mapAttributes.keySet()) {
             buffer.append("\nspan.class");
@@ -237,6 +277,9 @@ public abstract class MyBaseHandler implements HttpHandler {
                 buffer.append("background-color: ").append(tmp).append("; ");
             }
             buffer.append(getFontType(attr.getFontType())).append(" ");
+            if (attr.getEffectType().equals(EffectType.LINE_UNDERSCORE)) {
+                buffer.append("text-decoration: underline; ").append("; ");
+            }
             buffer.append("}");
 
             //Cut empty styles
@@ -259,19 +302,42 @@ public abstract class MyBaseHandler implements HttpHandler {
         OutputStream os = null;
         StringBuilder response = new StringBuilder();
         if (!isCssFile) {
+
             response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
             response.append("<html>\n");
             response.append("<head>\n");
             response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\"/>");
             response.append("<title>Web View</title>\n");
-            response.append("</head>\n");
+
             response.append("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js\"></script>\n");
-            response.append("<script src=\"highlighting.js\"></script>\n");
-            response.append("<body>\n");
+            response.append("<script src=\"/resources/highlighting.js\"></script>\n");
+            /* PopUp Dialog for find classes */
+            response.append("<script src=\"/resources/dialog.js\"></script>\n");
+            response.append("<script src=\"/resources/jquery/development-bundle/jquery-1.6.2.js\"></script>\n");
+            response.append("<script src=\"/resources/jquery/development-bundle/external/jquery.bgiframe-2.1.2.js\"></script>\n");
+            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.core.js\"></script>\n");
+            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.widget.js\"></script>\n");
+            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.mouse.js\"></script>\n");
+            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.draggable.js\"></script>\n");
+            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.position.js\"></script>\n");
+            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.resizable.js\"></script>\n");
+            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.dialog.js\"></script>\n");
+            response.append("<link rel=\"stylesheet\" href=\"/resources/jquery/development-bundle/themes/base/jquery.ui.all.css\">\n");
+            response.append("<link type=\"text/css\" href=\"/resources/jquery/css/ui-lightness/jquery-ui-1.8.16.custom.css\" rel=\"stylesheet\"/>\n");
+            response.append("<script src=\"/resources/jquery/js/jquery-ui-1.8.16.custom.min.js\" type=\"text/javascript\"></script>\n");
+            response.append("</head>\n");
+
+            int key = getKeyboardShortcut();
+
+            response.append("<body onload=\"setKeyboardShortcut(78);\">\n");
+            //response.append("<body onload=\"var fn = new wrap(log);\n" +
+            //        "fn(1,2);\">\n");
             response.append("<div>\n");
             response.append(responseBody);
             response.append("</div>\n");
+            response.append("<div id=\"dialog\" title=\"Enter file name: \" style=\"height: 25px !important;\">\n").append("<div class=\"ui-widget\">\n").append("<input id=\"tags\" type=\"text\" style=\"width: 476px;\"/>\n").append("</div>\n").append("</div>");
             response.append("</body>\n");
+            response.append("");
             response.append("</html>\n");
         } else {
             response.append(responseBody);
@@ -292,6 +358,12 @@ public abstract class MyBaseHandler implements HttpHandler {
                 e.printStackTrace();
             }
         }
+    }
+
+    private int getKeyboardShortcut() {
+        ShortcutSet gotoFile = ActionManager.getInstance().getAction("GotoFile").getShortcutSet();
+        //(KeyboardShortcut)gotoFile.getShortcuts()[0]).getFirstKeyStroke()
+        return 78;
     }
 
     //Change some special symbols from file to show in browser
@@ -371,16 +443,14 @@ public abstract class MyBaseHandler implements HttpHandler {
     }
 
     //Set IterationState and intPosition
-    public abstract void setVariables();
+    public abstract void setVariables(VirtualFile file);
 
     public static IterationState getIterationStateByPsiFile(final PsiFile currentFile, final int position) {
         final Ref<IterationState> stateRef = new Ref<IterationState>();
         final Ref<Integer> intPositionRef = new Ref<Integer>();
-        final Ref<PsiFile> psiFileRef = new Ref<PsiFile>();
 
         ApplicationManager.getApplication().invokeAndWait(new Runnable() {
             public void run() {
-
                 Document document = PsiDocumentManager.getInstance(currentProject).getDocument(currentFile);
                 Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, currentFile.getFileType(), true);
                 stateRef.set(new IterationState((EditorEx) editor, position, false));
@@ -389,36 +459,6 @@ public abstract class MyBaseHandler implements HttpHandler {
         }, ModalityState.defaultModalityState());
 
         return stateRef.get();
-    }
-
-    public static Pair<PsiFile, Integer> getFileAndTextRangeByElement(final PsiElement element) {
-        final Ref<PsiFile> resolvedRefFile = new Ref<PsiFile>();
-        final Ref<Integer> resolvedRefStartOffset = new Ref<Integer>();
-
-        ApplicationManager.getApplication().runReadAction(new Runnable() {
-            @Override
-            public void run() {
-                resolvedRefFile.set(element.getContainingFile());
-                resolvedRefStartOffset.set(element.getTextRange().getStartOffset());
-            }
-        });
-
-        return new Pair<PsiFile, Integer>(resolvedRefFile.get(), resolvedRefStartOffset.get());
-    }
-
-    public static Pair<String, Integer> getFilePathAndTextOffsetByElement(final PsiElement element) {
-        final Ref<String> resolvedRefFile = new Ref<String>();
-        final Ref<Integer> resolvedRefStartOffset = new Ref<Integer>();
-
-        ApplicationManager.getApplication().runReadAction(new Runnable() {
-            @Override
-            public void run() {
-                resolvedRefFile.set(element.getContainingFile().getVirtualFile().getPath());
-                resolvedRefStartOffset.set(element.getTextOffset());
-            }
-        });
-
-        return new Pair<String, Integer>(resolvedRefFile.get(), resolvedRefStartOffset.get());
     }
 
 }

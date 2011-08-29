@@ -1,7 +1,9 @@
 package web.view.ukhorskaya.handlers;
 
 import com.intellij.openapi.editor.impl.IterationState;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
+import web.view.ukhorskaya.providers.BaseHighlighterProvider;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,8 +13,14 @@ import com.intellij.psi.PsiFile;
  */
 public class MyTestHandler extends MyBaseHandler {
 
+    private BaseHighlighterProvider hProvider;
+
     public void setIterationState(IterationState state) {
         this.iterationState = state;
+    }
+
+    public void setHighlightingProvider(BaseHighlighterProvider provider) {
+        this.hProvider = provider;
     }
 
     public void setIntPosition(int position) {
@@ -24,8 +32,12 @@ public class MyTestHandler extends MyBaseHandler {
     }
 
     @Override
-    public void setVariables() {
+    protected BaseHighlighterProvider getProvider() {
+        return hProvider;
+    }
 
+    @Override
+    public void setVariables(VirtualFile file) {
     }
 
 }

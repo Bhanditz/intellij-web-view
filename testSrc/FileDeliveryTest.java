@@ -14,14 +14,14 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
+import com.intellij.psi.*;
+import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.testFramework.IdeaTestCase;
 import org.apache.commons.lang.math.RandomUtils;
 import org.jetbrains.annotations.NonNls;
 import web.view.ukhorskaya.IdeaHttpServer;
 import web.view.ukhorskaya.handlers.MyTestHandler;
+import web.view.ukhorskaya.providers.TestHighlighterProvider;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -90,14 +90,21 @@ public class FileDeliveryTest extends IdeaTestCase {
         compareResults(urlPath, addHtmlHeader(expectedResult));
     }
 
-    public void testFooRoot() throws IOException, InterruptedException {
-        String fileName = this.getTestName(false);
+    public void testFooRoot_java() throws IOException, InterruptedException {
+        String fileName = this.getTestName(false).replace("_", ".");
         makeFileInProject(fileName, true);
         getFilesToCompare(fileName, true);
     }
 
-    public void testFoo() throws IOException, InterruptedException {
-        String fileName = this.getTestName(false);
+    public void testFoo_java() throws IOException, InterruptedException {
+        String fileName = this.getTestName(false).replace("_", ".");
+        makeFileInProject(fileName);
+        getFilesToCompare(fileName);
+    }
+
+    public void
+    testMain_mxml() throws IOException, InterruptedException {
+        String fileName = this.getTestName(false).replace("_", ".");
         makeFileInProject(fileName);
         getFilesToCompare(fileName);
     }
@@ -109,9 +116,9 @@ public class FileDeliveryTest extends IdeaTestCase {
     private void getFilesToCompare(String fileName, boolean isRootDirectory) throws IOException {
         String urlPath;
         if (isRootDirectory) {
-            urlPath = myProject.getName() + "/" + fileName + ".java";
+            urlPath = myProject.getName() + "/" + fileName;
         } else {
-            urlPath = myProject.getName() + "/testData/" + fileName + ".java";
+            urlPath = myProject.getName() + "/testData/" + fileName;
 
         }
 
@@ -150,7 +157,7 @@ public class FileDeliveryTest extends IdeaTestCase {
             });
         }
 
-        String inputFilePath = getProjectDir().getPath() + "/testData/" + fileName + ".java";
+        String inputFilePath = getProjectDir().getPath() + "/testData/" + fileName;
         final VirtualFile inputFile = LocalFileSystem.getInstance().findFileByPath(inputFilePath);
 
         ApplicationManager.getApplication().runWriteAction(new Runnable() {
@@ -202,6 +209,11 @@ public class FileDeliveryTest extends IdeaTestCase {
             ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setPsiFile(psiFileRef.get());
             ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIterationState(stateRef.get());
             ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIntPosition(intPositionRef.get());
+
+            if (currentFile.getName().contains("Main.mxml")) {
+                setIterationStateForInjection(psiFileRef.get());
+            }
+
             in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
         }
 
@@ -213,6 +225,48 @@ public class FileDeliveryTest extends IdeaTestCase {
         in.close();
 
         return result.toString();
+    }
+
+    private void setIterationStateForInjection(PsiFile file) {
+        TestHighlighterProvider provider = new TestHighlighterProvider();
+        final Ref<PsiFile> injectionRef = new Ref<PsiFile>();
+
+        file.accept(new PsiRecursiveElementVisitor() {
+            @Override
+            public void visitElement(PsiElement element) {
+                final PsiElement next = element.getNextSibling();
+                if (next != null) {
+                    final Ref<PsiElement> injection = new Ref<PsiElement>();
+                    ApplicationManager.getApplication().runReadAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            PsiFile file = next.getContainingFile();
+                            int pos = next.getTextRange().getStartOffset();
+                            injection.set(InjectedLanguageUtil.findElementAtNoCommit(file, pos));
+                        }
+                    });
+
+                    if (injection.get() instanceof PsiFile) {
+                        injectionRef.set((PsiFile) injection.get());
+                    }
+                }
+                super.visitElement(element);
+            }
+        });
+
+        final Ref<IterationState> stateRef = new Ref<IterationState>();
+        ApplicationManager.getApplication().runWriteAction(new Runnable() {
+            public void run() {
+                Document document = PsiDocumentManager.getInstance(myProject).getDocument(injectionRef.get());
+                EditorFactory.getInstance().releaseEditor(myEditor);
+                myEditor = EditorFactory.getInstance().createEditor(document, myProject, injectionRef.get().getFileType(), true);
+                stateRef.set(new IterationState((EditorEx) myEditor, 0, false));
+            }
+        });
+
+        provider.setIterationState(stateRef.get());
+
+        ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setHighlightingProvider(provider);
     }
 
     @Override

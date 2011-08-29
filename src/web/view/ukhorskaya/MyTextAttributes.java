@@ -1,5 +1,6 @@
 package web.view.ukhorskaya;
 
+import com.intellij.openapi.editor.markup.EffectType;
 import com.intellij.openapi.editor.markup.TextAttributes;
 
 import java.awt.*;
@@ -14,12 +15,13 @@ public class MyTextAttributes {
     private Color foregroundColor;
     private Color backgroundColor;
     private int fontType;
+    private EffectType effectType;
 
     public MyTextAttributes() {
         foregroundColor = Color.black;
         backgroundColor = Color.white;
         fontType = 0;
-
+        effectType = EffectType.BOXED;
     }
 
 
@@ -27,11 +29,16 @@ public class MyTextAttributes {
         foregroundColor = attributes.getForegroundColor();
         backgroundColor = attributes.getBackgroundColor();
         fontType = attributes.getFontType();
+        effectType = attributes.getEffectType();
     }
 
 
     public Color getBackgroundColor() {
         return backgroundColor;
+    }
+
+     public EffectType getEffectType() {
+        return effectType;
     }
 
     public void setBackgroundColor(Color backgroundColor) {
@@ -54,12 +61,16 @@ public class MyTextAttributes {
         MyTextAttributes newTextAttributes = (MyTextAttributes) object;
         return (this.fontType == newTextAttributes.fontType) &&
                 (this.foregroundColor.equals(newTextAttributes.foregroundColor)) &&
-                (this.backgroundColor.equals(newTextAttributes.backgroundColor));
+                (this.effectType.equals(newTextAttributes.effectType)) &&
+                (this.backgroundColor.equals(newTextAttributes.backgroundColor)) ;
     }
 
     @Override
     public int hashCode() {
-        return (foregroundColor.hashCode() + backgroundColor.hashCode() + fontType);
+        return (foregroundColor.hashCode() + backgroundColor.hashCode() + fontType + effectType.hashCode());
     }
 
+    public void setEffectType(EffectType effectType) {
+        this.effectType = effectType;
+    }
 }

@@ -8,9 +8,12 @@ import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import web.view.ukhorskaya.providers.BaseHighlighterProvider;
+import web.view.ukhorskaya.providers.MainHighlighterProvider;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,7 +24,12 @@ import com.intellij.psi.PsiManager;
 public class MyMainHandler extends MyBaseHandler {
 
     @Override
-    public void setVariables() {
+    protected BaseHighlighterProvider getProvider() {
+        return new MainHighlighterProvider();
+    }
+
+    @Override
+    public void setVariables(final VirtualFile file) {
         final Ref<IterationState> stateRef = new Ref<IterationState>();
         final Ref<Integer> intPositionRef = new Ref<Integer>();
         final Ref<PsiFile> psiFileRef = new Ref<PsiFile>();
@@ -29,10 +37,10 @@ public class MyMainHandler extends MyBaseHandler {
         ApplicationManager.getApplication().invokeAndWait(new Runnable() {
             public void run() {
 
-                psiFileRef.set(PsiManager.getInstance(currentProject).findFile(currentFile));
+                psiFileRef.set(PsiManager.getInstance(currentProject).findFile(file));
 
                 Document document = PsiDocumentManager.getInstance(currentProject).getDocument(psiFileRef.get());
-                Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, currentFile, true);
+                Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, file, true);
                 stateRef.set(new IterationState((EditorEx) editor, 0, false));
                 intPositionRef.set(editor.getCaretModel().getVisualLineEnd());
             }

@@ -11,6 +11,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import web.view.ukhorskaya.handlers.MyBaseHandler;
+import web.view.ukhorskaya.providers.BaseHighlighterProvider;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -23,6 +24,8 @@ import java.util.HashMap;
  */
 public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
     private StringBuffer result = new StringBuffer();
+
+    private BaseHighlighterProvider provider;
 
     private VirtualFile currentFile;
     private Project currentProject;
@@ -39,64 +42,74 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
     private boolean isOpenedATag = false;
 
     //Position of Iteration state in injection
-    private int relPositionIterationState = 0;
+    private int relPosIS = 0;
 
-    public MyRecursiveVisitor(VirtualFile currentFile, Project currentProject, IterationState iterationState, int intPosition) {
+    public MyRecursiveVisitor(VirtualFile currentFile, Project currentProject, IterationState iterationState, int intPosition, BaseHighlighterProvider provider) {
         this.currentFile = currentFile;
         this.currentProject = currentProject;
 
         this.iterationState = iterationState;
         this.intPositionState = intPosition;
+        this.provider = provider;
     }
 
     @Override
     public void visitElement(final PsiElement element) {
 
         //Check for Referense
-        if (element instanceof PsiReference) {
-            final PsiReference localRef = element.getReference();
-            //if ((localRef.resolve() != null) && (localRef.resolve().getContainingFile() != null) && (localRef.getRangeInElement().getStartOffset() == 0)) {
-
-            ApplicationManager.getApplication().runReadAction(new Runnable() {
-                @Override
-                public void run() {
-                    if ((localRef.resolve() != null) && (localRef.resolve().getContainingFile() != null) && (isInProject(localRef.resolve().getContainingFile()))) {
-                        mapLinks.put(new TextRange(element.getTextRange().getStartOffset() + localRef.getRangeInElement().getStartOffset(), element.getTextRange().getStartOffset() + localRef.getRangeInElement().getEndOffset()), localRef);
-                    }
+        ApplicationManager.getApplication().runReadAction(new Runnable() {
+            @Override
+            public void run() {
+                PsiReference localRef = element.getReference();
+                if ((localRef != null) && (localRef.resolve() != null) && (localRef.resolve().getContainingFile() != null) && (isInProject(localRef.resolve().getContainingFile()))) {
+                    mapLinks.put(new TextRange(element.getTextRange().getStartOffset() + localRef.getRangeInElement().getStartOffset(),
+                            element.getTextRange().getStartOffset() + localRef.getRangeInElement().getEndOffset()), localRef);
                 }
-            });
-        }
-
-        //Check for childs
-        if (isLeaf(element) && !(element instanceof PsiReferenceParameterList)) {
-            //Check for injection
-            PsiFile injection = getInjection(element);
-            if (injection != null) {
-                addInjection(element, injection);
-            } else {
-                addTextToResult(element);
             }
+        });
+
+        //if (!getOnlyLinks) {
+        PsiElement injection = getInjection(element);
+
+        if ((injection != null) && (element.getTextRange().getStartOffset() != 0)) {
+            addInjectionForElement(element, injection);
         } else {
-            super.visitElement(element);
+            //Check for length for optimize work with empty elements
+            if (isLeaf(element) && (element.getText().length() > 0)) {
+                //Check for injection
+                addTextToResult(element);
+            } else {
+                super.visitElement(element);
+            }
         }
     }
 
-    private void addInjection(final PsiElement element, PsiFile injection) {
+    private void addInjectionForElement(final PsiElement element, final PsiElement injection) {
         if (element.getTextRange().getStartOffset() != 0) {
-            MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, currentProject, MyBaseHandler.getIterationStateByPsiFile(injection, element.getTextRange().getStartOffset()), intPositionState);
 
-            visitor.setRelPositionIterationState(iterationState.getStartOffset());
-            visitor.visitFile(injection);
-            HashMap<MyTextAttributes, Integer> map = visitor.getMapAttributes();
+            MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, currentProject, provider.getIterationStateFromPsiFile(injection.getContainingFile(), currentProject, element.getTextRange().getStartOffset()),
+                    intPositionState, provider);
+
+            final Ref<Integer> startOffsetInj = new Ref<Integer>();
+            ApplicationManager.getApplication().runReadAction(new Runnable() {
+                @Override
+                public void run() {
+                    startOffsetInj.set(injection.getTextRange().getStartOffset());
+                }
+            });
+
+            // "-" for add correct highlighting for elements witch starts not from begining of injected file
+            visitor.setRelPosIS(iterationState.getStartOffset() - startOffsetInj.get());
+            visitor.setMapAttributes(mapAttributes);
+
+            visitor.visitElement(injection);
 
             //Goto to end of Iteration state in injection
             while (iterationState.getEndOffset() != element.getTextRange().getEndOffset()) iterationState.advance();
             iterationState.advance();
 
             //Copy results from injection
-            for (MyTextAttributes attr : map.keySet()) {
-                mapAttributes.put(attr, map.get(attr));
-            }
+            mapAttributes = visitor.getMapAttributes();
             result.append(visitor.getResult());
         }
     }
@@ -114,23 +127,34 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
         });
 
         final PsiReference localRef = mapLinks.get(textRange.get());
+        //final PsiReference localRef = mapLinks.get(new TextRange(textRange.get().getStartOffset() + relPosIS, textRange.get().getEndOffset() + relPosIS));
 
         if (localRef != null) {
-            Pair<String, Integer> pair = MyBaseHandler.getFilePathAndTextOffsetByElement(localRef.resolve());
+            final Ref<String> resolvedRefFile = new Ref<String>();
+            final Ref<Integer> resolvedRefStartOffset = new Ref<Integer>();
 
-            if (!pair.getField2().equals(textOffset.get())) {
-                result.append(addLinkStart(pair.getField1(), "anch" + pair.getField2()));
+            ApplicationManager.getApplication().runReadAction(new Runnable() {
+                @Override
+                public void run() {
+                    resolvedRefFile.set(localRef.resolve().getContainingFile().getVirtualFile().getPath());
+                    resolvedRefStartOffset.set(localRef.resolve().getTextOffset());
+                }
+            });
+
+            // For don't add a link for it self
+            if (!resolvedRefStartOffset.get().equals(textOffset.get())) {
+                result.append(addLinkStart(resolvedRefFile.get(), "anch" + resolvedRefStartOffset.get() + localRef.resolve().getContainingFile()));
                 ref = localRef;
                 isOpenedATag = true;
             }
         }
 
         if (isOpenedATag) {
-            result.append(" name=\"anch").append(textOffset.get());
+            result.append(" name=\"anch").append(textOffset.get()).append(element.getContainingFile());
             result.append("\">");
             isOpenedATag = false;
         } else if (!(element instanceof PsiWhiteSpace)) {
-            result.append("<a name=\"anch").append(textOffset.get());
+            result.append("<a name=\"anch").append(textOffset.get()).append(element.getContainingFile());
             result.append("\"></a>");
             isOpenedATag = false;
         }
@@ -139,7 +163,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
         if ((iterationState.getEndOffset() < intPositionState) && (MyBaseHandler.getColor(myTextAttributes.getBackgroundColor()).equals("#ffffd7"))) {
             myTextAttributes.setBackgroundColor(Color.white);
         }
-        if ((element.getTextLength() != 0) && (textRange.get().getStartOffset() + relPositionIterationState == iterationState.getStartOffset())) {
+        if ((element.getTextLength() != 0) && (textRange.get().getStartOffset() + relPosIS == iterationState.getStartOffset())) {
             //if (!myTextAttributes.equals(defaultTextAttributes)) {
             int className = 0;
             if (mapAttributes.containsKey(myTextAttributes)) {
@@ -147,11 +171,11 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
                     className = mapAttributes.get(myTextAttributes);
                 }
             } else {
-                //relPositionIterationState added to differ class from injection
-                mapAttributes.put(myTextAttributes, id + relPositionIterationState);
-                className = id + relPositionIterationState;
+                //relPosIS added to differ class from injection
+                mapAttributes.put(myTextAttributes, id + relPosIS);
+                className = id + relPosIS;
             }
-            result.append(addHighlightingStart(className, textOffset.get()));
+            result.append(addHighlightingStart(className, textOffset.get().toString() + element.getContainingFile()));
             //}
         }
 
@@ -162,13 +186,13 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
             ref = null;
         }
 
-        if ((iterationState.getStartOffset() == textRange.get().getStartOffset() + relPositionIterationState) && ((iterationState.getEndOffset() - iterationState.getStartOffset()) < element.getTextLength())) {
-            while ((iterationState.getEndOffset() != textRange.get().getEndOffset() + relPositionIterationState) && (iterationState.getEndOffset() <= textRange.get().getEndOffset() + relPositionIterationState)) {
+        if ((iterationState.getStartOffset() == textRange.get().getStartOffset() + relPosIS) && ((iterationState.getEndOffset() - iterationState.getStartOffset()) < element.getTextLength())) {
+            while ((iterationState.getEndOffset() != textRange.get().getEndOffset() + relPosIS) && (iterationState.getEndOffset() <= textRange.get().getEndOffset() + relPosIS)) {
                 iterationState.advance();
             }
         }
 
-        if ((textRange.get().getEndOffset() + relPositionIterationState == iterationState.getEndOffset())) {
+        if ((textRange.get().getEndOffset() + relPosIS == iterationState.getEndOffset())) {
             //if (!myTextAttributes.equals(defaultTextAttributes)) {
             result.append(addHighlightingEnd());
             //}
@@ -187,9 +211,9 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
     }
 
     //If PsiElement contains characters form other language
-    private PsiFile getInjection(final PsiElement element) {
-        final PsiElement next = element.getNextSibling();
-        if (next != null) {
+    private PsiElement getInjection(final PsiElement element) {
+
+        if (element != null) {
             final Ref<PsiElement> injection = new Ref<PsiElement>();
             ApplicationManager.getApplication().runReadAction(new Runnable() {
                 @Override
@@ -200,8 +224,14 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
                 }
             });
 
-            if (injection.get() instanceof PsiFile) {
-                return (PsiFile) injection.get();
+            if ((!injection.get().getContainingFile().equals(element.getContainingFile()))) {
+                while (injection.get().getText().length() < element.getText().length()) {
+                    injection.set(injection.get().getParent());
+                }
+
+                if (injection.get().getText().equals(element.getText())) {
+                    return injection.get();
+                }
             }
         }
         return null;
@@ -243,7 +273,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
         return "</a>";
     }
 
-    private String addHighlightingStart(int classId, int offset) {
+    private String addHighlightingStart(int classId, String offset) {
         StringBuilder buffer = new StringBuilder();
         buffer.append("<span class=\"class");
         buffer.append(classId);
@@ -274,7 +304,11 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
         return mapAttributes;
     }
 
-    public void setRelPositionIterationState(int pos) {
-        relPositionIterationState = pos;
+    public void setMapAttributes(HashMap<MyTextAttributes, Integer> map) {
+        this.mapAttributes = map;
+    }
+
+    public void setRelPosIS(int pos) {
+        relPosIS = pos;
     }
 }
