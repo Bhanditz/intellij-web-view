@@ -1,7 +1,5 @@
-var firstKey;
+var shortcutKeys;
 $(document).ready(function() {
-
-
     $("#tags").autocomplete({
         source: "autocomplete",
         focus: function(event, ui) {
@@ -10,7 +8,6 @@ $(document).ready(function() {
         },
         select: function(event, ui) {
             window.location.href = ui.item.url;
-
         }
     });
 
@@ -22,31 +19,45 @@ $(document).ready(function() {
     });
 
     $(window).keydown(function(event) {
-        if ((event.ctrlKey) && (event.shiftKey) && (event.keyCode == firstKey)) {
+        if (isCorrectKeysPressed(event)) {
             event.preventDefault();
             $("#dialog").dialog("open");
         }
     });
-
-
-    var log = function(arg1, arg2) {
-        alert("inside :" + arg1 + " / " + arg2);
-    };
-
-    var wrap = function(fn) {
-        alert("bbb");
-        return function(args) {
-            alert("AAA");
-            fn.apply(this, args);
-
-        }
-    };
-
-
 });
 
-function setKeyboardShortcut(key) {
-    firstKey = key;
+function isCorrectKeysPressed(event) {
+    var args = args || {};
+
+    for (i = 0; i < shortcutKeys.length; ++i) {
+        args[i] = shortcutKeys[i];
+        if ((event.ctrlKey) && (args[i] == 17)) {
+            args[i] = true;
+        }
+        if ((event.shiftKey) && (args[i] == 16)) {
+            args[i] = true;
+        }
+        if ((event.altKey) && (args[i] == 18)) {
+            args[i] = true;
+        }
+        if ((event.metaKey) && (args[i] == 19)) {
+            args[i] = true;
+        }
+        if (args[i] == event.keyCode) {
+            args[i] = true;
+        }
+    }
+    for (k = 0; k < shortcutKeys.length; ++k) {
+        if (args[k] != true) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function setKeyboardShortcut() {
+    shortcutKeys = arguments;
+
 }
 
 

@@ -21,6 +21,24 @@
                 }
             });
         });
+
+
+        var log = function(arg1, arg2) {
+
+            alert("inside :" + arg1 + " / " + arg2);
+        };
+
+        var wrap = function(fn) {
+            alert("bbb");
+            return function() {
+                alert("AAA");
+                fn.apply(this, arguments);
+                for (i = 0; i < arguments.length; ++i) {
+                    shortcutKeys.push(arguments[i]);
+                }
+
+            }
+        };
     </script>
 
 
