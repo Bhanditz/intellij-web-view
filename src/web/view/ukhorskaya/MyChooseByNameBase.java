@@ -95,9 +95,10 @@ public class MyChooseByNameBase {
         String namePattern = getNamePattern(pattern);
         String qualifierPattern = getQualifierPattern(pattern);
 
-        if (namePattern.trim().length() > 0) {
+        //find pattern only for begining
+        /*if (namePattern.trim().length() > 0) {
             namePattern = "*" + namePattern + "*";
-        }
+        }*/
 
         boolean empty = namePattern.length() == 0 || namePattern.equals("@");    // TODO[yole]: remove implicit dependency
         if (empty) return;

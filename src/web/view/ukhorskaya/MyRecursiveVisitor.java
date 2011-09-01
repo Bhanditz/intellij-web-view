@@ -1,5 +1,8 @@
 package web.view.ukhorskaya;
 
+import com.intellij.codeInsight.daemon.LineMarkerInfo;
+import com.intellij.codeInsight.daemon.LineMarkerProvider;
+import com.intellij.codeInsight.daemon.impl.LineMarkersPass;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.project.Project;
@@ -70,6 +73,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
 
         //if (!getOnlyLinks) {
         PsiElement injection = getInjection(element);
+        //getLineMarkerInfo(element);
 
         if ((injection != null) && (element.getTextRange().getStartOffset() != 0)) {
             addInjectionForElement(element, injection);
@@ -81,6 +85,14 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
             } else {
                 super.visitElement(element);
             }
+        }
+    }
+
+    private void getLineMarkerInfo(PsiElement element) {
+        LineMarkerProvider provider = LineMarkersPass.getMarkerProviders(element.getLanguage(), currentProject).get(0);
+        LineMarkerInfo info = provider.getLineMarkerInfo(element);
+        if (info != null) {
+            System.out.println(info.getLineMarkerTooltip());
         }
     }
 

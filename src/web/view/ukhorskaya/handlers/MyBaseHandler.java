@@ -1,26 +1,27 @@
 package web.view.ukhorskaya.handlers;
 
+import com.intellij.ide.util.gotoByName.FilteringGotoByModel;
+import com.intellij.ide.util.gotoByName.GotoClassModel2;
 import com.intellij.ide.util.gotoByName.GotoFileModel;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.KeyboardShortcut;
 import com.intellij.openapi.actionSystem.ShortcutSet;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.editor.markup.EffectType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import web.view.ukhorskaya.MyChooseByNameBase;
+import web.view.ukhorskaya.JSONResponse;
 import web.view.ukhorskaya.MyRecursiveVisitor;
 import web.view.ukhorskaya.MyTextAttributes;
 import web.view.ukhorskaya.providers.BaseHighlighterProvider;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
@@ -44,7 +45,8 @@ public abstract class MyBaseHandler implements HttpHandler {
 
     protected IterationState iterationState;
 
-    protected BaseHighlighterProvider provider;
+    public static HashMap<Icon, Integer> mapIconHashCode = new HashMap<Icon, Integer>();
+    public static HashMap<Integer, BufferedImage> mapHashCodeBufferedImage = new HashMap<Integer, BufferedImage>();
 
     protected int intPositionState;
     protected PsiFile psiFile;
@@ -61,6 +63,8 @@ public abstract class MyBaseHandler implements HttpHandler {
     public void handle(HttpExchange exchange) {
         if (exchange.getRequestURI().toString().contains("____.css")) {
             sendCssFile(exchange);
+        } else if (exchange.getRequestURI().toString().contains("fticons")) {
+            sendIcon(exchange);
         } else if (exchange.getRequestURI().toString().contains(".png")) {
             sendImageFile(exchange);
         } else if (exchange.getRequestURI().toString().contains("jquery")) {
@@ -73,6 +77,33 @@ public abstract class MyBaseHandler implements HttpHandler {
             sendJsonData(exchange);
         } else {
             sendOtherFile(exchange);
+        }
+    }
+
+    private void sendIcon(HttpExchange exchange) {
+        String hashcode = exchange.getRequestURI().getPath();
+        hashcode = hashcode.substring(hashcode.indexOf("fticons/") + 8);
+        BufferedImage bi = MyBaseHandler.mapHashCodeBufferedImage.get(Integer.parseInt(hashcode));
+        OutputStream out = null;
+        try {
+            ByteArrayOutputStream tmp = new ByteArrayOutputStream();
+            ImageIO.write(bi, "png", tmp);
+            tmp.close();
+            Integer contentLength = tmp.size();
+            exchange.sendResponseHeaders(200, contentLength);
+            out = exchange.getResponseBody();
+            out.write(tmp.toByteArray());
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -111,7 +142,8 @@ public abstract class MyBaseHandler implements HttpHandler {
 
         String requestUri = exchange.getRequestURI().toString();
         String term = requestUri.substring(requestUri.indexOf("term=") + 5);
-        response.append(getAllFilesInProjectWithTerm(term));
+        String type = requestUri.substring(requestUri.indexOf("=") + 1, requestUri.indexOf("?term="));
+        response.append(getAllFilesInProjectWithTerm(term, type));
 
         writeResponse(exchange, response.toString(), 200, true);
 
@@ -187,52 +219,17 @@ public abstract class MyBaseHandler implements HttpHandler {
         writeResponse(exchange, response, 200);
     }
 
-    private String getAllFilesInProjectWithTerm(final String term) {
-        StringBuilder response = new StringBuilder();
-
-        final GotoFileModel fileModel = new GotoFileModel(currentProject);
-
-        final MyChooseByNameBase chooser = new MyChooseByNameBase(currentProject, fileModel, null, false);
-        final ArrayList<String> list = new ArrayList<String>();
-
-        ApplicationManager.getApplication().runReadAction(new Runnable() {
-            public void run() {
-                chooser.getNamesByPattern(list, term);
-            }
-        });
-
-        response.append("[");
-        for (int i = 0; i < 50 && i < list.size(); i++) {
-            final String name = list.get(i);
-            final Ref<String> refStr = new Ref<String>();
-            ApplicationManager.getApplication().runReadAction(new Runnable() {
-                public void run() {
-                    for (Object object : fileModel.getElementsByName(name, false, term)) {
-                        if ((object instanceof PsiFile)) {
-                            refStr.set(((PsiFile) object).getVirtualFile().getPath());
-                        }
-                    }
-                }
-            });
-
-            response.append("{\"label\":\"");
-            response.append(name);
-            response.append("\", \"url\":\"");
-            if (refStr.get() != null) {
-                String path = refStr.get();
-                String projectDir = currentProject.getBaseDir().getPath();
-                if (path.contains(projectDir)) {
-                    path = path.substring(path.indexOf(currentProject.getName()) - 1);
-                    response.append(path);
-                }
-            }
-            response.append("\"},");
+    private String getAllFilesInProjectWithTerm(final String term, String type) {
+        FilteringGotoByModel model;
+        if (type.equals("class")) {
+            model = new GotoClassModel2(currentProject);
+        } else {
+            model = new GotoFileModel(currentProject);
         }
 
-        response.delete(response.length() - 1, response.length());
-        response.append("]");
+        JSONResponse response = new JSONResponse(model);
+        return response.getResponse(currentProject, psiFile, term);
 
-        return response.toString();
     }
 
 
@@ -353,11 +350,13 @@ public abstract class MyBaseHandler implements HttpHandler {
             response.append("<script src=\"/resources/jquery/js/jquery-ui-1.8.16.custom.min.js\" type=\"text/javascript\"></script>\n");
             response.append("</head>\n");
 
-            response.append("<body onload=\"setKeyboardShortcut(" + getKeyboardShortcut() + ");\">\n");
+            response.append("<body onload=\"setGotoFileShortcut(" + getGotoFileShortcut()
+                    + "); setGotoClassShortcut(" + getGotoClassShortcut() + ");" +
+                    "\">\n");
             response.append("<div>\n");
             response.append(responseBody);
             response.append("</div>\n");
-            response.append("<div id=\"dialog\" title=\"Enter file name: \" style=\"height: 25px !important;\">\n").append("<div class=\"ui-widget\">\n").append("<input id=\"tags\" type=\"text\" style=\"width: 476px;\"/>\n").append("</div>\n").append("</div>");
+            response.append("<div id=\"dialog\" style=\"min-height: 26px !important; height: 26px !important;\">\n").append("<div class=\"ui-widget\">\n").append("<input id=\"tags\" type=\"text\" style='width: 468px;'/>\n").append("</div>\n").append("</div>");
             response.append("</body>\n");
             response.append("");
             response.append("</html>\n");
@@ -382,14 +381,21 @@ public abstract class MyBaseHandler implements HttpHandler {
         }
     }
 
-    private String getKeyboardShortcut() {
+    private String getGotoClassShortcut() {
+        String result = "";
+        ShortcutSet gotoFile = ActionManager.getInstance().getAction("GotoClass").getShortcutSet();
+        int modifiers = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getModifiers();
+        result += setModifiers(modifiers);
+        int keyCode = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getKeyCode();
+        result += keyCode;
+        return result;
+    }
+
+    private String getGotoFileShortcut() {
         String result = "";
         ShortcutSet gotoFile = ActionManager.getInstance().getAction("GotoFile").getShortcutSet();
         int modifiers = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getModifiers();
-
-
         result += setModifiers(modifiers);
-
         int keyCode = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getKeyCode();
         result += keyCode;
         return result;
