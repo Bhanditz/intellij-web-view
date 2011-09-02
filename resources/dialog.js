@@ -22,6 +22,7 @@ $(document).ready(function() {
             return false;
         },
         select: function(event, ui) {
+            ui.item.label = "";
             $(this).val("");
             $("#dialog").dialog("close");
             window.location.href = ui.item.url;
@@ -63,6 +64,27 @@ $(document).ready(function() {
             $("#tags").autocomplete({source: "autocomplete=class"});
         }
     });
+
+
+    var easing_type = 'easeOutBounce';
+    var default_dock_height = '20';
+    var expanded_dock_height = $('#dock').height();
+    var body_height = $(window).height() - default_dock_height;
+    $('#fake-body').height(body_height);
+    $('#dock').css({'height': default_dock_height, 'position':'absolute', 'top': body_height});
+    $(window).resize(function () {
+        updated_height = $(window).height() - default_dock_height;
+        $('#fake-body').height(updated_height);
+        $('#dock').css({'top': updated_height});
+    });
+    $('#dock').mouseover(
+        function () {
+            expanded_height = $(window).height() - expanded_dock_height;
+            $(this).animate({'height':expanded_dock_height,'top': expanded_height}, {queue:false, duration:800, easing: easing_type});
+        }).mouseout(function () {
+            body_height = $(window).height() - default_dock_height;
+            $(this).animate({'height':default_dock_height,'top': body_height}, {queue:false, duration:800, easing: easing_type});
+        });
 });
 
 function isGotoKeysPressed(event, array) {
@@ -105,3 +127,4 @@ function setGotoSymbolShortcut() {
     gotToSymbolShortcutKeys = arguments;
 
 }
+

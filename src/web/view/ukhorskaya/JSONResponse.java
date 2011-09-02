@@ -8,7 +8,6 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -82,10 +81,7 @@ public class JSONResponse {
                         file = ((PsiFile) element).getVirtualFile();
                     } else {
                         file = PsiUtilBase.getVirtualFile(element);
-                        TextRange textRange = element.getTextRange();
-                        if (textRange != null) {
-                            offset = textRange.getStartOffset();
-                        }
+                        offset = element.getTextOffset();
                     }
                     if (offset > 0) {
                         refUrl.set(file.getPath() + "#anch" + offset + element.getContainingFile());

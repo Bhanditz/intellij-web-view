@@ -13,6 +13,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.newvfs.impl.VirtualDirectoryImpl;
 import com.intellij.psi.PsiFile;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -135,7 +136,6 @@ public abstract class MyBaseHandler implements HttpHandler {
         String term = requestUri.substring(requestUri.indexOf("term=") + 5);
         String type = requestUri.substring(requestUri.indexOf("=") + 1, requestUri.indexOf("?term="));
         response.append(getAllFilesInProjectWithTerm(term, type));
-
         writeResponse(exchange, response.toString(), 200, true);
     }
 
@@ -176,8 +176,9 @@ public abstract class MyBaseHandler implements HttpHandler {
 
         String projectName = getProjectName(requestURI);
         if (projectName == null) {
-            response = "Path to the file is incorrect.<br/>URL format is [localhost]/[project name]/[path to the file]";
-            writeResponse(exchange, response, 404);
+            sendModuleList(exchange);
+            //response = "Path to the file is incorrect.<br/>URL format is [localhost]/[project name]/[path to the file]";
+            //writeResponse(exchange, response, 404);
             return;
         }
 
@@ -193,6 +194,7 @@ public abstract class MyBaseHandler implements HttpHandler {
             sendResourceFile(exchange, true);
             return;
         }
+
         currentFile = getFileByRelPath(relPath);
         if (currentFile == null) {
             response = "File " + relPath + " not found at project " + projectName;
@@ -207,6 +209,38 @@ public abstract class MyBaseHandler implements HttpHandler {
 
         writeResponse(exchange, response, 200);
     }
+
+    private void sendModuleList(HttpExchange exchange) {
+        StringBuilder response = new StringBuilder();
+        response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
+        response.append("<html>\n");
+        response.append("<head>\n");
+        response.append("<title>Web View</title>\n");
+        response.append("</head>\n");
+        response.append("<body>\n");
+        response.append("<div>\n");
+
+        Project[] projects = ProjectManager.getInstance().getOpenProjects();
+        if (projects.length > 0) {
+            response.append("Please, choose the project:<br/>");
+            for (Project project : projects) {
+                String projectName = project.getName();
+                response.append("<a href=\"/");
+                response.append(projectName);
+                response.append("/\">");
+                response.append(projectName);
+                response.append("</a><br/>");
+            }
+        }  else {
+            response.append("There is no open project in Intellij IDEA");
+        }
+
+        response.append("</div>\n");
+        response.append("</body>\n");
+        response.append("</html>\n");
+        writeResponse(exchange, response.toString(), 200, true);
+    }
+
 
     private String getAllFilesInProjectWithTerm(final String term, String type) {
         FilteringGotoByModel model;
@@ -337,14 +371,38 @@ public abstract class MyBaseHandler implements HttpHandler {
             response.append("<script src=\"/resources/jquery/js/jquery-ui-1.8.16.custom.min.js\" type=\"text/javascript\"></script>\n");
             response.append("</head>\n");
 
-            response.append("<body onload=\"setGotoFileShortcut(" + getGotoFileShortcut()
-                    + "); setGotoClassShortcut(" + getGotoClassShortcut() + ");" +
-                    " setGotoSymbolShortcut(" + getGotoSymbolShortcut() + ");" +
-                    "\">\n");
+            ShortcutSet gotofile = ActionManager.getInstance().getAction("GotoFile").getShortcutSet();
+            ShortcutSet gotoclass = ActionManager.getInstance().getAction("GotoClass").getShortcutSet();
+            ShortcutSet gotosymbol = ActionManager.getInstance().getAction("GotoSymbol").getShortcutSet();
+
+            response.append("<body onload=\"setGotoFileShortcut(");
+            response.append(getKeyboardShortcutFromShortcutSet(gotofile));
+            response.append("); setGotoClassShortcut(");
+            response.append(getKeyboardShortcutFromShortcutSet(gotoclass));
+            response.append(");");
+            response.append(" setGotoSymbolShortcut(");
+            response.append(getKeyboardShortcutFromShortcutSet(gotosymbol));
+            response.append(");");
+            response.append("\">\n");
+
+            response.append("<div id=\"fake-body\">\n");
             response.append("<div>\n");
             response.append(responseBody);
             response.append("</div>\n");
             response.append("<div id=\"dialog\" style=\"min-height: 26px !important; height: 26px !important;\">\n").append("<div class=\"ui-widget\">\n").append("<input id=\"tags\" value=\"\" type=\"text\" style='width: 468px;'/>\n").append("</div>\n").append("</div>");
+            response.append("</div>\n");
+            response.append("<div id=\"dock\">\n");
+            response.append(" Go to file: <b>");
+            response.append(gotofile.getShortcuts()[0].toString());
+            response.append("</b>     ");
+            response.append("Go to class: <b>");
+            response.append(gotoclass.getShortcuts()[0].toString());
+            response.append("</b>     ");
+            response.append("Go to symbol: <b>");
+            response.append(gotosymbol.getShortcuts()[0].toString());
+            response.append("</b>     ");
+            response.append("</div>\n");
+
             response.append("</body>\n");
             response.append("");
             response.append("</html>\n");
@@ -369,34 +427,13 @@ public abstract class MyBaseHandler implements HttpHandler {
         }
     }
 
-    private String getGotoClassShortcut() {
-        String result = "";
-        ShortcutSet gotoFile = ActionManager.getInstance().getAction("GotoClass").getShortcutSet();
-        int modifiers = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getModifiers();
-        result += setModifiers(modifiers);
-        int keyCode = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getKeyCode();
-        result += keyCode;
-        return result;
-    }
-
-    private String getGotoFileShortcut() {
-        String result = "";
-        ShortcutSet gotoFile = ActionManager.getInstance().getAction("GotoFile").getShortcutSet();
-        int modifiers = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getModifiers();
-        result += setModifiers(modifiers);
-        int keyCode = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getKeyCode();
-        result += keyCode;
-        return result;
-    }
-
-    private String getGotoSymbolShortcut() {
-        String result = "";
-        ShortcutSet gotoFile = ActionManager.getInstance().getAction("GotoSymbol").getShortcutSet();
-        int modifiers = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getModifiers();
-        result += setModifiers(modifiers);
-        int keyCode = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getKeyCode();
-        result += keyCode;
-        return result;
+    private String getKeyboardShortcutFromShortcutSet(ShortcutSet set) {
+        StringBuilder result = new StringBuilder();
+        int modifiers = ((KeyboardShortcut) (set.getShortcuts()[0])).getFirstKeyStroke().getModifiers();
+        result.append(setModifiers(modifiers));
+        int keyCode = ((KeyboardShortcut) (set.getShortcuts()[0])).getFirstKeyStroke().getKeyCode();
+        result.append(keyCode);
+        return result.toString();
     }
 
 
@@ -428,6 +465,34 @@ public abstract class MyBaseHandler implements HttpHandler {
             }
         }
         return null;
+    }
+
+    private VirtualFile getFileById(int id) {
+        VirtualFile searchResult = findFileInContentRootById(ProjectRootManager.getInstance(currentProject).getContentRootsFromAllModules(), id);
+        if (searchResult == null) {
+            searchResult = findFileInContentRootById(ProjectRootManager.getInstance(currentProject).getProjectSdk().getHomeDirectory().getChildren(), id);
+        }
+        return searchResult;
+    }
+
+    private VirtualFile findFileInContentRootById(VirtualFile[] dir, int id) {
+        VirtualFile curFile = null;
+        label:
+        {
+            for (VirtualFile file : dir) {
+                if (file instanceof VirtualDirectoryImpl) {
+                    curFile = ((VirtualDirectoryImpl) file).findChildById(id);
+                }
+                if (curFile != null) {
+                    break label;
+                }
+                VirtualFile[] childrens = file.getChildren();
+                if (childrens.length > 0) {
+                    findFileInContentRootById(file.getChildren(), id);
+                }
+            }
+        }
+        return curFile;
     }
 
     private String getProjectName(String uri) {
@@ -470,6 +535,7 @@ public abstract class MyBaseHandler implements HttpHandler {
         }
         return result;
     }
+
 
     class KeyModifier {
         int modifier;

@@ -3,49 +3,64 @@
 <html>
 <head>
     <link type="text/css" href="jquery/css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="stylesheet"/>
-    <script src="jquery/js/jquery-1.6.2.min.js" type="text/javascript"></script>
-    <script src="jquery/js/jquery-ui-1.8.15.custom.min.js" type="text/javascript"></script>
+
+    <title>Web View</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" type="text/javascript"></script>
+
+    <script src="jquery/development-bundle/jquery-1.6.2.js" type="text/javascript"></script>
+    <script src="jquery/development-bundle/external/jquery.bgiframe-2.1.2.js" type="text/javascript"></script>
+    <script src="jquery/development-bundle/ui/jquery.ui.core.js" type="text/javascript"></script>
+    <script src="jquery/development-bundle/ui/jquery.ui.widget.js" type="text/javascript"></script>
+    <script src="jquery/development-bundle/ui/jquery.ui.mouse.js" type="text/javascript"></script>
+    <script src="jquery/development-bundle/ui/jquery.ui.draggable.js" type="text/javascript"></script>
+    <script src="jquery/development-bundle/ui/jquery.ui.position.js" type="text/javascript"></script>
+    <script src="jquery/development-bundle/ui/jquery.ui.resizable.js" type="text/javascript"></script>
+    <script src="jquery/development-bundle/ui/jquery.ui.dialog.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="jquery/development-bundle/themes/base/jquery.ui.all.css">
+    <link type="text/css" href="jquery/css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet"/>
+    <script src="jquery/js/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(function() {
 
             $("#tags").autocomplete({
-                source: "autocomplete",
+                source: "autocomplete=file",
                 focus: function(event, ui) {
                     $("#tags").val(ui.item.label);
                     return false;
                 },
                 select: function(event, ui) {
+                    ui.item.label = "";
+                    $(this).val("");
                     window.location.href = ui.item.url;
-
+                },
+                search: function(event, ui) {
+                    $("#tags").attr("style", "color: black; width: 468px;");
                 }
-            });
+
+            })
+                    .data("autocomplete")._renderItem = function(ul, item) {
+                if (item.label == "null") {
+                    $("#autocomplete").attr("style", "display: none !important;");
+                    $("#tags").attr("style", "color: red; width: 468px;");
+                } else {
+                    return $("<li></li>")
+                            .data("item.autocomplete", item)
+                            .append("<a><table id='table-menu'><tr><td style=\"width: 32px;\">" + item.icon + "</td><td width='60%'>" + item.label + "   " + item.path + "</td><td>" + item.moduleName + "</td></tr></table></a>")
+
+                            .appendTo(ul);
+                }
+            };
         });
 
-
-        var log = function(arg1, arg2) {
-
-            alert("inside :" + arg1 + " / " + arg2);
-        };
-
-        var wrap = function(fn) {
-            alert("bbb");
-            return function() {
-                alert("AAA");
-                fn.apply(this, arguments);
-                for (i = 0; i < arguments.length; ++i) {
-                    shortcutKeys.push(arguments[i]);
-                }
-
-            }
-        };
     </script>
 
 
 <body onload="document.getElementById('tags').focus()">
-<div class="ui-widget">
+<div class="ui-widget" style="padding-top: 20px; padding-left: 10px;">
     <label for="tags">File Name: </label>
-    <input id="tags" type="text"/>
+    <input id="tags" type="text" style="color: black; width: 468px;"/>
 </div>
 
 

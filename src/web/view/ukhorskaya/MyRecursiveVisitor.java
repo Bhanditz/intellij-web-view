@@ -35,13 +35,18 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
     private IterationState iterationState;
     private int intPositionState;
 
+    //Link TextAttributes with css className
     private HashMap<MyTextAttributes, Integer> mapAttributes = new HashMap<MyTextAttributes, Integer>();
+    //Link TextRange of link in current file with PsiReferense
     private HashMap<TextRange, PsiReference> mapLinks = new HashMap<TextRange, PsiReference>();
 
     private PsiReference ref = null;
     //private MyTextAttributes defaultTextAttributes = new MyTextAttributes();
+
+    //Counter for generate css className
     private int id = 0;
 
+    //Boolean for check is <a> tag open
     private boolean isOpenedATag = false;
 
     //Position of Iteration state in injection
@@ -59,28 +64,35 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
     @Override
     public void visitElement(final PsiElement element) {
 
-        //Check for Referense
+        //Check for Reference
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             @Override
             public void run() {
                 PsiReference localRef = element.getReference();
-                if ((localRef != null) && (localRef.resolve() != null) && (localRef.resolve().getContainingFile() != null) && (isInProject(localRef.resolve().getContainingFile()))) {
-                    mapLinks.put(new TextRange(element.getTextRange().getStartOffset() + localRef.getRangeInElement().getStartOffset(),
-                            element.getTextRange().getStartOffset() + localRef.getRangeInElement().getEndOffset()), localRef);
+                if (localRef != null) {
+                    PsiElement resolvedRef = localRef.resolve();
+
+                    if (resolvedRef != null) {
+                        if (resolvedRef.getTextOffset() != element.getTextOffset()) {
+                            if ((resolvedRef.getContainingFile() != null) && (isInProject(resolvedRef.getContainingFile()))) {
+                                mapLinks.put(new TextRange(element.getTextRange().getStartOffset() + localRef.getRangeInElement().getStartOffset(),
+                                        element.getTextRange().getStartOffset() + localRef.getRangeInElement().getEndOffset()), localRef);
+                            }
+                        }
+                    }
                 }
             }
         });
 
-        //if (!getOnlyLinks) {
         PsiElement injection = getInjection(element);
         //getLineMarkerInfo(element);
 
+        //Check for injection
         if ((injection != null) && (element.getTextRange().getStartOffset() != 0)) {
             addInjectionForElement(element, injection);
         } else {
             //Check for length for optimize work with empty elements
             if (isLeaf(element) && (element.getText().length() > 0)) {
-                //Check for injection
                 addTextToResult(element);
             } else {
                 super.visitElement(element);
@@ -139,28 +151,27 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
         });
 
         final PsiReference localRef = mapLinks.get(textRange.get());
-        //final PsiReference localRef = mapLinks.get(new TextRange(textRange.get().getStartOffset() + relPosIS, textRange.get().getEndOffset() + relPosIS));
 
         if (localRef != null) {
             final Ref<String> resolvedRefFile = new Ref<String>();
             final Ref<Integer> resolvedRefStartOffset = new Ref<Integer>();
-
+            final PsiElement resolvedRef = localRef.resolve();
             ApplicationManager.getApplication().runReadAction(new Runnable() {
                 @Override
                 public void run() {
-                    resolvedRefFile.set(localRef.resolve().getContainingFile().getVirtualFile().getPath());
-                    resolvedRefStartOffset.set(localRef.resolve().getTextOffset());
+                    resolvedRefFile.set(resolvedRef.getContainingFile().getVirtualFile().getPath());
+                    resolvedRefStartOffset.set(resolvedRef.getTextOffset());
                 }
             });
 
-            // For don't add a link for it self
-            if (!resolvedRefStartOffset.get().equals(textOffset.get())) {
-                result.append(addLinkStart(resolvedRefFile.get(), "anch" + resolvedRefStartOffset.get() + localRef.resolve().getContainingFile()));
-                ref = localRef;
-                isOpenedATag = true;
-            }
+
+            result.append(addLinkStart(resolvedRefFile.get(), "anch" + resolvedRefStartOffset.get() + resolvedRef.getContainingFile()));
+            ref = localRef;
+            isOpenedATag = true;
+
         }
 
+        //Add anchors
         if (isOpenedATag) {
             result.append(" name=\"anch").append(textOffset.get()).append(element.getContainingFile());
             result.append("\">");
@@ -183,7 +194,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
                     className = mapAttributes.get(myTextAttributes);
                 }
             } else {
-                //relPosIS added to differ class from injection
+                //relPosIS added to differ css classes for injection
                 mapAttributes.put(myTextAttributes, id + relPosIS);
                 className = id + relPosIS;
             }
@@ -193,17 +204,20 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
 
         result.append(MyBaseHandler.processString(element.getText()));
 
+        //Add </a> tag if there is a referense for element
         if ((ref != null) && (textRange.get().getEndOffset() == ref.getElement().getTextRange().getEndOffset())) {
             result.append(addLinkEnd());
             ref = null;
         }
 
+        //Advance IterationState for case when PsiElement is bigger then element for IterationState
         if ((iterationState.getStartOffset() == textRange.get().getStartOffset() + relPosIS) && ((iterationState.getEndOffset() - iterationState.getStartOffset()) < element.getTextLength())) {
             while ((iterationState.getEndOffset() != textRange.get().getEndOffset() + relPosIS) && (iterationState.getEndOffset() <= textRange.get().getEndOffset() + relPosIS)) {
                 iterationState.advance();
             }
         }
 
+        //Add </span> tag for end of element for IterationState
         if ((textRange.get().getEndOffset() + relPosIS == iterationState.getEndOffset())) {
             //if (!myTextAttributes.equals(defaultTextAttributes)) {
             result.append(addHighlightingEnd());
@@ -222,7 +236,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
         return false;
     }
 
-    //If PsiElement contains characters form other language
+    //If PsiElement contains characters from other language
     private PsiElement getInjection(final PsiElement element) {
 
         if (element != null) {
@@ -261,7 +275,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
 
     private String getUrlFromFilePath(String path) {
         StringBuilder buffer = new StringBuilder();
-        buffer.append("http://localhost/");
+        buffer.append("/");
         String projectName = currentProject.getName();
         buffer.append(projectName);
         if (path.contains(projectName)) {

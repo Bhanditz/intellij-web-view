@@ -17,23 +17,46 @@
         height: 45px !important;
 
     }
-    
+
 }
+
 #table-menu {
-table-layout: fixed; 
-white-space: nowrap; 
-width: 100%;
-overflow-x: hidden; 
+    table-layout: fixed;
+    white-space: nowrap;
+    width: 100%;
+    overflow-x: hidden;
 }
+
 #table-menu td {
-	margin-left: 5px;
-	margin-right: 5px;
-	overflow-x: hidden;
-	white-space: nowrap;
+    margin-left: 5px;
+    margin-right: 5px;
+    overflow-x: hidden;
+    white-space: nowrap;
 }
+
 #autocomplete {
-		width: 466px !important;
-    }
+    width: 466px !important;
+}
+
+body {
+    margin: 0;
+    padding: 0
+}
+
+#fake-body {
+    overflow: auto;
+    z-index: 1;
+}
+
+#dock {
+    background-color: #c0c0c0;
+    font-family: Georgia;
+    font-size: 11px;
+    height: 20px;
+    z-index: 100;
+    width: 100%;
+    padding-top: 4px;
+}
 
 /* Layout helpers
 ----------------------------------*/
