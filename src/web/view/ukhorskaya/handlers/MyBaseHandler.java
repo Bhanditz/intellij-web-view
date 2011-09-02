@@ -3,6 +3,7 @@ package web.view.ukhorskaya.handlers;
 import com.intellij.ide.util.gotoByName.FilteringGotoByModel;
 import com.intellij.ide.util.gotoByName.GotoClassModel2;
 import com.intellij.ide.util.gotoByName.GotoFileModel;
+import com.intellij.ide.util.gotoByName.GotoSymbolModel2;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.KeyboardShortcut;
 import com.intellij.openapi.actionSystem.ShortcutSet;
@@ -37,25 +38,28 @@ import java.util.HashMap;
  */
 
 public abstract class MyBaseHandler implements HttpHandler {
-
-    public final KeyModifier SHIFT = new KeyModifier(InputEvent.SHIFT_DOWN_MASK + InputEvent.SHIFT_MASK, 16);
-    public final KeyModifier CTRL = new KeyModifier(InputEvent.CTRL_DOWN_MASK + InputEvent.CTRL_MASK, 17);
-    public final KeyModifier ALT = new KeyModifier(InputEvent.ALT_DOWN_MASK + InputEvent.ALT_MASK, 18);
-    public final KeyModifier META = new KeyModifier(InputEvent.META_DOWN_MASK + InputEvent.META_MASK, 19);
-
-    protected IterationState iterationState;
+//private static final Logger LOG = Logger.getInstance("web.view.ukhorskaya.handlers.MyBaseHandler");
 
     public static HashMap<Icon, Integer> mapIconHashCode = new HashMap<Icon, Integer>();
     public static HashMap<Integer, BufferedImage> mapHashCodeBufferedImage = new HashMap<Integer, BufferedImage>();
 
     protected int intPositionState;
     protected PsiFile psiFile;
+    protected IterationState iterationState;
 
-    protected static Project currentProject;
+    protected Project currentProject;
     protected VirtualFile currentFile;
 
+    private final KeyModifier SHIFT = new KeyModifier(InputEvent.SHIFT_DOWN_MASK + InputEvent.SHIFT_MASK, 16);
+    private final KeyModifier CTRL = new KeyModifier(InputEvent.CTRL_DOWN_MASK + InputEvent.CTRL_MASK, 17);
+    private final KeyModifier ALT = new KeyModifier(InputEvent.ALT_DOWN_MASK + InputEvent.ALT_MASK, 18);
+    private final KeyModifier META = new KeyModifier(InputEvent.META_DOWN_MASK + InputEvent.META_MASK, 19);
+
     private enum FileType {
-        HL_JS, HTML, JS, DIALOG_JS
+        HL_JS,
+        HTML,
+        JS,
+        DIALOG_JS
     }
 
     private HashMap<MyTextAttributes, Integer> mapAttributes = new HashMap<MyTextAttributes, Integer>();
@@ -68,11 +72,11 @@ public abstract class MyBaseHandler implements HttpHandler {
         } else if (exchange.getRequestURI().toString().contains(".png")) {
             sendImageFile(exchange);
         } else if (exchange.getRequestURI().toString().contains("jquery")) {
-            sendResourceFile(exchange, FileType.JS);
+            sendResourceFile(exchange, false);
         } else if ((exchange.getRequestURI().toString().contains("highlighting.js"))) {
-            sendResourceFile(exchange, FileType.HL_JS);
+            sendResourceFile(exchange, false);
         } else if ((exchange.getRequestURI().toString().contains("dialog.js"))) {
-            sendResourceFile(exchange, FileType.DIALOG_JS);
+            sendResourceFile(exchange, false);
         } else if (exchange.getRequestURI().toString().contains("autocomplete")) {
             sendJsonData(exchange);
         } else {
@@ -84,27 +88,7 @@ public abstract class MyBaseHandler implements HttpHandler {
         String hashcode = exchange.getRequestURI().getPath();
         hashcode = hashcode.substring(hashcode.indexOf("fticons/") + 8);
         BufferedImage bi = MyBaseHandler.mapHashCodeBufferedImage.get(Integer.parseInt(hashcode));
-        OutputStream out = null;
-        try {
-            ByteArrayOutputStream tmp = new ByteArrayOutputStream();
-            ImageIO.write(bi, "png", tmp);
-            tmp.close();
-            Integer contentLength = tmp.size();
-            exchange.sendResponseHeaders(200, contentLength);
-            out = exchange.getResponseBody();
-            out.write(tmp.toByteArray());
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        writeImageToStream(bi, exchange);
     }
 
     private void sendImageFile(HttpExchange exchange) {
@@ -112,17 +96,25 @@ public abstract class MyBaseHandler implements HttpHandler {
         String projectName = getProjectName(path);
         path = path.substring(path.indexOf(projectName) + projectName.length());
         BufferedImage bi;
-        OutputStream out = null;
         try {
             bi = ImageIO.read(MyBaseHandler.class.getResourceAsStream(path));
+            writeImageToStream(bi, exchange);
+        } catch (IOException e) {
+            //LOG.error("Error while reading image file", e);
+            e.printStackTrace();
+        }
+    }
+
+    private void writeImageToStream(BufferedImage image, HttpExchange exchange) {
+        OutputStream out = null;
+        try {
             ByteArrayOutputStream tmp = new ByteArrayOutputStream();
-            ImageIO.write(bi, "png", tmp);
+            ImageIO.write(image, "png", tmp);
             tmp.close();
             Integer contentLength = tmp.size();
             exchange.sendResponseHeaders(200, contentLength);
             out = exchange.getResponseBody();
             out.write(tmp.toByteArray());
-
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
@@ -136,25 +128,22 @@ public abstract class MyBaseHandler implements HttpHandler {
         }
     }
 
+
     private void sendJsonData(HttpExchange exchange) {
         StringBuilder response = new StringBuilder();
-        //response.append("[{label:\"Pete Freitag\", \"value\":1}, {\"label\":\"Pete Doe\", \"value\":2}]");
-
         String requestUri = exchange.getRequestURI().toString();
         String term = requestUri.substring(requestUri.indexOf("term=") + 5);
         String type = requestUri.substring(requestUri.indexOf("=") + 1, requestUri.indexOf("?term="));
         response.append(getAllFilesInProjectWithTerm(term, type));
 
         writeResponse(exchange, response.toString(), 200, true);
-
     }
 
-    private void sendResourceFile(HttpExchange exchange, FileType type) {
+    private void sendResourceFile(HttpExchange exchange, boolean isRoot) {
         StringBuilder response = new StringBuilder();
 
-
         InputStreamReader reader = null;
-        if (type == FileType.HTML) {
+        if (isRoot) {
             reader = new InputStreamReader(MyBaseHandler.class.getResourceAsStream("/index.html"));
 
         } else {
@@ -201,7 +190,7 @@ public abstract class MyBaseHandler implements HttpHandler {
 
         String relPath = requestURI.substring(requestURI.indexOf(projectName) + projectName.length());
         if (relPath.length() <= 1) {
-            sendResourceFile(exchange, FileType.HTML);
+            sendResourceFile(exchange, true);
             return;
         }
         currentFile = getFileByRelPath(relPath);
@@ -223,15 +212,15 @@ public abstract class MyBaseHandler implements HttpHandler {
         FilteringGotoByModel model;
         if (type.equals("class")) {
             model = new GotoClassModel2(currentProject);
+        } else if (type.equals("symbol")) {
+            model = new GotoSymbolModel2(currentProject);
         } else {
             model = new GotoFileModel(currentProject);
         }
 
         JSONResponse response = new JSONResponse(model);
         return response.getResponse(currentProject, psiFile, term);
-
     }
-
 
     private String getContentWithDecoration() {
         setVariables(currentFile);
@@ -252,7 +241,6 @@ public abstract class MyBaseHandler implements HttpHandler {
     //Generate css-file
     private String generateCssStyles() {
         StringBuffer buffer = new StringBuffer();
-        //buffer.append("<style type=\"text/css\">");
         buffer.append("body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;} ");
         buffer.append(" a {text-decoration: none; color: #000000;} span.highlighting { background-color: yellow !important;}");
         buffer.append(" a span {text-decoration: none; color: #000000;} a:hover span {color: blue; text-decoration: underline;}");
@@ -280,7 +268,6 @@ public abstract class MyBaseHandler implements HttpHandler {
                 buffer = buffer.delete(position, buffer.length());
             }
         }
-        //buffer.append("</style>");
         return buffer.toString();
     }
 
@@ -294,7 +281,7 @@ public abstract class MyBaseHandler implements HttpHandler {
         StringBuilder buffer = new StringBuilder();
         for (String c : colors) {
             if (c.length() == 1) {
-                c = "0" + c;
+                buffer.append("0");
             }
             buffer.append(c);
         }
@@ -321,10 +308,10 @@ public abstract class MyBaseHandler implements HttpHandler {
     }
 
     //Send Response
-    private void writeResponse(HttpExchange exchange, String responseBody, int errorCode, boolean isCssFile) {
+    private void writeResponse(HttpExchange exchange, String responseBody, int errorCode, boolean isResourceFile) {
         OutputStream os = null;
         StringBuilder response = new StringBuilder();
-        if (!isCssFile) {
+        if (!isResourceFile) {
 
             response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
             response.append("<html>\n");
@@ -352,11 +339,12 @@ public abstract class MyBaseHandler implements HttpHandler {
 
             response.append("<body onload=\"setGotoFileShortcut(" + getGotoFileShortcut()
                     + "); setGotoClassShortcut(" + getGotoClassShortcut() + ");" +
+                    " setGotoSymbolShortcut(" + getGotoSymbolShortcut() + ");" +
                     "\">\n");
             response.append("<div>\n");
             response.append(responseBody);
             response.append("</div>\n");
-            response.append("<div id=\"dialog\" style=\"min-height: 26px !important; height: 26px !important;\">\n").append("<div class=\"ui-widget\">\n").append("<input id=\"tags\" type=\"text\" style='width: 468px;'/>\n").append("</div>\n").append("</div>");
+            response.append("<div id=\"dialog\" style=\"min-height: 26px !important; height: 26px !important;\">\n").append("<div class=\"ui-widget\">\n").append("<input id=\"tags\" value=\"\" type=\"text\" style='width: 468px;'/>\n").append("</div>\n").append("</div>");
             response.append("</body>\n");
             response.append("");
             response.append("</html>\n");
@@ -394,6 +382,16 @@ public abstract class MyBaseHandler implements HttpHandler {
     private String getGotoFileShortcut() {
         String result = "";
         ShortcutSet gotoFile = ActionManager.getInstance().getAction("GotoFile").getShortcutSet();
+        int modifiers = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getModifiers();
+        result += setModifiers(modifiers);
+        int keyCode = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getKeyCode();
+        result += keyCode;
+        return result;
+    }
+
+    private String getGotoSymbolShortcut() {
+        String result = "";
+        ShortcutSet gotoFile = ActionManager.getInstance().getAction("GotoSymbol").getShortcutSet();
         int modifiers = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getModifiers();
         result += setModifiers(modifiers);
         int keyCode = ((KeyboardShortcut) (gotoFile.getShortcuts()[0])).getFirstKeyStroke().getKeyCode();

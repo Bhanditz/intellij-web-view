@@ -1,7 +1,20 @@
 var gotToFileShortcutKeys;
 var gotToClassShortcutKeys;
+var gotToSymbolShortcutKeys;
 $(document).ready(function() {
 
+    $("#dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 500,
+        height: 80,
+        draggable: false,
+        resizable: false,
+        close: function() {
+            $("#tags").val("");
+            $("#autocomplete").attr("style", "display: none;");
+        }
+    });
 
     $("#tags").autocomplete({
         focus: function(event, ui) {
@@ -9,6 +22,8 @@ $(document).ready(function() {
             return false;
         },
         select: function(event, ui) {
+            $(this).val("");
+            $("#dialog").dialog("close");
             window.location.href = ui.item.url;
         },
         search: function(event, ui) {
@@ -20,36 +35,28 @@ $(document).ready(function() {
         if (item.label == "null") {
             $("#tags").attr("style", "color: red; width: 468px;");
             $("#autocomplete").attr("style", "display: none;");
-            return;
         } else {
             return $("<li></li>")
                 .data("item.autocomplete", item)
-                .append("<a><table style=\"width: 100%;\"><tr><td style=\"width: 8%;\">" + item.icon + "</td><td>" + item.label + "   " + item.path + "</td><td  style=\"width: 30%;\">" + item.moduleName + "</td></tr></table></a>")
+                .append("<a><table id='table-menu'><tr><td style=\"width: 32px;\">" + item.icon + "</td><td width='60%'>" + item.label + "   " + item.path + "</td><td>" + item.moduleName + "</td></tr></table></a>")
 
                 .appendTo(ul);
         }
     };
 
-    $("#dialog").dialog({
-        autoOpen: false,
-        modal: true,
-        width: 500,
-        height: 80,
-        draggable: false,
-        resizable: false,
-        close: function(event, ui) {
-            $("#tags").val("");
-            $("#autocomplete").attr("style", "display: none;");
-        }
-    });
 
     $(document).keydown(function(event) {
-        if (isGotoFileKeysPressed(event, gotToFileShortcutKeys)) {
+        if (isGotoKeysPressed(event, gotToSymbolShortcutKeys)) {
+            event.preventDefault();
+            $("#dialog").dialog("open");
+            $("#dialog").dialog({title: "Enter symbol name: "});
+            $("#tags").autocomplete({source: "autocomplete=symbol"});
+        } else if (isGotoKeysPressed(event, gotToFileShortcutKeys)) {
             event.preventDefault();
             $("#dialog").dialog("open");
             $("#dialog").dialog({title: "Enter file name: "});
             $("#tags").autocomplete({source: "autocomplete=file"});
-        } else if (isGotoFileKeysPressed(event, gotToClassShortcutKeys)) {
+        } else if (isGotoKeysPressed(event, gotToClassShortcutKeys)) {
             event.preventDefault();
             $("#dialog").dialog("open");
             $("#dialog").dialog({title: "Enter class name: "});
@@ -58,7 +65,7 @@ $(document).ready(function() {
     });
 });
 
-function isGotoFileKeysPressed(event, array) {
+function isGotoKeysPressed(event, array) {
     var args = args || {};
 
     for (i = 0; i < array.length; ++i) {
@@ -89,9 +96,12 @@ function isGotoFileKeysPressed(event, array) {
 
 function setGotoFileShortcut() {
     gotToFileShortcutKeys = arguments;
-
 }
 function setGotoClassShortcut() {
     gotToClassShortcutKeys = arguments;
+}
+
+function setGotoSymbolShortcut() {
+    gotToSymbolShortcutKeys = arguments;
 
 }

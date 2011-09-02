@@ -45,9 +45,7 @@ public class IdeaHttpServer implements ApplicationComponent {
             isServerRunning = false;
             System.err.println("Server didn't start");
             e.printStackTrace();
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
