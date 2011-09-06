@@ -55,7 +55,11 @@ body {
     height: 20px;
     z-index: 100;
     width: 100%;
+}
+
+#dock div{
     padding-top: 4px;
+    padding-left: 10px;
 }
 
 /* Layout helpers

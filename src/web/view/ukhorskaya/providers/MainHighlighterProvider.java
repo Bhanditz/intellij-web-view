@@ -8,6 +8,7 @@ import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
@@ -22,11 +23,12 @@ import com.intellij.psi.PsiFile;
 public class MainHighlighterProvider extends BaseHighlighterProvider {
 
     @Override
-    public IterationState getIterationStateFromPsiFile(final PsiFile file, final Project project, final int position) {
+    public IterationState getIterationStateFromPsiFile(final PsiFile file, final int position) {
         final Ref<IterationState> stateRef = new Ref<IterationState>();
         final Ref<Integer> intPositionRef = new Ref<Integer>();
         ApplicationManager.getApplication().invokeAndWait(new Runnable() {
             public void run() {
+                Project project = ProjectUtil.guessProjectForFile(file.getVirtualFile());
                 Document document = PsiDocumentManager.getInstance(project).getDocument(file);
                 Editor editor = EditorFactory.getInstance().createEditor(document, project, file.getFileType(), true);
                 stateRef.set(new IterationState((EditorEx) editor, position, false));

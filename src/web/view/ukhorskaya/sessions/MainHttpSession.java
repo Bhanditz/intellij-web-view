@@ -1,21 +1,29 @@
-package web.view.ukhorskaya.handlers;
+package web.view.ukhorskaya.sessions;
 
-import com.sun.net.httpserver.HttpExchange;
-import web.view.ukhorskaya.sessions.HttpSession;
-import web.view.ukhorskaya.sessions.MainHttpSession;
-
-import java.io.IOException;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.ModalityState;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.EditorFactory;
+import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.editor.impl.IterationState;
+import com.intellij.openapi.util.Ref;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
+import web.view.ukhorskaya.providers.BaseHighlighterProvider;
+import web.view.ukhorskaya.providers.MainHighlighterProvider;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Natalia.Ukhorskaya
- * Date: 8/10/11
- * Time: 1:23 PM
+ * Date: 9/6/11
+ * Time: 12:30 PM
  */
-public class MyMainHandler extends MyBaseHandler {
 
-
-    /*@Override
+public class MainHttpSession extends HttpSession {
+    @Override
     protected BaseHighlighterProvider getProvider() {
         return new MainHighlighterProvider();
     }
@@ -41,14 +49,5 @@ public class MyMainHandler extends MyBaseHandler {
         psiFile = psiFileRef.get();
         iterationState = stateRef.get();
         intPositionState = intPositionRef.get();
-    }*/
-
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        if (!parseRequest(exchange)) {
-            HttpSession session = new MainHttpSession();
-            session.handle(exchange);
-            clearMaps();
-        }
     }
 }

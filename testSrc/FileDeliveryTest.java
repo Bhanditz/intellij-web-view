@@ -206,9 +206,9 @@ public class FileDeliveryTest extends IdeaTestCase {
                 }
             });
 
-            ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setPsiFile(psiFileRef.get());
-            ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIterationState(stateRef.get());
-            ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIntPosition(intPositionRef.get());
+            ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setVariables(psiFileRef.get(), stateRef.get(), intPositionRef.get());
+            //((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIterationState(stateRef.get());
+            //((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIntPosition(intPositionRef.get());
 
             if (currentFile.getName().contains("Main.mxml")) {
                 setIterationStateForInjection(psiFileRef.get());

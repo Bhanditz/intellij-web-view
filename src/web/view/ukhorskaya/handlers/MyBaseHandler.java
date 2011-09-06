@@ -4,32 +4,25 @@ import com.intellij.ide.util.gotoByName.FilteringGotoByModel;
 import com.intellij.ide.util.gotoByName.GotoClassModel2;
 import com.intellij.ide.util.gotoByName.GotoFileModel;
 import com.intellij.ide.util.gotoByName.GotoSymbolModel2;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.KeyboardShortcut;
-import com.intellij.openapi.actionSystem.ShortcutSet;
-import com.intellij.openapi.editor.impl.IterationState;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.markup.EffectType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.newvfs.impl.VirtualDirectoryImpl;
-import com.intellij.psi.PsiFile;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import web.view.ukhorskaya.IconHelper;
 import web.view.ukhorskaya.JSONResponse;
-import web.view.ukhorskaya.MyRecursiveVisitor;
 import web.view.ukhorskaya.MyTextAttributes;
-import web.view.ukhorskaya.providers.BaseHighlighterProvider;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,175 +32,45 @@ import java.util.HashMap;
  */
 
 public abstract class MyBaseHandler implements HttpHandler {
-//private static final Logger LOG = Logger.getInstance("web.view.ukhorskaya.handlers.MyBaseHandler");
+    private static final Logger LOG = Logger.getInstance(MyBaseHandler.class);
 
-    public static HashMap<Icon, Integer> mapIconHashCode = new HashMap<Icon, Integer>();
-    public static HashMap<Integer, BufferedImage> mapHashCodeBufferedImage = new HashMap<Integer, BufferedImage>();
+    public static IconHelper iconHelper = IconHelper.getInstance();
 
-    protected int intPositionState;
-    protected PsiFile psiFile;
-    protected IterationState iterationState;
+    //Link map for TextAttributes with session id for download correct css styles
+    public static Map<Integer, Map<MyTextAttributes, Integer>> mapCss = Collections.synchronizedMap(new HashMap<Integer, Map<MyTextAttributes, Integer>>());
 
-    protected Project currentProject;
-    protected VirtualFile currentFile;
-
-    private final KeyModifier SHIFT = new KeyModifier(InputEvent.SHIFT_DOWN_MASK + InputEvent.SHIFT_MASK, 16);
-    private final KeyModifier CTRL = new KeyModifier(InputEvent.CTRL_DOWN_MASK + InputEvent.CTRL_MASK, 17);
-    private final KeyModifier ALT = new KeyModifier(InputEvent.ALT_DOWN_MASK + InputEvent.ALT_MASK, 18);
-    private final KeyModifier META = new KeyModifier(InputEvent.META_DOWN_MASK + InputEvent.META_MASK, 19);
-
-    private enum FileType {
-        HL_JS,
-        HTML,
-        JS,
-        DIALOG_JS
-    }
-
-    private HashMap<MyTextAttributes, Integer> mapAttributes = new HashMap<MyTextAttributes, Integer>();
-
-    public void handle(HttpExchange exchange) {
-        if (exchange.getRequestURI().toString().contains("____.css")) {
-            sendCssFile(exchange);
-        } else if (exchange.getRequestURI().toString().contains("fticons")) {
-            sendIcon(exchange);
-        } else if (exchange.getRequestURI().toString().contains(".png")) {
-            sendImageFile(exchange);
-        } else if (exchange.getRequestURI().toString().contains("jquery")) {
-            sendResourceFile(exchange, false);
-        } else if ((exchange.getRequestURI().toString().contains("highlighting.js"))) {
-            sendResourceFile(exchange, false);
-        } else if ((exchange.getRequestURI().toString().contains("dialog.js"))) {
-            sendResourceFile(exchange, false);
-        } else if (exchange.getRequestURI().toString().contains("autocomplete")) {
-            sendJsonData(exchange);
+    protected boolean parseRequest(HttpExchange exchange) {
+        String param = exchange.getRequestURI().getQuery();
+        if (param != null) {
+            if (param.contains("file=highlighting.js")) {
+                sendResourceFile(exchange);
+            } else if (param.contains("file=dialog.js")) {
+                sendResourceFile(exchange);
+            } else if (param.contains("type=jquery_lib")) {
+                sendResourceFile(exchange);
+            } else if (param.contains("type=css")) {
+                writeResponse(exchange, generateCssStyles(param), 200);
+            } else if (param.contains("file_type=autocomplete")) {
+                sendJsonData(exchange);
+            }
+            return true;
         } else {
-            sendOtherFile(exchange);
-        }
-    }
-
-    private void sendIcon(HttpExchange exchange) {
-        String hashcode = exchange.getRequestURI().getPath();
-        hashcode = hashcode.substring(hashcode.indexOf("fticons/") + 8);
-        BufferedImage bi = MyBaseHandler.mapHashCodeBufferedImage.get(Integer.parseInt(hashcode));
-        writeImageToStream(bi, exchange);
-    }
-
-    private void sendImageFile(HttpExchange exchange) {
-        String path = exchange.getRequestURI().getPath();
-        String projectName = getProjectName(path);
-        path = path.substring(path.indexOf(projectName) + projectName.length());
-        BufferedImage bi;
-        try {
-            bi = ImageIO.read(MyBaseHandler.class.getResourceAsStream(path));
-            writeImageToStream(bi, exchange);
-        } catch (IOException e) {
-            //LOG.error("Error while reading image file", e);
-            e.printStackTrace();
-        }
-    }
-
-    private void writeImageToStream(BufferedImage image, HttpExchange exchange) {
-        OutputStream out = null;
-        try {
-            ByteArrayOutputStream tmp = new ByteArrayOutputStream();
-            ImageIO.write(image, "png", tmp);
-            tmp.close();
-            Integer contentLength = tmp.size();
-            exchange.sendResponseHeaders(200, contentLength);
-            out = exchange.getResponseBody();
-            out.write(tmp.toByteArray());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            param = exchange.getRequestURI().toString();
+            if (param.contains("fticons")) {
+                sendIcon(exchange);
+                return  true;
+            } else if (param.contains(".png")) {
+                sendImageFile(exchange);
+                return  true;
+            } else if (param.equals("/")) {
+                sendModuleList(exchange);
+                return  true;
+            } else if (param.contains(".css") && param.contains("jquery.ui")) {
+                sendResourceFile(exchange);
+                return  true;
             }
         }
-    }
-
-
-    private void sendJsonData(HttpExchange exchange) {
-        StringBuilder response = new StringBuilder();
-        String requestUri = exchange.getRequestURI().toString();
-        String term = requestUri.substring(requestUri.indexOf("term=") + 5);
-        String type = requestUri.substring(requestUri.indexOf("=") + 1, requestUri.indexOf("?term="));
-        response.append(getAllFilesInProjectWithTerm(term, type));
-        writeResponse(exchange, response.toString(), 200, true);
-    }
-
-    private void sendResourceFile(HttpExchange exchange, boolean isRoot) {
-        StringBuilder response = new StringBuilder();
-
-        InputStreamReader reader = null;
-        if (isRoot) {
-            reader = new InputStreamReader(MyBaseHandler.class.getResourceAsStream("/index.html"));
-
-        } else {
-            String path = exchange.getRequestURI().getPath();
-            String projectName = getProjectName(path);
-            path = path.substring(path.indexOf(projectName) + projectName.length());
-            reader = new InputStreamReader(MyBaseHandler.class.getResourceAsStream(path));
-        }
-        try {
-            BufferedReader bufferedReader = new BufferedReader(reader);
-
-            String tmp;
-            while ((tmp = bufferedReader.readLine()) != null) {
-                response.append(tmp);
-                response.append("\n");
-            }
-        } catch (NullPointerException e) {
-            response.append("Resource file not found");
-            writeResponse(exchange, response.toString(), 404);
-        } catch (IOException e) {
-            response.append("Error while reading from file");
-            writeResponse(exchange, response.toString(), 400);
-        }
-        writeResponse(exchange, response.toString(), 200, true);
-    }
-
-    private void sendOtherFile(HttpExchange exchange) {
-        String requestURI = exchange.getRequestURI().toString();
-        String response;
-
-        String projectName = getProjectName(requestURI);
-        if (projectName == null) {
-            sendModuleList(exchange);
-            //response = "Path to the file is incorrect.<br/>URL format is [localhost]/[project name]/[path to the file]";
-            //writeResponse(exchange, response, 404);
-            return;
-        }
-
-        currentProject = getProjectByProjectName(projectName);
-        if (currentProject == null) {
-            response = "Project " + projectName + " not found. Check that the project is opened in Intellij IDEA.";
-            writeResponse(exchange, response, 404);
-            return;
-        }
-
-        String relPath = requestURI.substring(requestURI.indexOf(projectName) + projectName.length());
-        if (relPath.length() <= 1) {
-            sendResourceFile(exchange, true);
-            return;
-        }
-
-        currentFile = getFileByRelPath(relPath);
-        if (currentFile == null) {
-            response = "File " + relPath + " not found at project " + projectName;
-            writeResponse(exchange, response, 404);
-            return;
-        }
-
-        response = getContentWithDecoration();
-
-        response = response.replaceAll("    ", "&nbsp;&nbsp;&nbsp;&nbsp;");
-        response = response.replaceAll("\\n", "<br/>");
-
-        writeResponse(exchange, response, 200);
+        return false;
     }
 
     private void sendModuleList(HttpExchange exchange) {
@@ -231,18 +94,84 @@ public abstract class MyBaseHandler implements HttpHandler {
                 response.append(projectName);
                 response.append("</a><br/>");
             }
-        }  else {
+        } else {
             response.append("There is no open project in Intellij IDEA");
         }
 
         response.append("</div>\n");
         response.append("</body>\n");
         response.append("</html>\n");
-        writeResponse(exchange, response.toString(), 200, true);
+        writeResponse(exchange, response.toString(), 200);
     }
 
+     private void sendIcon(HttpExchange exchange) {
+        String hashCode = exchange.getRequestURI().getPath();
+        hashCode = hashCode.substring(hashCode.indexOf("fticons/") + 8);
+        BufferedImage bi = iconHelper.getIconFromMap(Integer.parseInt(hashCode));
+        writeImageToStream(bi, exchange);
+    }
 
-    private String getAllFilesInProjectWithTerm(final String term, String type) {
+    private void sendImageFile(HttpExchange exchange) {
+        String path = exchange.getRequestURI().getPath();
+        if (path.contains("resources")) {
+            path = path.substring(path.indexOf("resources") + 9);
+        }
+        BufferedImage bi;
+        try {
+            bi = ImageIO.read(MyBaseHandler.class.getResourceAsStream(path));
+            writeImageToStream(bi, exchange);
+        } catch (IOException e) {
+            LOG.error(e);
+        }
+    }
+
+    private void writeImageToStream(BufferedImage image, HttpExchange exchange) {
+        OutputStream out = null;
+        try {
+            ByteArrayOutputStream tmp = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", tmp);
+            tmp.close();
+            Integer contentLength = tmp.size();
+            exchange.sendResponseHeaders(200, contentLength);
+            out = exchange.getResponseBody();
+            out.write(tmp.toByteArray());
+        } catch (IOException e) {
+            LOG.error(e);
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    LOG.error(e);
+                }
+            }
+        }
+    }
+
+    private void sendJsonData(HttpExchange exchange) {
+        StringBuilder response = new StringBuilder();
+        String requestUri = exchange.getRequestURI().toString();
+        String type = requestUri.substring(requestUri.indexOf("&type=") + 6, requestUri.indexOf("&project="));
+        String projectName = requestUri.substring(requestUri.indexOf("&project=") + 9, requestUri.indexOf("&term"));
+        String term = requestUri.substring(requestUri.indexOf("&term=") + 6);
+
+        try {
+            response.append(getAllFilesInProjectWithTerm(term, type, projectName));
+            writeResponse(exchange, response.toString(), 200);
+        } catch (NoSuchAlgorithmException e) {
+            response.append("Server can't generate MD5 for icon image");
+            response.append(e.getMessage());
+            writeResponse(exchange, response.toString(), 400);
+        }
+
+    }
+
+    private String getAllFilesInProjectWithTerm(final String term, String type, String projectName) throws NoSuchAlgorithmException {
+        Project currentProject = getProjectByProjectName(projectName);
+        if (currentProject == null) {
+            return "Impossible to find a project by project name: " + projectName + "Check that the project is open in Intellij Idea." ;
+        }
+
         FilteringGotoByModel model;
         if (type.equals("class")) {
             model = new GotoClassModel2(currentProject);
@@ -253,27 +182,72 @@ public abstract class MyBaseHandler implements HttpHandler {
         }
 
         JSONResponse response = new JSONResponse(model);
-        return response.getResponse(currentProject, psiFile, term);
+        return response.getResponse(currentProject, null, term);
     }
 
-    private String getContentWithDecoration() {
-        setVariables(currentFile);
+    private void sendResourceFile(HttpExchange exchange) {
+        StringBuilder response = new StringBuilder();
 
-        MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, currentProject, iterationState, intPositionState, getProvider());
-        visitor.visitFile(psiFile);
-        mapAttributes = visitor.getMapAttributes();
-        return visitor.getResult();
+        String path = exchange.getRequestURI().getPath();
+        if (path.contains("resources")) {
+            path = path.substring(path.indexOf("resources") + 9);
+        }
+        InputStream is = MyBaseHandler.class.getResourceAsStream(path);
+        if (is == null) {
+            writeResponse(exchange, "File not found", 404);
+            return;
+        }
+        InputStreamReader reader = new InputStreamReader(is);
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(reader);
+
+            String tmp;
+            while ((tmp = bufferedReader.readLine()) != null) {
+                response.append(tmp);
+                response.append("\n");
+            }
+        } catch (NullPointerException e) {
+            response.append("Resource file not found");
+            writeResponse(exchange, response.toString(), 404);
+        } catch (IOException e) {
+            response.append("Error while reading from file");
+            writeResponse(exchange, response.toString(), 400);
+        }
+        writeResponse(exchange, response.toString(), 200);
     }
 
-    protected abstract BaseHighlighterProvider getProvider();
-
-    private void sendCssFile(HttpExchange exchange) {
-        String response = generateCssStyles();
-        writeResponse(exchange, response, 200, true);
+    //Send Response
+    private void writeResponse(HttpExchange exchange, String responseBody, int errorCode) {
+        OutputStream os = null;
+        StringBuilder response = new StringBuilder();
+        response.append(responseBody);
+        try {
+            exchange.sendResponseHeaders(errorCode, response.length());
+            os = exchange.getResponseBody();
+            os.write(response.toString().getBytes());
+        } catch (IOException e) {
+            //This is an exception we can't to send data to client
+        } finally {
+            try {
+                if (os != null) {
+                    os.close();
+                }
+            } catch (IOException e) {
+                LOG.error(e);
+            }
+        }
     }
 
     //Generate css-file
-    private String generateCssStyles() {
+    private String generateCssStyles(String param) {
+        String sessionId;
+        if (!param.contains("sessionid")) {
+            return "";
+        }
+        sessionId = param.substring(param.indexOf("sessionid=") + 10);
+
+        Map<MyTextAttributes, Integer> mapAttributes = mapCss.get(Integer.parseInt(sessionId));
         StringBuffer buffer = new StringBuffer();
         buffer.append("body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;} ");
         buffer.append(" a {text-decoration: none; color: #000000;} span.highlighting { background-color: yellow !important;}");
@@ -281,15 +255,15 @@ public abstract class MyBaseHandler implements HttpHandler {
         for (MyTextAttributes attr : mapAttributes.keySet()) {
             buffer.append("\nspan.class");
             buffer.append(mapAttributes.get(attr)).append("{");
-            String tmp = getColor(attr.getForegroundColor());
+            String tmp = MyBaseHandler.getColor(attr.getForegroundColor());
             if (!tmp.equals("#000000")) {
                 buffer.append("color: ").append(tmp).append("; ");
             }
-            tmp = getColor(attr.getBackgroundColor());
+            tmp = MyBaseHandler.getColor(attr.getBackgroundColor());
             if (!tmp.equals("#ffffff")) {
                 buffer.append("background-color: ").append(tmp).append("; ");
             }
-            buffer.append(getFontType(attr.getFontType())).append(" ");
+            buffer.append(MyBaseHandler.getFontType(attr.getFontType())).append(" ");
             if (attr.getEffectType().equals(EffectType.LINE_UNDERSCORE)) {
                 buffer.append("text-decoration: underline; ").append("; ");
             }
@@ -303,6 +277,12 @@ public abstract class MyBaseHandler implements HttpHandler {
             }
         }
         return buffer.toString();
+    }
+
+    protected void clearMaps() {
+        if (mapCss.size() > 30) {
+            mapCss = Collections.synchronizedMap(new HashMap<Integer, Map<MyTextAttributes, Integer>>());
+        }
     }
 
     //Get Color as String
@@ -334,110 +314,6 @@ public abstract class MyBaseHandler implements HttpHandler {
         }
     }
 
-    //Set IterationState and intPosition
-    public abstract void setVariables(VirtualFile file);
-
-    private void writeResponse(HttpExchange exchange, String responseBody, int errorCode) {
-        writeResponse(exchange, responseBody, errorCode, false);
-    }
-
-    //Send Response
-    private void writeResponse(HttpExchange exchange, String responseBody, int errorCode, boolean isResourceFile) {
-        OutputStream os = null;
-        StringBuilder response = new StringBuilder();
-        if (!isResourceFile) {
-
-            response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
-            response.append("<html>\n");
-            response.append("<head>\n");
-            response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\"/>");
-            response.append("<title>Web View</title>\n");
-
-            response.append("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js\"></script>\n");
-            response.append("<script src=\"/resources/highlighting.js\"></script>\n");
-            /* PopUp Dialog for find classes */
-            response.append("<script src=\"/resources/dialog.js\"></script>\n");
-            response.append("<script src=\"/resources/jquery/development-bundle/jquery-1.6.2.js\"></script>\n");
-            response.append("<script src=\"/resources/jquery/development-bundle/external/jquery.bgiframe-2.1.2.js\"></script>\n");
-            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.core.js\"></script>\n");
-            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.widget.js\"></script>\n");
-            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.mouse.js\"></script>\n");
-            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.draggable.js\"></script>\n");
-            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.position.js\"></script>\n");
-            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.resizable.js\"></script>\n");
-            response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.dialog.js\"></script>\n");
-            response.append("<link rel=\"stylesheet\" href=\"/resources/jquery/development-bundle/themes/base/jquery.ui.all.css\">\n");
-            response.append("<link type=\"text/css\" href=\"/resources/jquery/css/ui-lightness/jquery-ui-1.8.16.custom.css\" rel=\"stylesheet\"/>\n");
-            response.append("<script src=\"/resources/jquery/js/jquery-ui-1.8.16.custom.min.js\" type=\"text/javascript\"></script>\n");
-            response.append("</head>\n");
-
-            ShortcutSet gotofile = ActionManager.getInstance().getAction("GotoFile").getShortcutSet();
-            ShortcutSet gotoclass = ActionManager.getInstance().getAction("GotoClass").getShortcutSet();
-            ShortcutSet gotosymbol = ActionManager.getInstance().getAction("GotoSymbol").getShortcutSet();
-
-            response.append("<body onload=\"setGotoFileShortcut(");
-            response.append(getKeyboardShortcutFromShortcutSet(gotofile));
-            response.append("); setGotoClassShortcut(");
-            response.append(getKeyboardShortcutFromShortcutSet(gotoclass));
-            response.append(");");
-            response.append(" setGotoSymbolShortcut(");
-            response.append(getKeyboardShortcutFromShortcutSet(gotosymbol));
-            response.append(");");
-            response.append("\">\n");
-
-            response.append("<div id=\"fake-body\">\n");
-            response.append("<div>\n");
-            response.append(responseBody);
-            response.append("</div>\n");
-            response.append("<div id=\"dialog\" style=\"min-height: 26px !important; height: 26px !important;\">\n").append("<div class=\"ui-widget\">\n").append("<input id=\"tags\" value=\"\" type=\"text\" style='width: 468px;'/>\n").append("</div>\n").append("</div>");
-            response.append("</div>\n");
-            response.append("<div id=\"dock\">\n");
-            response.append(" Go to file: <b>");
-            response.append(gotofile.getShortcuts()[0].toString());
-            response.append("</b>     ");
-            response.append("Go to class: <b>");
-            response.append(gotoclass.getShortcuts()[0].toString());
-            response.append("</b>     ");
-            response.append("Go to symbol: <b>");
-            response.append(gotosymbol.getShortcuts()[0].toString());
-            response.append("</b>     ");
-            response.append("</div>\n");
-
-            response.append("</body>\n");
-            response.append("");
-            response.append("</html>\n");
-        } else {
-            response.append(responseBody);
-        }
-
-        try {
-            exchange.sendResponseHeaders(errorCode, response.length());
-            os = exchange.getResponseBody();
-            os.write(response.toString().getBytes());
-        } catch (IOException e) {
-            //This is an exception we can't to send data to client
-        } finally {
-            try {
-                if (os != null) {
-                    os.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private String getKeyboardShortcutFromShortcutSet(ShortcutSet set) {
-        StringBuilder result = new StringBuilder();
-        int modifiers = ((KeyboardShortcut) (set.getShortcuts()[0])).getFirstKeyStroke().getModifiers();
-        result.append(setModifiers(modifiers));
-        int keyCode = ((KeyboardShortcut) (set.getShortcuts()[0])).getFirstKeyStroke().getKeyCode();
-        result.append(keyCode);
-        return result.toString();
-    }
-
-
-    //Change some special symbols from file to show in browser
     public static String processString(String string) {
         if (string.contains("<")) {
             string = string.replaceAll("<", "&lt;");
@@ -448,7 +324,7 @@ public abstract class MyBaseHandler implements HttpHandler {
         return string;
     }
 
-    private Project getProjectByProjectName(String projectName) {
+    public static Project getProjectByProjectName(String projectName) {
         for (Project p : ProjectManager.getInstance().getOpenProjects()) {
             if (p.getName().equals(projectName)) {
                 return p;
@@ -456,97 +332,6 @@ public abstract class MyBaseHandler implements HttpHandler {
         }
         return null;
     }
-
-    private VirtualFile getFileByRelPath(String relPath) {
-        for (VirtualFile file : ProjectRootManager.getInstance(currentProject).getContentRoots()) {
-            VirtualFile currentFile = file.findFileByRelativePath(relPath);
-            if (currentFile != null) {
-                return currentFile;
-            }
-        }
-        return null;
-    }
-
-    private VirtualFile getFileById(int id) {
-        VirtualFile searchResult = findFileInContentRootById(ProjectRootManager.getInstance(currentProject).getContentRootsFromAllModules(), id);
-        if (searchResult == null) {
-            searchResult = findFileInContentRootById(ProjectRootManager.getInstance(currentProject).getProjectSdk().getHomeDirectory().getChildren(), id);
-        }
-        return searchResult;
-    }
-
-    private VirtualFile findFileInContentRootById(VirtualFile[] dir, int id) {
-        VirtualFile curFile = null;
-        label:
-        {
-            for (VirtualFile file : dir) {
-                if (file instanceof VirtualDirectoryImpl) {
-                    curFile = ((VirtualDirectoryImpl) file).findChildById(id);
-                }
-                if (curFile != null) {
-                    break label;
-                }
-                VirtualFile[] childrens = file.getChildren();
-                if (childrens.length > 0) {
-                    findFileInContentRootById(file.getChildren(), id);
-                }
-            }
-        }
-        return curFile;
-    }
-
-    private String getProjectName(String uri) {
-        int position = uri.indexOf('/');
-        if (position == -1) {
-            return null;
-        } else if (position == 0) {
-            return getProjectName(uri.substring(1));
-        } else {
-            return uri.substring(0, position);
-        }
-    }
-
-    private String setModifiers(int modifiers) {
-        String result = "";
-        if (modifiers == SHIFT.modifier) {
-            result += SHIFT.key + ",";
-        } else if (modifiers == CTRL.modifier) {
-            result += CTRL.key + ",";
-        } else if (modifiers == ALT.modifier) {
-            result += ALT.key + ",";
-        } else if (modifiers == META.modifier) {
-            result += META.key + ",";
-        } else if (modifiers == SHIFT.modifier + CTRL.modifier) {
-            result += SHIFT.key + "," + CTRL.key + ",";
-        } else if (modifiers == SHIFT.modifier + ALT.modifier) {
-            result += SHIFT.key + "," + ALT.key;
-        } else if (modifiers == CTRL.modifier + ALT.modifier) {
-            result += CTRL.key + "," + ALT.key + ",";
-        } else if (modifiers == SHIFT.modifier + ALT.modifier + CTRL.modifier) {
-            result += SHIFT.key + "," + ALT.key + "," + CTRL.key + ",";
-        } else if (modifiers == SHIFT.modifier + META.modifier) {
-            result += SHIFT.key + "," + META.key;
-        } else if (modifiers == CTRL.modifier + META.modifier) {
-            result += CTRL.key + "," + META.key + ",";
-        } else if (modifiers == SHIFT.modifier + META.modifier + CTRL.modifier) {
-            result += SHIFT.key + "," + META.key + "," + CTRL.key + ",";
-        } else if (modifiers != 0) {
-            System.err.println("Error: there isn't a value for modifiers: " + modifiers);
-        }
-        return result;
-    }
-
-
-    class KeyModifier {
-        int modifier;
-        int key;
-
-        private KeyModifier(int modifier, int key) {
-            this.modifier = modifier;
-            this.key = key;
-        }
-    }
-
 
 }
 

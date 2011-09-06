@@ -1,7 +1,6 @@
 package web.view.ukhorskaya.providers;
 
 import com.intellij.openapi.editor.impl.IterationState;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 
 /**
@@ -13,6 +12,6 @@ import com.intellij.psi.PsiFile;
 
 public abstract class BaseHighlighterProvider {
 
-    public abstract IterationState getIterationStateFromPsiFile(PsiFile file, Project project, int position);
+    public abstract IterationState getIterationStateFromPsiFile(PsiFile file, int position);
 
 }

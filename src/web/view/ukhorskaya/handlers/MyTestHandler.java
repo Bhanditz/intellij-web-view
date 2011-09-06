@@ -1,9 +1,12 @@
 package web.view.ukhorskaya.handlers;
 
 import com.intellij.openapi.editor.impl.IterationState;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
-import web.view.ukhorskaya.providers.BaseHighlighterProvider;
+import com.sun.net.httpserver.HttpExchange;
+import web.view.ukhorskaya.providers.TestHighlighterProvider;
+import web.view.ukhorskaya.sessions.TestHttpSession;
+
+import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,7 +16,8 @@ import web.view.ukhorskaya.providers.BaseHighlighterProvider;
  */
 public class MyTestHandler extends MyBaseHandler {
 
-    private BaseHighlighterProvider hProvider;
+
+    /*private BaseHighlighterProvider hProvider;
 
     public void setIterationState(IterationState state) {
         this.iterationState = state;
@@ -38,6 +42,27 @@ public class MyTestHandler extends MyBaseHandler {
 
     @Override
     public void setVariables(VirtualFile file) {
+    }
+*/
+
+    TestHttpSession session = new TestHttpSession();
+
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        if (!parseRequest(exchange)) {
+            session.handle(exchange);
+            clearMaps();
+        }
+    }
+
+    public void setVariables(PsiFile file, IterationState state, int pos) {
+        session.setPsiFile(file);
+        session.setIterationState(state);
+        session.setIntPosition(pos);
+    }
+
+    public void setHighlightingProvider(TestHighlighterProvider provider) {
+        session.setHighlightingProvider(provider);
     }
 
 }

@@ -1,6 +1,7 @@
 var gotToFileShortcutKeys;
 var gotToClassShortcutKeys;
 var gotToSymbolShortcutKeys;
+var projectName;
 $(document).ready(function() {
 
     $("#dialog").dialog({
@@ -51,17 +52,17 @@ $(document).ready(function() {
             event.preventDefault();
             $("#dialog").dialog("open");
             $("#dialog").dialog({title: "Enter symbol name: "});
-            $("#tags").autocomplete({source: "autocomplete=symbol"});
+            $("#tags").autocomplete({source: "autocomplete?file_type=autocomplete&type=symbol&project=" + projectName});
         } else if (isGotoKeysPressed(event, gotToFileShortcutKeys)) {
             event.preventDefault();
             $("#dialog").dialog("open");
             $("#dialog").dialog({title: "Enter file name: "});
-            $("#tags").autocomplete({source: "autocomplete=file"});
+            $("#tags").autocomplete({source: "autocomplete?file_type=autocomplete&type=file&project=" + projectName});
         } else if (isGotoKeysPressed(event, gotToClassShortcutKeys)) {
             event.preventDefault();
             $("#dialog").dialog("open");
             $("#dialog").dialog({title: "Enter class name: "});
-            $("#tags").autocomplete({source: "autocomplete=class"});
+            $("#tags").autocomplete({source: "autocomplete?file_type=autocomplete&type=class&project=" + projectName});
         }
     });
 
@@ -125,6 +126,8 @@ function setGotoClassShortcut() {
 
 function setGotoSymbolShortcut() {
     gotToSymbolShortcutKeys = arguments;
-
+}
+function setProjectName() {
+    projectName = arguments[0];
 }
 
