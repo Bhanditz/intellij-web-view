@@ -10,9 +10,9 @@ import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.psi.PsiCompiledElement;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.impl.compiled.ClsFileImpl;
 import com.sun.net.httpserver.HttpExchange;
 import org.apache.commons.lang.math.RandomUtils;
 import web.view.ukhorskaya.MyRecursiveVisitor;
@@ -168,8 +168,8 @@ public abstract class HttpSession {
         setVariables(currentFile);
 
         PsiElement mirrorFile = null;
-        if (psiFile instanceof ClsFileImpl) {
-            mirrorFile = ((ClsFileImpl) psiFile).getMirror();
+        if (psiFile instanceof PsiCompiledElement) {
+            mirrorFile = ((PsiCompiledElement) psiFile).getMirror();
         }
 
         MyRecursiveVisitor2 visitor = new MyRecursiveVisitor2(currentFile, iterationState, intPositionState, getProvider());

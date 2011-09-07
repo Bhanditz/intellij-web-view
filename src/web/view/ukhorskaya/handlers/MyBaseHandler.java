@@ -54,21 +54,21 @@ public abstract class MyBaseHandler implements HttpHandler {
                 iconHelper.clearMaps();
                 sendJsonData(exchange);
             }
-            return true;
+//            return true;
         } else {
             param = exchange.getRequestURI().toString();
             if (param.contains("fticons")) {
                 sendIcon(exchange);
-                return  true;
+               // return  true;
             } else if (param.contains(".png")) {
                 sendImageFile(exchange);
-                return  true;
+              //  return  true;
             } else if (param.equals("/")) {
                 sendModuleList(exchange);
-                return  true;
+              //  return  true;
             } else if (param.contains(".css") && param.contains("jquery.ui")) {
                 sendResourceFile(exchange);
-                return  true;
+              //  return  true;
             }
         }
         return false;

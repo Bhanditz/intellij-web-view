@@ -58,11 +58,12 @@ public class JSONResponse {
         response.append("[");
         //for (int i = 0; i < 50 && i < list.size(); i++) {
         for (int i = 0; i < COUNT_OF_ITEM_IN_LIST && i < list.length; i++) {
-            if (i != 0) {
-                response.append(",");
-            }
+
             if (list[i].toString().equals("...")) {
                 continue;
+            }
+            if (i != 0) {
+                response.append(",");
             }
             NavigationItem item = (NavigationItem) list[i];
             PsiElement element = (PsiElement) list[i];
@@ -105,7 +106,8 @@ public class JSONResponse {
             response.append("\"}");
         }
 
-        if (response.length() == 0) {
+        if (response.length() < 5) {
+            response = new StringBuilder();
             response.append("[");
             response.append("{\"label\":\"null\"}");
         }

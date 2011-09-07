@@ -1,3 +1,4 @@
+import com.intellij.ide.util.gotoByName.GotoClassModel2;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -17,15 +18,16 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.testFramework.IdeaTestCase;
-import org.apache.commons.lang.math.RandomUtils;
 import org.jetbrains.annotations.NonNls;
 import web.view.ukhorskaya.IdeaHttpServer;
+import web.view.ukhorskaya.JSONResponse;
 import web.view.ukhorskaya.handlers.MyTestHandler;
 import web.view.ukhorskaya.providers.TestHighlighterProvider;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -68,20 +70,21 @@ public class FileDeliveryTest extends IdeaTestCase {
         return module;
     }
 
-    public void testIncorrectUrlFormat() throws IOException {
+    /*public void testIncorrectUrlFormat() throws IOException {
         String urlPath = "incorrectUrlFormat";
         String expectedResult = "Path to the file is incorrect.<br/>URL format is [localhost]/[project name]/[path to the file]";
 
         compareResults(urlPath, addHtmlHeader(expectedResult));
-    }
+    }*/
 
-    public void testAbsentProject() throws IOException {
+
+    /*public void testAbsentProject() throws IOException {
         String absentProjectName = "myProject" + RandomUtils.nextInt();
         String urlPath = absentProjectName + "/Foo.java";
         String expectedResult = "Project " + absentProjectName + " not found. Check that the project is opened in Intellij IDEA.";
 
         compareResults(urlPath, addHtmlHeader(expectedResult));
-    }
+    }*/
 
     public void testAbsentFile() throws IOException, InterruptedException {
         String urlPath = myProject.getName() + "/AbsentFile.java";
@@ -102,8 +105,7 @@ public class FileDeliveryTest extends IdeaTestCase {
         getFilesToCompare(fileName);
     }
 
-    public void
-    testMain_mxml() throws IOException, InterruptedException {
+    public void testMain_mxml() throws IOException, InterruptedException {
         String fileName = this.getTestName(false).replace("_", ".");
         makeFileInProject(fileName);
         getFilesToCompare(fileName);
@@ -119,9 +121,7 @@ public class FileDeliveryTest extends IdeaTestCase {
             urlPath = myProject.getName() + "/" + fileName;
         } else {
             urlPath = myProject.getName() + "/testData/" + fileName;
-
         }
-
 
         String expectedFilePath = getProjectDir().getPath() + "/testData/" + fileName + ".html";
 
@@ -135,6 +135,27 @@ public class FileDeliveryTest extends IdeaTestCase {
 
         assertEquals("Wrong result", expectedResult, actualResult);
     }
+
+    public void testJsonNullFormat() throws NoSuchAlgorithmException {
+        String expectedResult = "[{\"label\":\"null\"}]";
+        GotoClassModel2 model = new GotoClassModel2(myProject);
+        JSONResponse response = new JSONResponse(model);
+        String actualResult = response.getResponse(myProject, null, "qwerty");
+
+        assertEquals("Wrong result", expectedResult, actualResult);
+    }
+
+    /* public void testJsonFormat() throws NoSuchAlgorithmException, IOException {
+        String expectedResult = "[{\"label\":\"null\"}]";
+        makeFileInProject("Foo.java", true);
+        makeFileInProject("FooRoot.java", true);
+        GotoClassModel2 model = new GotoClassModel2(myProject);
+        JSONResponse response = new JSONResponse(model);
+        String actualResult = response.getResponse(myProject, null, "myh");
+
+        assertEquals("Wrong result", expectedResult, actualResult);
+    }*/
+
 
     private void makeFileInProject(String fileName) throws IOException {
         makeFileInProject(fileName, false);
@@ -305,15 +326,33 @@ public class FileDeliveryTest extends IdeaTestCase {
         response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
         response.append("<html>");
         response.append("<head>");
-        response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css\"/>");
+        //TODO add sessionId
+        //1response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css?type=css&sessionid=" + sessionId + "\"/>");
         response.append("<title>Web View</title>");
-        response.append("</head>");
+
         response.append("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js\"></script>");
-        response.append("<script src=\"highlighting.js\"></script>");
-        response.append("<body>");
+        response.append("<script src=\"/highlighting.js?file=highlighting.js\"></script>");
+        /* PopUp Dialog for find classes */
+        response.append("<script src=\"/dialog.js?file=dialog.js\"></script>");
+        response.append("<script src=\"/jquery/development-bundle/jquery-1.6.2.js?type=jquery_lib\"></script>");
+        response.append("<script src=\"/jquery/development-bundle/external/jquery.bgiframe-2.1.2.js?type=jquery_lib\"></script>");
+        response.append("<script src=\"/jquery/development-bundle/ui/jquery.ui.core.js?type=jquery_lib\"></script>");
+        response.append("<script src=\"/jquery/development-bundle/ui/jquery.ui.widget.js?type=jquery_lib\"></script>");
+        response.append("<script src=\"/jquery/development-bundle/ui/jquery.ui.mouse.js?type=jquery_lib\"></script>");
+        //response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.draggable.js?type=jquery_lib\"></script>");
+        //response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.position.js?type=jquery_lib\"></script>");
+        //response.append("<script src=\"/resources/jquery/development-bundle/ui/jquery.ui.resizable.js?type=jquery_lib\"></script>");
+        response.append("<script src=\"/jquery/development-bundle/ui/jquery.ui.dialog.js?type=jquery_lib\"></script>");
+        response.append("<link rel=\"stylesheet\" href=\"/jquery/development-bundle/themes/base/jquery.ui.all.css\">");
+        response.append("<link type=\"text/css\" href=\"/jquery/css/ui-lightness/jquery-ui-1.8.16.custom.css?type=jquery_lib\" rel=\"stylesheet\"/>");
+        response.append("<script src=\"/jquery/js/jquery-ui-1.8.16.custom.min.js?type=jquery_lib\" type=\"text/javascript\"></script>");
+        response.append("</head>");
+        //TODO add projectName
+        response.append("<body onload=\"setGotoFileShortcut(16,17,78); setGotoClassShortcut(17,78); setGotoSymbolShortcut(16,18,17,78); setProjectName('PROJECT_NAME');\"><div id=\"fake-body\">");
         response.append("<div>");
         response.append(inputString);
         response.append("</div>");
+        response.append("<div id=\"dialog\" style=\"min-height: 26px !important; height: 26px !important;\"><div class=\"ui-widget\"><input id=\"tags\" value=\"\" type=\"text\" style='width: 468px;'/></div></div></div><div id=\"dock\"><div> Go to file: <b>Ctrl+Shift+N</b>     Go to class: <b>Ctrl+N</b>     Go to symbol: <b>Ctrl+Alt+Shift+N</b>     </div></div>");
         response.append("</body>");
         response.append("</html>");
         return response.toString();

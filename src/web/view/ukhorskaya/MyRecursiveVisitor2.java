@@ -78,6 +78,7 @@ public class MyRecursiveVisitor2 extends PsiRecursiveElementVisitor {
             }
         });
 
+        //PsiElement injection = null;
         PsiElement injection = getInjection(element);
         //getLineMarkerInfo(element);
 
@@ -167,6 +168,11 @@ public class MyRecursiveVisitor2 extends PsiRecursiveElementVisitor {
         }
 
         String elemContainingFileName = element.getContainingFile().toString();
+        if (currentFile.getUrl().contains(".class")) {
+             elemContainingFileName = elemContainingFileName.replace(".java", ".class");
+             elemContainingFileName = elemContainingFileName.replace("PsiJavaFile", "PsiFile");
+        }
+
 
         //Add anchors
         if (isOpenedATag) {
@@ -255,7 +261,7 @@ public class MyRecursiveVisitor2 extends PsiRecursiveElementVisitor {
                 className = id + relPosIS;
             }
             result.append(addHighlightingStart(className, String.valueOf(iterationState.getStartOffset()) + element.getContainingFile()));
-            result.append(element.getText().substring(iterationState.getStartOffset() - iterStateBegin, iterationState.getEndOffset() - iterStateBegin));
+            result.append(MyBaseHandler.processString(element.getText().substring(iterationState.getStartOffset() - iterStateBegin, iterationState.getEndOffset() - iterStateBegin)));
             result.append(addHighlightingEnd());
             iterationState.advance();
             id++;

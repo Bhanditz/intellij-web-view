@@ -45,10 +45,11 @@ public class MyMainHandler extends MyBaseHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if (!parseRequest(exchange)) {
-            HttpSession session = new MainHttpSession();
-            session.handle(exchange);
-            clearMaps();
-        }
+        //if (!parseRequest(exchange)) {
+        clearMaps();
+        parseRequest(exchange);
+        HttpSession session = new MainHttpSession();
+        session.handle(exchange);
+        // }
     }
 }
