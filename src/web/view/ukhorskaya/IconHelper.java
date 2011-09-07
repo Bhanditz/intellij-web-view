@@ -1,7 +1,5 @@
 package web.view.ukhorskaya;
 
-import com.intellij.ui.RowIcon;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -37,36 +35,14 @@ public class IconHelper {
     private IconHelper() {
     }
 
-    protected void clearMaps() {
-        if (mapIconHashCode.size() > 20) {
+    public void clearMaps() {
+        if (mapIconHashCode.size() > 30) {
             mapIconHashCode = Collections.synchronizedMap(new HashMap<Icon, Integer>());
             mapHashCodeBufferedImage = Collections.synchronizedMap(new HashMap<Integer, BufferedImage>());
         }
     }
 
-    public String getHtmlImageTag(Icon inputIcon) throws NoSuchAlgorithmException {
-        clearMaps();
-        StringBuilder response = new StringBuilder();
-        if (inputIcon instanceof RowIcon) {
-            for (int j = 0; j < ((RowIcon) inputIcon).getIconCount(); ++j) {
-                Icon icon = ((RowIcon) inputIcon).getIcon(j);
-                if (icon != null) {
-                    paintIcon(icon);
-                    response.append(getIconUrl(((RowIcon) inputIcon).getIcon(j)));
-                }
-            }
-        } else {
-            paintIcon(inputIcon);
-            response.append(getIconUrl(inputIcon));
-        }
-        return response.toString();
-    }
-
-    public BufferedImage getIconFromMap(int hashCode) {
-        return mapHashCodeBufferedImage.get(hashCode);
-    }
-
-    private void paintIcon(Icon myIcon) throws NoSuchAlgorithmException {
+    public int addIconToMap(Icon myIcon) throws NoSuchAlgorithmException {
         BufferedImage iconBufImage = new BufferedImage(myIcon.getIconWidth(), myIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D graphics = iconBufImage.createGraphics();
@@ -80,6 +56,11 @@ public class IconHelper {
             mapIconHashCode.put(myIcon, hashCode);
             mapHashCodeBufferedImage.put(hashCode, iconBufImage);
         }
+        return hashCode;
+    }
+
+    public BufferedImage getIconFromMap(int hashCode) {
+        return mapHashCodeBufferedImage.get(hashCode);
     }
 
     private int setHashCodeWithMD5FromBufferedImage(BufferedImage image) throws NoSuchAlgorithmException {
@@ -90,32 +71,19 @@ public class IconHelper {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(data);
             byte[] hash = md.digest();
-            return setHashcodeFromByteArray(hash);
+            return setHashCodeFromByteArray(hash);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return 0;
     }
 
-    private int setHashcodeFromByteArray(byte[] bytes) {
+    private int setHashCodeFromByteArray(byte[] bytes) {
         int hashCode = 0;
         for (int i = 0; i < 4; i++) {
             hashCode = (hashCode << 8) - Byte.MIN_VALUE + (int) bytes[i];
         }
         return hashCode;
-    }
-
-    private String getIconUrl(Icon icon) {
-        if (icon == null) {
-            return "";
-        }
-        StringBuilder response = new StringBuilder();
-        response.append("<img src='");
-        response.append("/fticons/");
-        response.append(mapIconHashCode.get(icon).toString());
-        response.append("'/>");
-        return response.toString();
-
     }
 
 }

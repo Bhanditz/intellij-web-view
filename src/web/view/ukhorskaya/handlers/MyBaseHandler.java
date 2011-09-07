@@ -51,6 +51,7 @@ public abstract class MyBaseHandler implements HttpHandler {
             } else if (param.contains("type=css")) {
                 writeResponse(exchange, generateCssStyles(param), 200);
             } else if (param.contains("file_type=autocomplete")) {
+                iconHelper.clearMaps();
                 sendJsonData(exchange);
             }
             return true;
@@ -128,6 +129,7 @@ public abstract class MyBaseHandler implements HttpHandler {
     private void writeImageToStream(BufferedImage image, HttpExchange exchange) {
         OutputStream out = null;
         try {
+            //ByteArrayOutputStream exist because it is necessary to send headers before write to out
             ByteArrayOutputStream tmp = new ByteArrayOutputStream();
             ImageIO.write(image, "png", tmp);
             tmp.close();
@@ -150,7 +152,11 @@ public abstract class MyBaseHandler implements HttpHandler {
 
     private void sendJsonData(HttpExchange exchange) {
         StringBuilder response = new StringBuilder();
-        String requestUri = exchange.getRequestURI().toString();
+        String requestUri = exchange.getRequestURI().getQuery();
+        if (requestUri == null) {
+            writeResponse(exchange, "There isn't parametrs for request", 200);
+            return;
+        }
         String type = requestUri.substring(requestUri.indexOf("&type=") + 6, requestUri.indexOf("&project="));
         String projectName = requestUri.substring(requestUri.indexOf("&project=") + 9, requestUri.indexOf("&term"));
         String term = requestUri.substring(requestUri.indexOf("&term=") + 6);
@@ -311,6 +317,8 @@ public abstract class MyBaseHandler implements HttpHandler {
                 return "font-weight: bold;";
             case 2:
                 return "font-style: italic;";
+            case 3:
+                return "font-style: italic; font-weight: bold;";
         }
     }
 

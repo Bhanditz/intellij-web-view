@@ -12,6 +12,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.ui.DeferredIcon;
+import com.intellij.ui.RowIcon;
 import web.view.ukhorskaya.handlers.MyBaseHandler;
 
 import javax.swing.*;
@@ -57,6 +58,9 @@ public class JSONResponse {
         response.append("[");
         //for (int i = 0; i < 50 && i < list.size(); i++) {
         for (int i = 0; i < COUNT_OF_ITEM_IN_LIST && i < list.length; i++) {
+            if (i != 0) {
+                response.append(",");
+            }
             if (list[i].toString().equals("...")) {
                 continue;
             }
@@ -98,10 +102,9 @@ public class JSONResponse {
             }
             getJsonResponseForModuleIcon(resultPresentation);
             response.append("</div>");
-            response.append("\"},");
+            response.append("\"}");
         }
 
-        response.delete(response.length() - 1, response.length());
         if (response.length() == 0) {
             response.append("[");
             response.append("{\"label\":\"null\"}");
@@ -114,9 +117,18 @@ public class JSONResponse {
     private void getJsonResponseForModuleIcon(MyItemPresentation resultPresentation) throws NoSuchAlgorithmException {
         if (resultPresentation.moduleIcon != null) {
             response.append("       ");
-
-            response.append(MyBaseHandler.iconHelper.getHtmlImageTag(resultPresentation.moduleIcon));
+            response.append(getIconUrl(MyBaseHandler.iconHelper.addIconToMap(resultPresentation.moduleIcon)));
         }
+    }
+
+    private String getIconUrl(int hashCode) throws NoSuchAlgorithmException {
+        StringBuilder response = new StringBuilder();
+        response.append("<img src='");
+        response.append("/fticons/");
+        response.append(String.valueOf(hashCode));
+        response.append("'/>");
+        return response.toString();
+
     }
 
     private void getJsonResponseForPath(NavigationItem item, MyItemPresentation resultPresentation, String path) {
@@ -140,7 +152,16 @@ public class JSONResponse {
     private void getJsonResponseForIcon(MyItemPresentation resultPresentation) throws NoSuchAlgorithmException {
         if (resultPresentation.icon != null) {
             response.append("<div style='display: inline;'>");
-            response.append(MyBaseHandler.iconHelper.getHtmlImageTag(resultPresentation.icon));
+            if (resultPresentation.icon instanceof RowIcon) {
+                for (int j = 0; j < ((RowIcon) resultPresentation.icon).getIconCount(); ++j) {
+                    Icon icon = ((RowIcon) resultPresentation.icon).getIcon(j);
+                    if (icon != null) {
+                        response.append(getIconUrl(MyBaseHandler.iconHelper.addIconToMap(icon)));
+                    }
+                }
+            } else {
+                response.append(getIconUrl(MyBaseHandler.iconHelper.addIconToMap(resultPresentation.icon)));
+            }
             response.append("</div>");
         }
     }

@@ -57,9 +57,9 @@ public abstract class HttpSession {
     public void handle(HttpExchange exchange) {
         String param = exchange.getRequestURI().toString();
         if (param.contains("url=")) {
-            sendOtherFile2(exchange);
+            sendProjectSourceFile2(exchange);
         } else {
-            sendOtherFile(exchange);
+            sendProjectSourceFile(exchange);
         }
     }
 
@@ -88,7 +88,7 @@ public abstract class HttpSession {
         writeResponse(exchange, response.toString(), 200, true);
     }
 
-    private void sendOtherFile(HttpExchange exchange) {
+    private void sendProjectSourceFile(HttpExchange exchange) {
         String requestURI = exchange.getRequestURI().toString();
         String response;
 
@@ -127,7 +127,7 @@ public abstract class HttpSession {
         writeResponse(exchange, response, 200);
     }
 
-    private void sendOtherFile2(HttpExchange exchange) {
+    private void sendProjectSourceFile2(HttpExchange exchange) {
         String requestURI = exchange.getRequestURI().toString().substring(5);
         requestURI = requestURI.replace("%20", " ");
         String response;
