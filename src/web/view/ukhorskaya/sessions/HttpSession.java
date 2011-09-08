@@ -61,8 +61,7 @@ public abstract class HttpSession {
             sendIndexFile(exchange);
         }
 
-        writeResponse(exchange, "Wrong request", 404);
-
+        writeResponse(exchange, "Wrong request", 404, true);
     }
 
     private void sendIndexFile(HttpExchange exchange) {
@@ -134,17 +133,19 @@ public abstract class HttpSession {
     }
 
     //Send Response
-    private void writeResponse(HttpExchange exchange, String responseBody, int errorCode, boolean isResourceFile) {
+    //addFeatures - for add popUp window with autocomplete action
+    private void writeResponse(HttpExchange exchange, String responseBody, int errorCode, boolean addFeatures) {
         OutputStream os = null;
         StringBuilder response = new StringBuilder();
-        if (!isResourceFile) {
 
-            response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
-            response.append("<html>\n");
-            response.append("<head>\n");
-            response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css?type=css&sessionid=" + sessionId + "\"/>");
-            response.append("<title>Web View</title>\n");
 
+        response.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
+        response.append("<html>\n");
+        response.append("<head>\n");
+        response.append("<title>Web View</title>\n");
+
+        if (!addFeatures) {
+            response.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"____.css?type=css&sessionid=").append(sessionId).append("\"/>");
             response.append("<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js\"></script>\n");
             response.append("<script src=\"/highlighting.js?file=highlighting.js\"></script>\n");
             /* PopUp Dialog for find classes */
@@ -161,11 +162,13 @@ public abstract class HttpSession {
             response.append("<link rel=\"stylesheet\" href=\"/jquery/development-bundle/themes/base/jquery.ui.all.css\">\n");
             response.append("<link type=\"text/css\" href=\"/jquery/css/ui-lightness/jquery-ui-1.8.16.custom.css?type=jquery_lib\" rel=\"stylesheet\"/>\n");
             response.append("<script src=\"/jquery/js/jquery-ui-1.8.16.custom.min.js?type=jquery_lib\" type=\"text/javascript\"></script>\n");
-            response.append("</head>\n");
+        }
+        response.append("</head>\n");
+        ShortcutSet gotofile = ActionManager.getInstance().getAction("GotoFile").getShortcutSet();
+        ShortcutSet gotoclass = ActionManager.getInstance().getAction("GotoClass").getShortcutSet();
+        ShortcutSet gotosymbol = ActionManager.getInstance().getAction("GotoSymbol").getShortcutSet();
 
-            ShortcutSet gotofile = ActionManager.getInstance().getAction("GotoFile").getShortcutSet();
-            ShortcutSet gotoclass = ActionManager.getInstance().getAction("GotoClass").getShortcutSet();
-            ShortcutSet gotosymbol = ActionManager.getInstance().getAction("GotoSymbol").getShortcutSet();
+        if (!addFeatures) {
 
             response.append("<body onload=\"setGotoFileShortcut(");
             response.append(getKeyboardShortcutFromShortcutSet(gotofile));
@@ -181,11 +184,15 @@ public abstract class HttpSession {
             }
             response.append("');");
             response.append("\">\n");
-
             response.append("<div id=\"fake-body\">\n");
-            response.append("<div>\n");
-            response.append(responseBody);
-            response.append("</div>\n");
+        } else {
+            response.append("<body>");
+        }
+
+        response.append("<div>\n");
+        response.append(responseBody);
+        response.append("</div>\n");
+        if (!addFeatures) {
             response.append("<div id=\"dialog\" style=\"min-height: 26px !important; height: 26px !important;\">\n").append("<div class=\"ui-widget\">\n").append("<input id=\"tags\" value=\"\" type=\"text\" style='width: 468px;'/>\n").append("</div>\n").append("</div>");
             response.append("</div>\n");
             response.append("<div id=\"dock\"><div>\n");
@@ -199,13 +206,10 @@ public abstract class HttpSession {
             response.append(gotosymbol.getShortcuts()[0].toString());
             response.append("</b>     ");
             response.append("</div></div>\n");
-
-            response.append("</body>\n");
-            response.append("");
-            response.append("</html>\n");
-        } else {
-            response.append(responseBody);
         }
+        response.append("</body>\n");
+        response.append("</html>\n");
+
 
         try {
             exchange.sendResponseHeaders(errorCode, response.length());

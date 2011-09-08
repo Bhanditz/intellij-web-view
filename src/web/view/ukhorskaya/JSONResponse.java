@@ -8,6 +8,7 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiBinaryFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiUtilBase;
@@ -65,18 +66,20 @@ public class JSONResponse {
             NavigationItem item = (NavigationItem) list[i];
             PsiElement element = (PsiElement) list[i];
             ItemPresentation presentation = item.getPresentation();
-            if (item.getPresentation() == null) {
-                continue;
-            }
 
             final MyItemPresentation resultPresentation = new MyItemPresentation();
-
-            setResultPresentation(element, presentation, resultPresentation);
+            if (element instanceof PsiBinaryFile) {
+                setResultPresentationForBinary((PsiBinaryFile) element, resultPresentation);
+            } else if (item.getPresentation() == null) {
+                continue;
+            } else {
+                setResultPresentation(element, presentation, resultPresentation);
+            }
             if ((i != 0) && (response.length() > 5)) {
                 response.append(",");
             }
             response.append("{\"label\":\"");
-            response.append(presentation.getPresentableText());
+            response.append(resultPresentation.name);
             response.append("\", \"icon\":\"");
             getJsonResponseForIcon(resultPresentation);
 
@@ -88,7 +91,7 @@ public class JSONResponse {
                     String projectDir = currentProject.getBaseDir().getPath();
                     if (path.contains(projectDir)) {
                         path = path.substring(path.indexOf(currentProject.getName()) - 1);*/
-                response.append("/path=" + path);
+                response.append("/path=").append(path);
                 /*    }
                 }*/
             }
@@ -113,6 +116,31 @@ public class JSONResponse {
         response.append("]");
 
         return response.toString();
+    }
+
+    private void setResultPresentationForBinary(final PsiBinaryFile element, final MyItemPresentation resultPresentation) {
+        resultPresentation.name = element.getName();
+        ApplicationManager.getApplication().runReadAction(new Runnable() {
+            public void run() {
+                resultPresentation.navigation = "";
+                Icon icon = element.getIcon(0);
+                if (icon instanceof DeferredIcon) {
+                    resultPresentation.icon = ((DeferredIcon) icon).evaluate();
+                } else {
+                    resultPresentation.icon = icon;
+                }
+
+                VirtualFile file;
+                file = element.getVirtualFile();
+                resultPresentation.url = file.getUrl();
+
+                Module module = ModuleUtil.findModuleForFile(file, currentProject);
+                if (module != null) {
+                    resultPresentation.module = module.getName();
+                    resultPresentation.moduleIcon = module.getModuleType().getNodeIcon(true);
+                }
+            }
+        });
     }
 
     private void getJsonResponseForModuleIcon(MyItemPresentation resultPresentation) throws NoSuchAlgorithmException {
@@ -168,6 +196,7 @@ public class JSONResponse {
     }
 
     private void setResultPresentation(final PsiElement element, final ItemPresentation presentation, final MyItemPresentation resultPresentation) {
+        resultPresentation.name = presentation.getPresentableText();
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             public void run() {
                 resultPresentation.navigation = presentation.getLocationString();
@@ -202,6 +231,7 @@ public class JSONResponse {
 
     private class MyItemPresentation {
         public String navigation;
+        public String name;
         public String url;
         public Icon icon;
         public String module;
