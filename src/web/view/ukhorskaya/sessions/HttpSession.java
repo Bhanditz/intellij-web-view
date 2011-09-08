@@ -10,11 +10,15 @@ import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.openapi.vfs.newvfs.ManagingFS;
+import com.intellij.openapi.vfs.newvfs.persistent.PersistentFS;
 import com.intellij.psi.PsiCompiledElement;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.util.indexing.IndexInfrastructure;
 import com.sun.net.httpserver.HttpExchange;
 import org.apache.commons.lang.math.RandomUtils;
+import web.view.ukhorskaya.MyRecursiveVisitor;
 import web.view.ukhorskaya.MyRecursiveVisitor2;
 import web.view.ukhorskaya.MyTextAttributes;
 import web.view.ukhorskaya.handlers.MyBaseHandler;
@@ -55,6 +59,8 @@ public abstract class HttpSession {
         String param = exchange.getRequestURI().toString();
         if (param.contains("path=")) {
             sendProjectSourceFile2(exchange);
+        } else  if (param.contains("id=")) {
+            sendProjectSourceFile(exchange);
         }
         param = exchange.getRequestURI().getPath();
         if (param.contains("project=")) {
@@ -76,6 +82,27 @@ public abstract class HttpSession {
         writeResponse(exchange, response.toString(), 200);
     }
 
+    private void sendProjectSourceFile(HttpExchange exchange) {
+        String requestURI = exchange.getRequestURI().toString().substring(4);
+        String response;
+
+        currentFile = IndexInfrastructure.findFileById((PersistentFS) ManagingFS.getInstance(), Integer.parseInt(requestURI));
+
+        if (currentFile == null) {
+            response = "File with path " + requestURI + " not found ";
+            writeResponse(exchange, response, 404);
+            return;
+        }
+
+        currentProject = ProjectUtil.guessProjectForFile(currentFile);
+        response = getContentWithDecoration();
+
+        response = response.replaceAll("    ", "&nbsp;&nbsp;&nbsp;&nbsp;");
+        response = response.replaceAll("\\n", "<br/>");
+
+        writeResponse(exchange, response, 200);
+    }
+
     private void sendProjectSourceFile2(HttpExchange exchange) {
         String requestURI = exchange.getRequestURI().toString().substring(6);
         requestURI = requestURI.replace("%20", " ");
@@ -83,6 +110,7 @@ public abstract class HttpSession {
 
         //TODO add navigation by id IndexInfrastructure.findFileById((PersistentFS)ManagingFS.getInstance(), myFileId)
         currentFile = VirtualFileManager.getInstance().findFileByUrl(requestURI);
+
         if (currentFile == null) {
             response = "File with path " + requestURI + " not found ";
             writeResponse(exchange, response, 404);
@@ -102,6 +130,31 @@ public abstract class HttpSession {
 
     //Set IterationState and intPosition
     public abstract void setVariables(VirtualFile file);
+
+    private String getContentWithDecoration() {
+        try {
+            setVariables(currentFile);
+        } catch (NullPointerException e) {
+            return e.getMessage();
+        }
+
+        PsiElement mirrorFile = null;
+        if (psiFile instanceof PsiCompiledElement) {
+            mirrorFile = ((PsiCompiledElement) psiFile).getMirror();
+        }
+
+        MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, iterationState, intPositionState, getProvider());
+        //MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, currentProject, iterationState, intPositionState, getProvider());
+        if (mirrorFile instanceof PsiFile) {
+            visitor.visitFile((PsiFile) mirrorFile);
+        } else {
+            visitor.visitFile(psiFile);
+        }
+
+        mapAttributes = visitor.getMapAttributes();
+        MyBaseHandler.mapCss.put(sessionId, mapAttributes);
+        return visitor.getResult();
+    }
 
     private String getContentWithDecoration2() {
         try {
