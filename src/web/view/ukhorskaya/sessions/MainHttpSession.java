@@ -9,6 +9,7 @@ import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiBinaryFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
@@ -40,6 +41,9 @@ public class MainHttpSession extends HttpSession {
                 psiFileRef.set(PsiManager.getInstance(currentProject).findFile(file));
 
                 Document document = PsiDocumentManager.getInstance(currentProject).getDocument(psiFileRef.get());
+                if (document == null) {
+                    return;
+                }
                 Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, file, true);
                 stateRef.set(new IterationState((EditorEx) editor, 0, false));
                 intPositionRef.set(editor.getCaretModel().getVisualLineEnd());
@@ -47,6 +51,14 @@ public class MainHttpSession extends HttpSession {
         }, ModalityState.defaultModalityState());
 
         psiFile = psiFileRef.get();
+        if (stateRef.isNull()) {
+            if (psiFileRef.get() instanceof PsiBinaryFile) {
+                throw new NullPointerException("This is binary file.");
+            } else {
+                throw new NullPointerException("Impossible to create an editor.");
+            }
+        }
+
         iterationState = stateRef.get();
         intPositionState = intPositionRef.get();
     }

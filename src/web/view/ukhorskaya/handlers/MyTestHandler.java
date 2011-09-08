@@ -1,9 +1,12 @@
 package web.view.ukhorskaya.handlers;
 
 import com.intellij.openapi.editor.impl.IterationState;
+import com.intellij.openapi.util.Ref;
 import com.intellij.psi.PsiFile;
 import com.sun.net.httpserver.HttpExchange;
+import org.jetbrains.annotations.Nullable;
 import web.view.ukhorskaya.providers.TestHighlighterProvider;
+import web.view.ukhorskaya.sessions.HttpSession;
 import web.view.ukhorskaya.sessions.TestHttpSession;
 
 import java.io.IOException;
@@ -55,14 +58,19 @@ public class MyTestHandler extends MyBaseHandler {
         }
     }
 
-    public void setVariables(PsiFile file, IterationState state, int pos) {
+    public void setVariables(@Nullable Ref<PsiFile> file,@Nullable Ref<IterationState> state,@Nullable Ref<Integer> pos) {
         session.setPsiFile(file);
         session.setIterationState(state);
         session.setIntPosition(pos);
+
     }
 
     public void setHighlightingProvider(TestHighlighterProvider provider) {
         session.setHighlightingProvider(provider);
+    }
+
+    public HttpSession getHttpSession() {
+        return session;
     }
 
 }

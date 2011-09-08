@@ -15,6 +15,7 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.tree.injected.InjectedLanguageUtil;
 import com.intellij.testFramework.IdeaTestCase;
@@ -70,49 +71,47 @@ public class FileDeliveryTest extends IdeaTestCase {
         return module;
     }
 
-    /*public void testIncorrectUrlFormat() throws IOException {
+    public void testIncorrectUrlFormat() throws IOException {
         String urlPath = "incorrectUrlFormat";
-        String expectedResult = "Path to the file is incorrect.<br/>URL format is [localhost]/[project name]/[path to the file]";
+        String expectedResult = "Wrong request";
 
-        compareResults(urlPath, addHtmlHeader(expectedResult));
-    }*/
-
-
-    /*public void testAbsentProject() throws IOException {
-        String absentProjectName = "myProject" + RandomUtils.nextInt();
-        String urlPath = absentProjectName + "/Foo.java";
-        String expectedResult = "Project " + absentProjectName + " not found. Check that the project is opened in Intellij IDEA.";
-
-        compareResults(urlPath, addHtmlHeader(expectedResult));
-    }*/
+        compareResultsWithSubstring(urlPath, expectedResult);
+    }
 
     public void testAbsentFile() throws IOException, InterruptedException {
         String urlPath = myProject.getName() + "/AbsentFile.java";
-        String expectedResult = "File /AbsentFile.java not found at project " + myProject.getName();
+        String expectedResult = "Wrong request";
 
-        compareResults(urlPath, addHtmlHeader(expectedResult));
+        compareResultsWithSubstring(urlPath, expectedResult);
+    }
+
+    public void testBinary_bmp() throws IOException, InterruptedException {
+        String fileName = this.getTestName(false).replace("_", ".");
+        makeFileInProject(fileName, true);
+        getFilesToCompareWithSubstring(fileName, true);
     }
 
     public void testFooRoot_java() throws IOException, InterruptedException {
         String fileName = this.getTestName(false).replace("_", ".");
         makeFileInProject(fileName, true);
-        getFilesToCompare(fileName, true);
+        getFilesToCompareWithSubstring(fileName, true);
+    }
+
+    public void testLibFile_java() throws IOException, InterruptedException {
+        makeFileInProject("rt.jar", true);
+        getFilesToCompareWithSubstringForLib("rt.jar!/java/lang/Exception.class", true);
     }
 
     public void testFoo_java() throws IOException, InterruptedException {
         String fileName = this.getTestName(false).replace("_", ".");
         makeFileInProject(fileName);
-        getFilesToCompare(fileName);
+        getFilesToCompareWithSubstring(fileName, false);
     }
 
     public void testMain_mxml() throws IOException, InterruptedException {
         String fileName = this.getTestName(false).replace("_", ".");
         makeFileInProject(fileName);
-        getFilesToCompare(fileName);
-    }
-
-    private void getFilesToCompare(String fileName) throws IOException {
-        getFilesToCompare(fileName, false);
+        getFilesToCompareWithSubstring(fileName, false);
     }
 
     private void getFilesToCompare(String fileName, boolean isRootDirectory) throws IOException {
@@ -126,8 +125,51 @@ public class FileDeliveryTest extends IdeaTestCase {
         String expectedFilePath = getProjectDir().getPath() + "/testData/" + fileName + ".html";
 
         VirtualFile expectedFile = LocalFileSystem.getInstance().findFileByPath(expectedFilePath);
-        String expectedResult = processString(VfsUtil.loadText(expectedFile)).replaceAll("PROJECT_NAME", myProject.getName());
+        String expectedResult = processString(VfsUtil.loadText(expectedFile)).replaceAll("PROJECT_NAME", getProjectName());
         compareResults(urlPath, expectedResult);
+    }
+
+    private String getProjectName() {
+        String projectDir = myProject.getBaseDir().toString();
+        projectDir = projectDir.substring(projectDir.lastIndexOf("/") + 1);
+        return projectDir;
+    }
+
+    private void getFilesToCompareWithSubstring(String fileName, boolean isRootDirectory) throws IOException {
+        String urlPath;
+        if (isRootDirectory) {
+            urlPath = "path=" + myProject.getBaseDir() + "/" + fileName;
+        } else {
+            urlPath = "path=" + myProject.getBaseDir() + "/testData/" + fileName;
+        }
+
+        String expectedFilePath = getProjectDir().getPath() + "/testData/" + fileName + ".html";
+
+        VirtualFile expectedFile = LocalFileSystem.getInstance().findFileByPath(expectedFilePath);
+        String expectedResult = substringHtmlHeader(processString(VfsUtil.loadText(expectedFile)).replaceAll("PROJECT_NAME", getProjectName()));
+        compareResultsWithSubstring(urlPath, expectedResult);
+    }
+
+    private void getFilesToCompareWithSubstringForLib(String fileName, boolean isRootDirectory) throws IOException {
+        String urlPath;
+        String projectDir = myProject.getBaseDir().toString();
+        projectDir = projectDir.replace("file:", "jar:");
+        if (isRootDirectory) {
+            urlPath = "path=" + projectDir + "/" + fileName;
+        } else {
+            urlPath = "path=" + projectDir + "/testData/" + fileName;
+        }
+
+        String expectedFilePath = getProjectDir().getPath() + "/testData/Exception.class.html";
+
+        VirtualFile expectedFile = LocalFileSystem.getInstance().findFileByPath(expectedFilePath);
+        String expectedResult = substringHtmlHeader(processString(VfsUtil.loadText(expectedFile)).replaceAll("PROJECT_NAME", getProjectName()));
+        compareResultsWithSubstring(urlPath, expectedResult);
+    }
+
+    private void compareResultsWithSubstring(final String urlToInputFile, String expectedResult) throws IOException {
+        String actualResult = substringHtmlHeader(getFileContentFromUrl(urlToInputFile));
+        assertEquals("Wrong result", expectedResult, actualResult);
     }
 
     private void compareResults(final String urlToInputFile, String expectedResult) throws IOException {
@@ -193,20 +235,20 @@ public class FileDeliveryTest extends IdeaTestCase {
     }
 
     private String getFileContentFromUrl(String urlPathWoLocalhost) throws IOException {
-        String urlPath = LOCALHOST + urlPathWoLocalhost;
+        String urlPath = LOCALHOST + urlPathWoLocalhost.replace(" ", "%20");
         URL url = new URL(urlPath);
         HttpURLConnection urlConnection = null;
         BufferedReader in = null;
         urlConnection = (HttpURLConnection) url.openConnection();
 
         String relPath = "";
-        if (urlPathWoLocalhost.contains("/")) {
-            relPath = urlPathWoLocalhost.substring(urlPathWoLocalhost.indexOf("/"));
+        if (urlPathWoLocalhost.contains("path=")) {
+            relPath = urlPathWoLocalhost.substring(urlPathWoLocalhost.indexOf("path=") + 5);
         } else {
             relPath = urlPathWoLocalhost;
         }
 
-        final VirtualFile currentFile = getFileByRelPath(relPath);
+        final VirtualFile currentFile = VirtualFileManager.getInstance().findFileByUrl(relPath);
         if (currentFile == null) {
             try {
                 urlConnection.getInputStream();
@@ -221,13 +263,16 @@ public class FileDeliveryTest extends IdeaTestCase {
                 public void run() {
                     psiFileRef.set(PsiManager.getInstance(myProject).findFile(currentFile));
                     Document document = PsiDocumentManager.getInstance(myProject).getDocument(psiFileRef.get());
+                    if (document == null) {
+                        return;
+                    }
                     myEditor = EditorFactory.getInstance().createEditor(document, myProject, currentFile, true);
                     stateRef.set(new IterationState((EditorEx) myEditor, 0, false));
                     intPositionRef.set(myEditor.getCaretModel().getVisualLineEnd());
                 }
             });
 
-            ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setVariables(psiFileRef.get(), stateRef.get(), intPositionRef.get());
+            ((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setVariables(psiFileRef, stateRef, intPositionRef);
             //((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIterationState(stateRef.get());
             //((MyTestHandler) IdeaHttpServer.getInstance().getMyHandler()).setIntPosition(intPositionRef.get());
 
@@ -319,6 +364,16 @@ public class FileDeliveryTest extends IdeaTestCase {
     private boolean isProjectDir(File dir) {
         String path = dir.getAbsolutePath().replace("%20", " ");
         return new File(path).isDirectory() && new File(path + "\\" + ProjectUtil.DIRECTORY_BASED_PROJECT_DIR).exists();
+    }
+
+    private String substringHtmlHeader(String str) {
+        int start = str.indexOf("<div id=\"fake-body\"><div>") + 25;
+        int end = str.indexOf("</div>");
+        if ((start != -1) && (end != -1) && (start < end)) {
+            str = str.substring(start, end);
+            System.err.println("WARN: Impossible to substring result in tests.");
+        }
+        return str;
     }
 
     private String addHtmlHeader(String inputString) {

@@ -62,9 +62,6 @@ public class JSONResponse {
             if (list[i].toString().equals("...")) {
                 continue;
             }
-            if (i != 0) {
-                response.append(",");
-            }
             NavigationItem item = (NavigationItem) list[i];
             PsiElement element = (PsiElement) list[i];
             ItemPresentation presentation = item.getPresentation();
@@ -75,7 +72,9 @@ public class JSONResponse {
             final MyItemPresentation resultPresentation = new MyItemPresentation();
 
             setResultPresentation(element, presentation, resultPresentation);
-
+            if ((i != 0) && (response.length() > 5)) {
+                response.append(",");
+            }
             response.append("{\"label\":\"");
             response.append(presentation.getPresentableText());
             response.append("\", \"icon\":\"");
@@ -89,7 +88,7 @@ public class JSONResponse {
                     String projectDir = currentProject.getBaseDir().getPath();
                     if (path.contains(projectDir)) {
                         path = path.substring(path.indexOf(currentProject.getName()) - 1);*/
-                response.append("/url=" + path);
+                response.append("/path=" + path);
                 /*    }
                 }*/
             }

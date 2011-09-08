@@ -15,16 +15,13 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.sun.net.httpserver.HttpExchange;
 import org.apache.commons.lang.math.RandomUtils;
-import web.view.ukhorskaya.MyRecursiveVisitor;
 import web.view.ukhorskaya.MyRecursiveVisitor2;
 import web.view.ukhorskaya.MyTextAttributes;
 import web.view.ukhorskaya.handlers.MyBaseHandler;
 import web.view.ukhorskaya.providers.BaseHighlighterProvider;
 
 import java.awt.event.InputEvent;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +35,7 @@ import java.util.Map;
 public abstract class HttpSession {
     private static final Logger LOG = Logger.getInstance(HttpSession.class);
 
-    private final int sessionId = RandomUtils.nextInt();
+    protected final int sessionId = RandomUtils.nextInt();
 
     private Map<MyTextAttributes, Integer> mapAttributes = new HashMap<MyTextAttributes, Integer>();
 
@@ -56,86 +53,39 @@ public abstract class HttpSession {
 
     public void handle(HttpExchange exchange) {
         String param = exchange.getRequestURI().toString();
-        if (param.contains("url=")) {
+        if (param.contains("path=")) {
             sendProjectSourceFile2(exchange);
-        } else {
-            sendProjectSourceFile(exchange);
         }
+        param = exchange.getRequestURI().getPath();
+        if (param.contains("project=")) {
+            sendIndexFile(exchange);
+        }
+
+        writeResponse(exchange, "Wrong request", 404);
+
     }
 
-
-    private void sendResourceFile(HttpExchange exchange) {
+    private void sendIndexFile(HttpExchange exchange) {
         StringBuilder response = new StringBuilder();
 
-        InputStreamReader reader = null;
-        reader = new InputStreamReader(MyBaseHandler.class.getResourceAsStream("/index.html"));
-
-        try {
-            BufferedReader bufferedReader = new BufferedReader(reader);
-
-            String tmp;
-            while ((tmp = bufferedReader.readLine()) != null) {
-                response.append(tmp);
-                response.append("\n");
-            }
-        } catch (NullPointerException e) {
-            response.append("Resource file not found");
-            writeResponse(exchange, response.toString(), 404);
-        } catch (IOException e) {
-            response.append("Error while reading from file");
-            writeResponse(exchange, response.toString(), 400);
-        }
-        writeResponse(exchange, response.toString(), 200, true);
-    }
-
-    private void sendProjectSourceFile(HttpExchange exchange) {
-        String requestURI = exchange.getRequestURI().toString();
-        String response;
-
-        String projectName = getProjectName(requestURI);
-        if (projectName == null) {
-            response = "Impossible to find a project by request URI: " + requestURI;
-            writeResponse(exchange, response, 404);
-            return;
-        }
+        String path = exchange.getRequestURI().getPath();
+        String projectName = path.substring(path.indexOf("project=") + 8, path.length() - 1);
 
         currentProject = MyBaseHandler.getProjectByProjectName(projectName);
-        if (currentProject == null) {
-            response = "Project " + projectName + " not found. Check that the project is opened in Intellij IDEA.";
-            writeResponse(exchange, response, 404);
-            return;
-        }
 
-        String relPath = requestURI.substring(requestURI.indexOf(projectName) + projectName.length());
-        if (relPath.length() <= 1) {
-            sendResourceFile(exchange);
-            return;
-        }
-
-        currentFile = getFileByRelPath(relPath);
-        if (currentFile == null) {
-            response = "File " + relPath + " not found at project " + projectName;
-            writeResponse(exchange, response, 404);
-            return;
-        }
-
-        response = getContentWithDecoration();
-
-        response = response.replaceAll("    ", "&nbsp;&nbsp;&nbsp;&nbsp;");
-        response = response.replaceAll("\\n", "<br/>");
-
-        writeResponse(exchange, response, 200);
+        response.append("For find file, class or file you can open a popup window.");
+        writeResponse(exchange, response.toString(), 200);
     }
 
     private void sendProjectSourceFile2(HttpExchange exchange) {
-        String requestURI = exchange.getRequestURI().toString().substring(5);
+        String requestURI = exchange.getRequestURI().toString().substring(6);
         requestURI = requestURI.replace("%20", " ");
         String response;
 
         //TODO add navigation by id IndexInfrastructure.findFileById((PersistentFS)ManagingFS.getInstance(), myFileId)
         currentFile = VirtualFileManager.getInstance().findFileByUrl(requestURI);
         if (currentFile == null) {
-            response = "File with url " + requestURI + " not found ";
+            response = "File with path " + requestURI + " not found ";
             writeResponse(exchange, response, 404);
             return;
         }
@@ -149,23 +99,17 @@ public abstract class HttpSession {
         writeResponse(exchange, response, 200);
     }
 
-    private String getContentWithDecoration() {
-        setVariables(currentFile);
-        MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, currentProject, iterationState, intPositionState, getProvider());
-        visitor.visitFile(psiFile);
-
-        mapAttributes = visitor.getMapAttributes();
-        MyBaseHandler.mapCss.put(sessionId, mapAttributes);
-        return visitor.getResult();
-    }
-
     protected abstract BaseHighlighterProvider getProvider();
 
     //Set IterationState and intPosition
     public abstract void setVariables(VirtualFile file);
 
     private String getContentWithDecoration2() {
-        setVariables(currentFile);
+        try {
+            setVariables(currentFile);
+        } catch (NullPointerException e) {
+            return e.getMessage();
+        }
 
         PsiElement mirrorFile = null;
         if (psiFile instanceof PsiCompiledElement) {
@@ -184,7 +128,6 @@ public abstract class HttpSession {
         MyBaseHandler.mapCss.put(sessionId, mapAttributes);
         return visitor.getResult();
     }
-
 
     private void writeResponse(HttpExchange exchange, String responseBody, int errorCode) {
         writeResponse(exchange, responseBody, errorCode, false);
@@ -233,7 +176,9 @@ public abstract class HttpSession {
             response.append(getKeyboardShortcutFromShortcutSet(gotosymbol));
             response.append(");");
             response.append(" setProjectName('");
-            response.append(currentProject.getName());
+            if (currentProject != null) {
+                response.append(currentProject.getName());
+            }
             response.append("');");
             response.append("\">\n");
 

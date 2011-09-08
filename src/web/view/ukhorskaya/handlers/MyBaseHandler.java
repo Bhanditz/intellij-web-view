@@ -54,21 +54,17 @@ public abstract class MyBaseHandler implements HttpHandler {
                 iconHelper.clearMaps();
                 sendJsonData(exchange);
             }
-//            return true;
         } else {
             param = exchange.getRequestURI().toString();
             if (param.contains("fticons")) {
                 sendIcon(exchange);
-               // return  true;
             } else if (param.contains(".png")) {
                 sendImageFile(exchange);
-              //  return  true;
+                return false;
             } else if (param.equals("/")) {
                 sendModuleList(exchange);
-              //  return  true;
             } else if (param.contains(".css") && param.contains("jquery.ui")) {
                 sendResourceFile(exchange);
-              //  return  true;
             }
         }
         return false;
@@ -89,7 +85,7 @@ public abstract class MyBaseHandler implements HttpHandler {
             response.append("Please, choose the project:<br/>");
             for (Project project : projects) {
                 String projectName = project.getName();
-                response.append("<a href=\"/");
+                response.append("<a href=\"/project=");
                 response.append(projectName);
                 response.append("/\">");
                 response.append(projectName);
@@ -105,7 +101,7 @@ public abstract class MyBaseHandler implements HttpHandler {
         writeResponse(exchange, response.toString(), 200);
     }
 
-     private void sendIcon(HttpExchange exchange) {
+    private void sendIcon(HttpExchange exchange) {
         String hashCode = exchange.getRequestURI().getPath();
         hashCode = hashCode.substring(hashCode.indexOf("fticons/") + 8);
         BufferedImage bi = iconHelper.getIconFromMap(Integer.parseInt(hashCode));
@@ -175,7 +171,7 @@ public abstract class MyBaseHandler implements HttpHandler {
     private String getAllFilesInProjectWithTerm(final String term, String type, String projectName) throws NoSuchAlgorithmException {
         Project currentProject = getProjectByProjectName(projectName);
         if (currentProject == null) {
-            return "Impossible to find a project by project name: " + projectName + "Check that the project is open in Intellij Idea." ;
+            return "Impossible to find a project by project name: " + projectName + "Check that the project is open in Intellij Idea.";
         }
 
         FilteringGotoByModel model;
@@ -258,28 +254,30 @@ public abstract class MyBaseHandler implements HttpHandler {
         buffer.append("body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;} ");
         buffer.append(" a {text-decoration: none; color: #000000;} span.highlighting { background-color: yellow !important;}");
         buffer.append(" a span {text-decoration: none; color: #000000;} a:hover span {color: blue; text-decoration: underline;}");
-        for (MyTextAttributes attr : mapAttributes.keySet()) {
-            buffer.append("\nspan.class");
-            buffer.append(mapAttributes.get(attr)).append("{");
-            String tmp = MyBaseHandler.getColor(attr.getForegroundColor());
-            if (!tmp.equals("#000000")) {
-                buffer.append("color: ").append(tmp).append("; ");
-            }
-            tmp = MyBaseHandler.getColor(attr.getBackgroundColor());
-            if (!tmp.equals("#ffffff")) {
-                buffer.append("background-color: ").append(tmp).append("; ");
-            }
-            buffer.append(MyBaseHandler.getFontType(attr.getFontType())).append(" ");
-            if (attr.getEffectType().equals(EffectType.LINE_UNDERSCORE)) {
-                buffer.append("text-decoration: underline; ").append("; ");
-            }
-            buffer.append("}");
+        if (mapAttributes != null) {
+            for (MyTextAttributes attr : mapAttributes.keySet()) {
+                buffer.append("\nspan.class");
+                buffer.append(mapAttributes.get(attr)).append("{");
+                String tmp = MyBaseHandler.getColor(attr.getForegroundColor());
+                if (!tmp.equals("#000000")) {
+                    buffer.append("color: ").append(tmp).append("; ");
+                }
+                tmp = MyBaseHandler.getColor(attr.getBackgroundColor());
+                if (!tmp.equals("#ffffff")) {
+                    buffer.append("background-color: ").append(tmp).append("; ");
+                }
+                buffer.append(MyBaseHandler.getFontType(attr.getFontType())).append(" ");
+                if (attr.getEffectType().equals(EffectType.LINE_UNDERSCORE)) {
+                    buffer.append("text-decoration: underline; ").append("; ");
+                }
+                buffer.append("}");
 
-            //Cut empty styles
-            tmp = "\nspan.class" + mapAttributes.get(attr) + "{ }";
-            int position = buffer.toString().indexOf(tmp);
-            if (position != -1) {
-                buffer = buffer.delete(position, buffer.length());
+                //Cut empty styles
+                tmp = "\nspan.class" + mapAttributes.get(attr) + "{ }";
+                int position = buffer.toString().indexOf(tmp);
+                if (position != -1) {
+                    buffer = buffer.delete(position, buffer.length());
+                }
             }
         }
         return buffer.toString();

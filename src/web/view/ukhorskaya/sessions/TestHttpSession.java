@@ -1,7 +1,9 @@
 package web.view.ukhorskaya.sessions;
 
 import com.intellij.openapi.editor.impl.IterationState;
+import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiBinaryFile;
 import com.intellij.psi.PsiFile;
 import web.view.ukhorskaya.providers.BaseHighlighterProvider;
 
@@ -15,29 +17,53 @@ import web.view.ukhorskaya.providers.BaseHighlighterProvider;
 public class TestHttpSession extends HttpSession {
     private BaseHighlighterProvider hProvider;
 
-        public void setIterationState(IterationState state) {
-            this.iterationState = state;
+    Ref<IterationState> state;
+    Ref<Integer> position;
+    Ref<PsiFile> file;
+
+    public void setIterationState(Ref<IterationState> state) {
+        this.state = state;
+    }
+
+    public void setHighlightingProvider(BaseHighlighterProvider provider) {
+        this.hProvider = provider;
+    }
+
+    public void setIntPosition(Ref<Integer> position) {
+        this.position = position;
+    }
+
+    public void setPsiFile(Ref<PsiFile> file) {
+        this.file = file;
+    }
+
+    @Override
+    protected BaseHighlighterProvider getProvider() {
+        return hProvider;
+    }
+
+    @Override
+    public void setVariables(VirtualFile myfile) {
+        try {
+            psiFile = file.get();
+            iterationState = state.get();
+            intPositionState = position.get();
+
+        } catch (NullPointerException e) {
+
+        }
+        if (iterationState == null) {
+            if (psiFile instanceof PsiBinaryFile) {
+                throw new NullPointerException("This is binary file.");
+            } else {
+                throw new NullPointerException("Impossible to create an editor.");
+            }
         }
 
-        public void setHighlightingProvider(BaseHighlighterProvider provider) {
-            this.hProvider = provider;
-        }
+    }
 
-        public void setIntPosition(int position) {
-            this.intPositionState = position;
-        }
-
-        public void setPsiFile(PsiFile file) {
-            this.psiFile = file;
-        }
-
-        @Override
-        protected BaseHighlighterProvider getProvider() {
-            return hProvider;
-        }
-
-        @Override
-        public void setVariables(VirtualFile file) {
-        }
+    public int getSessionId() {
+        return sessionId;
+    }
 
 }

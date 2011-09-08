@@ -311,7 +311,7 @@ public class MyRecursiveVisitor2 extends PsiRecursiveElementVisitor {
 
     private String getUrlFromFilePath(String path) {
         StringBuilder buffer = new StringBuilder();
-        buffer.append("/url=");
+        buffer.append("/path=");
         buffer.append(path);
         return buffer.toString();
     }
