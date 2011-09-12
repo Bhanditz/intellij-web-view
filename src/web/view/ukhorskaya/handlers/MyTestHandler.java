@@ -19,35 +19,6 @@ import java.io.IOException;
  */
 public class MyTestHandler extends MyBaseHandler {
 
-
-    /*private BaseHighlighterProvider hProvider;
-
-    public void setIterationState(IterationState state) {
-        this.iterationState = state;
-    }
-
-    public void setHighlightingProvider(BaseHighlighterProvider provider) {
-        this.hProvider = provider;
-    }
-
-    public void setIntPosition(int position) {
-        this.intPositionState = position;
-    }
-
-    public void setPsiFile(PsiFile file) {
-        this.psiFile = file;
-    }
-
-    @Override
-    protected BaseHighlighterProvider getProvider() {
-        return hProvider;
-    }
-
-    @Override
-    public void setVariables(VirtualFile file) {
-    }
-*/
-
     TestHttpSession session = new TestHttpSession();
 
     @Override

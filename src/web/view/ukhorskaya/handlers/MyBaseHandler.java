@@ -44,27 +44,34 @@ public abstract class MyBaseHandler implements HttpHandler {
         if (param != null) {
             if (param.contains("file=highlighting.js")) {
                 sendResourceFile(exchange);
+                return true;
             } else if (param.contains("file=dialog.js")) {
                 sendResourceFile(exchange);
+                return true;
             } else if (param.contains("type=jquery_lib")) {
                 sendResourceFile(exchange);
+                return true;
             } else if (param.contains("type=css")) {
                 writeResponse(exchange, generateCssStyles(param), 200);
+                return true;
             } else if (param.contains("file_type=autocomplete")) {
-                iconHelper.clearMaps();
                 sendJsonData(exchange);
+                return true;
             }
         } else {
             param = exchange.getRequestURI().toString();
             if (param.contains("fticons")) {
                 sendIcon(exchange);
+                return true;
             } else if (param.contains(".png")) {
                 sendImageFile(exchange);
-                return false;
+                return true;
             } else if (param.equals("/")) {
                 sendModuleList(exchange);
-            } else if (param.contains(".css") && param.contains("jquery.ui")) {
+                return true;
+            } else if (param.contains(".css") && (param.contains("jquery.ui") || param.contains("jquery-ui"))) {
                 sendResourceFile(exchange);
+                return true;
             }
         }
         return false;
@@ -104,7 +111,12 @@ public abstract class MyBaseHandler implements HttpHandler {
     private void sendIcon(HttpExchange exchange) {
         String hashCode = exchange.getRequestURI().getPath();
         hashCode = hashCode.substring(hashCode.indexOf("fticons/") + 8);
-        BufferedImage bi = iconHelper.getIconFromMap(Integer.parseInt(hashCode));
+        BufferedImage bi = null;
+        try {
+            bi = iconHelper.getIconFromMap(Integer.parseInt(hashCode));
+        } catch (NoSuchAlgorithmException e) {
+            writeResponse(exchange, "Impossible to generate MD% hash for save an image" + hashCode, 400);
+        }
         writeImageToStream(bi, exchange);
     }
 

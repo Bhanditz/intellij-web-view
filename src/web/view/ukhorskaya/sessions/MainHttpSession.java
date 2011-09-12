@@ -9,7 +9,6 @@ import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiBinaryFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
@@ -34,7 +33,10 @@ public class MainHttpSession extends HttpSession {
         final Ref<IterationState> stateRef = new Ref<IterationState>();
         final Ref<Integer> intPositionRef = new Ref<Integer>();
         final Ref<PsiFile> psiFileRef = new Ref<PsiFile>();
-
+        final Ref<Editor> editorRef = new Ref<Editor>();
+        if (file.getFileType().isBinary()) {
+            throw new IllegalArgumentException("This is binary file." + file.getUrl());
+        }
         ApplicationManager.getApplication().invokeAndWait(new Runnable() {
             public void run() {
 
@@ -45,6 +47,7 @@ public class MainHttpSession extends HttpSession {
                     return;
                 }
                 Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, file, true);
+                editorRef.set(editor);
                 stateRef.set(new IterationState((EditorEx) editor, 0, false));
                 intPositionRef.set(editor.getCaretModel().getVisualLineEnd());
             }
@@ -52,11 +55,7 @@ public class MainHttpSession extends HttpSession {
 
         psiFile = psiFileRef.get();
         if (stateRef.isNull()) {
-            if (psiFileRef.get() instanceof PsiBinaryFile) {
-                throw new NullPointerException("This is binary file.");
-            } else {
-                throw new NullPointerException("Impossible to create an editor.");
-            }
+            throw new IllegalArgumentException("Impossible to create an editor.");
         }
 
         iterationState = stateRef.get();

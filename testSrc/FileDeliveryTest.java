@@ -61,6 +61,7 @@ public class FileDeliveryTest extends IdeaTestCase {
     @Override
     protected Module createModule(@NonNls String moduleName) {
         final Module module = super.createModule(moduleName);
+   //    ProjectRootManager.getInstance(myProject).setProjectSdk(new JavaSdkImpl().createJdk("jdk", "C://Program Files/Java/jdk1.6.0_26/bin/", true));
         ApplicationManager.getApplication().runWriteAction(new Runnable() {
             public void run() {
                 ModifiableRootModel model = ModuleRootManager.getInstance(module).getModifiableModel();
@@ -73,14 +74,14 @@ public class FileDeliveryTest extends IdeaTestCase {
 
     public void testIncorrectUrlFormat() throws IOException {
         String urlPath = "incorrectUrlFormat";
-        String expectedResult = "Wrong request";
+        String expectedResult = "Wrong request: /incorrectUrlFormat";
 
         compareResultsWithSubstring(urlPath, expectedResult);
     }
 
     public void testAbsentFile() throws IOException, InterruptedException {
         String urlPath = myProject.getName() + "/AbsentFile.java";
-        String expectedResult = "Wrong request";
+        String expectedResult = "Wrong request: /" + myProject.getName() + "/AbsentFile.java";
 
         compareResultsWithSubstring(urlPath, expectedResult);
     }
@@ -94,6 +95,7 @@ public class FileDeliveryTest extends IdeaTestCase {
     public void testFooRoot_java() throws IOException, InterruptedException {
         String fileName = this.getTestName(false).replace("_", ".");
         makeFileInProject(fileName, true);
+        makeFileInProject("MyHandler.java", true);
         getFilesToCompareWithSubstring(fileName, true);
     }
 
@@ -106,27 +108,13 @@ public class FileDeliveryTest extends IdeaTestCase {
         String fileName = this.getTestName(false).replace("_", ".");
         makeFileInProject(fileName);
         getFilesToCompareWithSubstring(fileName, false);
+
     }
 
     public void testMain_mxml() throws IOException, InterruptedException {
         String fileName = this.getTestName(false).replace("_", ".");
         makeFileInProject(fileName);
         getFilesToCompareWithSubstring(fileName, false);
-    }
-
-    private void getFilesToCompare(String fileName, boolean isRootDirectory) throws IOException {
-        String urlPath;
-        if (isRootDirectory) {
-            urlPath = myProject.getName() + "/" + fileName;
-        } else {
-            urlPath = myProject.getName() + "/testData/" + fileName;
-        }
-
-        String expectedFilePath = getProjectDir().getPath() + "/testData/" + fileName + ".html";
-
-        VirtualFile expectedFile = LocalFileSystem.getInstance().findFileByPath(expectedFilePath);
-        String expectedResult = processString(VfsUtil.loadText(expectedFile)).replaceAll("PROJECT_NAME", getProjectName());
-        compareResults(urlPath, expectedResult);
     }
 
     private String getProjectName() {
@@ -186,18 +174,6 @@ public class FileDeliveryTest extends IdeaTestCase {
 
         assertEquals("Wrong result", expectedResult, actualResult);
     }
-
-    /* public void testJsonFormat() throws NoSuchAlgorithmException, IOException {
-        String expectedResult = "[{\"label\":\"null\"}]";
-        makeFileInProject("Foo.java", true);
-        makeFileInProject("FooRoot.java", true);
-        GotoClassModel2 model = new GotoClassModel2(myProject);
-        JSONResponse response = new JSONResponse(model);
-        String actualResult = response.getResponse(myProject, null, "myh");
-
-        assertEquals("Wrong result", expectedResult, actualResult);
-    }*/
-
 
     private void makeFileInProject(String fileName) throws IOException {
         makeFileInProject(fileName, false);
@@ -367,11 +343,14 @@ public class FileDeliveryTest extends IdeaTestCase {
     }
 
     private String substringHtmlHeader(String str) {
-        int start = str.indexOf("<div id=\"fake-body\"><div>") + 25;
+        str = str.replace("    ", "");
+        int start = str.indexOf("<div id=\"fake-body\">") + 25;
         int end = str.indexOf("</div>");
         if ((start != -1) && (end != -1) && (start < end)) {
             str = str.substring(start, end);
-            System.err.println("WARN: Impossible to substring result in tests.");
+        }   else {
+            System.err.println("WARN: Impossible to substring result in tests. (" + start + ", " + end + ")");
+
         }
         return str;
     }

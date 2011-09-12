@@ -67,13 +67,13 @@ public class JSONResponse {
             PsiElement element = (PsiElement) list[i];
             ItemPresentation presentation = item.getPresentation();
 
-            final MyItemPresentation resultPresentation = new MyItemPresentation();
+            final MyItemPresentation resultPresentation;
             if (element instanceof PsiBinaryFile) {
-                setResultPresentationForBinary((PsiBinaryFile) element, resultPresentation);
+                resultPresentation = setResultPresentationForBinary((PsiBinaryFile) element);
             } else if (item.getPresentation() == null) {
                 continue;
             } else {
-                setResultPresentation(element, presentation, resultPresentation);
+                resultPresentation = setResultPresentation(element, presentation);
             }
             if ((i != 0) && (response.length() > 5)) {
                 response.append(",");
@@ -118,7 +118,8 @@ public class JSONResponse {
         return response.toString();
     }
 
-    private void setResultPresentationForBinary(final PsiBinaryFile element, final MyItemPresentation resultPresentation) {
+    private MyItemPresentation setResultPresentationForBinary(final PsiBinaryFile element) {
+        final MyItemPresentation resultPresentation = new MyItemPresentation();
         resultPresentation.name = element.getName();
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             public void run() {
@@ -141,6 +142,8 @@ public class JSONResponse {
                 }
             }
         });
+
+        return resultPresentation;
     }
 
     private void getJsonResponseForModuleIcon(MyItemPresentation resultPresentation) throws NoSuchAlgorithmException {
@@ -195,7 +198,8 @@ public class JSONResponse {
         }
     }
 
-    private void setResultPresentation(final PsiElement element, final ItemPresentation presentation, final MyItemPresentation resultPresentation) {
+    private MyItemPresentation setResultPresentation(final PsiElement element, final ItemPresentation presentation) {
+        final MyItemPresentation resultPresentation = new MyItemPresentation();
         resultPresentation.name = presentation.getPresentableText();
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             public void run() {
@@ -227,6 +231,7 @@ public class JSONResponse {
                 }
             }
         });
+        return resultPresentation;
     }
 
     private class MyItemPresentation {

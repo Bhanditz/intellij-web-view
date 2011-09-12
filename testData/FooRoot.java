@@ -1,5 +1,3 @@
-package com.jetbrains.ukhorskaya;
-
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.sun.net.httpserver.HttpServer;
@@ -14,7 +12,7 @@ import java.net.InetSocketAddress;
  * Time: 10:05 AM
  * To change this template use File | Settings | File Templates.
  */
-public class IdeaHttpServer implements ApplicationComponent {
+public class FooRoot implements ApplicationComponent {
     private boolean isServerRunning = false;
     private HttpServer server;
 
@@ -34,8 +32,8 @@ public class IdeaHttpServer implements ApplicationComponent {
         }
     }
 
-    public static IdeaHttpServer getInstance() {
-        return ApplicationManager.getApplication().getComponent(IdeaHttpServer.class);
+    public static FooRoot getInstance() {
+        return ApplicationManager.getApplication().getComponent(FooRoot.class);
     }
 
     public void initComponent() {

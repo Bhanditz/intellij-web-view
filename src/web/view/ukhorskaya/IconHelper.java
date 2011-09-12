@@ -11,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,9 +24,10 @@ public class IconHelper {
     private static IconHelper helper;
 
     private Map<Icon, Integer> mapIconHashCode = Collections.synchronizedMap(new HashMap<Icon, Integer>());
-    private Map<Integer, BufferedImage> mapHashCodeBufferedImage = Collections.synchronizedMap(new HashMap<Integer, BufferedImage>());
+    private Map<Integer, Icon> mapHashCodeIcon = Collections.synchronizedMap(new HashMap<Integer, Icon>());
+    private Map<Integer, BufferedImage> mapHashCodeBufferedImage = Collections.synchronizedMap(new WeakHashMap<Integer, BufferedImage>());
 
-    public static IconHelper getInstance() {
+    public static synchronized IconHelper getInstance() {
         if (helper == null) {
             helper = new IconHelper();
         }
@@ -33,13 +35,6 @@ public class IconHelper {
     }
 
     private IconHelper() {
-    }
-
-    public void clearMaps() {
-        if (mapIconHashCode.size() > 30) {
-            mapIconHashCode = Collections.synchronizedMap(new HashMap<Icon, Integer>());
-            mapHashCodeBufferedImage = Collections.synchronizedMap(new HashMap<Integer, BufferedImage>());
-        }
     }
 
     public int addIconToMap(Icon myIcon) throws NoSuchAlgorithmException {
@@ -52,15 +47,20 @@ public class IconHelper {
         myIcon.paintIcon(panel, graphics, 0, 0);
         graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_IN, 0.0f));
         int hashCode = setHashCodeWithMD5FromBufferedImage(iconBufImage);
-        if (!mapIconHashCode.containsKey(myIcon)) {
-            mapIconHashCode.put(myIcon, hashCode);
-            mapHashCodeBufferedImage.put(hashCode, iconBufImage);
-        }
+        mapIconHashCode.put(myIcon, hashCode);
+        mapHashCodeIcon.put(hashCode, myIcon);
+        mapHashCodeBufferedImage.put(hashCode, iconBufImage);
         return hashCode;
     }
 
-    public BufferedImage getIconFromMap(int hashCode) {
-        return mapHashCodeBufferedImage.get(hashCode);
+    public BufferedImage getIconFromMap(int hashCode) throws NoSuchAlgorithmException {
+        BufferedImage image = mapHashCodeBufferedImage.get(hashCode);
+        if (image == null) {
+            Icon icon = mapHashCodeIcon.get(hashCode);
+            hashCode = addIconToMap(icon);
+            return getIconFromMap(hashCode);
+        }
+        return image;
     }
 
     private int setHashCodeWithMD5FromBufferedImage(BufferedImage image) throws NoSuchAlgorithmException {
