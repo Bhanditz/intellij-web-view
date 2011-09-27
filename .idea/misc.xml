@@ -6,7 +6,7 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
-  <component name="IdProvider" IDEtalkID="A0EF2A7FA7E667D86A3B1A22BA641454" />
+  <component name="IdProvider" IDEtalkID="9ECAFBFB63F0558D0999E99D93ADFC65" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
@@ -28,7 +28,7 @@
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="IDEA IC-107.322" project-jdk-type="IDEA JDK">
-    <output url="file://$PROJECT_DIR$/out" />
+    <output url="file://$PROJECT_DIR$/../Kotlin/KotlinWebCompiler/KotlinWebCompiler/out" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>
