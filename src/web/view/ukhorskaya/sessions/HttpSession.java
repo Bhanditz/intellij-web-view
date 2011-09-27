@@ -108,7 +108,7 @@ public abstract class HttpSession {
     private String getContentWithDecoration() {
         try {
             setVariables(currentFile);
-        } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
             return e.getMessage();
         }
 

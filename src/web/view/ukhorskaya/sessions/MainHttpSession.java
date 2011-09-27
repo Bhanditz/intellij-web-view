@@ -34,9 +34,7 @@ public class MainHttpSession extends HttpSession {
         final Ref<Integer> intPositionRef = new Ref<Integer>();
         final Ref<PsiFile> psiFileRef = new Ref<PsiFile>();
         final Ref<Editor> editorRef = new Ref<Editor>();
-        if (file.getFileType().isBinary()) {
-            throw new IllegalArgumentException("This is binary file." + file.getUrl());
-        }
+
         ApplicationManager.getApplication().invokeAndWait(new Runnable() {
             public void run() {
 
@@ -55,6 +53,9 @@ public class MainHttpSession extends HttpSession {
 
         psiFile = psiFileRef.get();
         if (stateRef.isNull()) {
+            if (file.getFileType().isBinary()) {
+                throw new IllegalArgumentException("This is binary file." + file.getUrl());
+            }
             throw new IllegalArgumentException("Impossible to create an editor.");
         }
 
