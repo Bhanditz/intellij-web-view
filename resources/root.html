@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Web View</title>
+</head>
+<body>
+   <script type="text/javascript">
+        $(function() {
+
+            $("#tags").autocomplete({
+                source: "autocomplete=file",
+                focus: function(event, ui) {
+                    $("#tags").val(ui.item.label);
+                    return false;
+                },
+                select: function(event, ui) {
+                    ui.item.label = "";
+                    $(this).val("");
+                    window.location.href = ui.item.url;
+                },
+                search: function(event, ui) {
+                    $("#tags").attr("style", "color: black; width: 468px;");
+                }
+
+            })
+                    .data("autocomplete")._renderItem = function(ul, item) {
+                if (item.label == "null") {
+                    $("#tags").attr("style", "color: red; width: 468px;");
+                    $("#autocomplete").attr("style", "display: none;");
+                } else {
+                    return $("<li></li>")
+                            .data("item.autocomplete", item)
+                            .append("<a><table id='table-menu'><tr><td style=\"width: 32px;\">" + item.icon + "</td><td width='60%'>" + item.label + "   " + item.path + "</td><td>" + item.moduleName + "</td></tr></table></a>")
+
+                            .appendTo(ul);
+                }
+            };
+        });
+
+    </script>
+</body>
+</html>

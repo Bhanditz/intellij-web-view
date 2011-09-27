@@ -1,0 +1,1585 @@
+body { font-family: monospace; font-size: 12px; color: #000000; background-color: #FFFFFF;}  a {text-decoration: none; color: #000000;} span.highlighting { background-color: yellow !important;} a span {text-decoration: none; color: #000000;} a:hover span {color: blue; text-decoration: underline;}
+span.class1297{color: #458383; font-weight: bold; background-color: #ffffd7; }
+span.class1296{color: #458383;  background-color: #ffffd7; }
+span.class1299{color: #458383; font-style: italic; font-weight: bold; background-color: #ffffd7; }
+span.class1298{color: #458383; font-style: italic; background-color: #ffffd7; }
+span.class1331{color: #458383; font-style: italic; font-weight: bold; background-color: #ffffcc; }
+span.class1328{color: #458383;  background-color: #ffffcc; }
+span.class1330{color: #458383; font-style: italic; background-color: #ffffcc; }
+span.class1329{color: #458383; font-weight: bold; background-color: #ffffcc; }
+span.class1229{color: #008000; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class684{color: #000080;  text-decoration: underline; ; background-color: #efefef; }
+span.class1228{color: #008000;  text-decoration: underline; ; background-color: #e2ffe2; }
+span.class1202{color: #008000; font-style: italic; background-color: #ffcccc; }
+span.class1203{color: #008000; font-style: italic; font-weight: bold; background-color: #ffcccc; }
+span.class1231{color: #008000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class1230{color: #008000; font-style: italic; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class687{color: #000080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class685{color: #000080; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class686{color: #000080; font-style: italic; text-decoration: underline; ; background-color: #efefef; }
+span.class19{color: #000000; font-style: italic; font-weight: bold; }
+span.class18{color: #000000; font-style: italic; }
+span.class17{color: #000000; font-weight: bold; }
+span.class16{color: #000000;  }
+span.class1201{color: #008000; font-weight: bold; background-color: #ffcccc; }
+span.class1200{color: #008000;  background-color: #ffcccc; }
+span.class841{color: #808080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class843{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class837{color: #808080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class839{color: #808080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class303{color: #660e7a; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class300{color: #660e7a;  text-decoration: underline; ; background-color: #ffffd7; }
+span.class302{color: #660e7a; font-style: italic; text-decoration: underline; ; background-color: #ffffd7; }
+span.class301{color: #660e7a; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class335{color: #660e7a; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1312{color: #458383;  }
+span.class334{color: #660e7a; font-style: italic; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1313{color: #458383; font-weight: bold; }
+span.class567{color: #ff0000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1286{color: #008000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1314{color: #458383; font-style: italic; }
+span.class565{color: #ff0000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1284{color: #008000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1315{color: #458383; font-style: italic; font-weight: bold; }
+span.class569{color: #ff0000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class34{color: #000000; font-style: italic; background-color: #ffffcc; }
+span.class1288{color: #008000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class571{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class35{color: #000000; font-style: italic; font-weight: bold; background-color: #ffffcc; }
+span.class1290{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1{color: #000000; font-weight: bold; background-color: #ffffd7; }
+span.class2{color: #000000; font-style: italic; background-color: #ffffd7; }
+span.class319{color: #660e7a; font-style: italic; font-weight: bold; text-decoration: underline; ; }
+span.class0{color: #000000;  background-color: #ffffd7; }
+span.class317{color: #660e7a; font-weight: bold; text-decoration: underline; ; }
+span.class318{color: #660e7a; font-style: italic; text-decoration: underline; ; }
+span.class3{color: #000000; font-style: italic; font-weight: bold; background-color: #ffffd7; }
+span.class316{color: #660e7a;  text-decoration: underline; ; }
+span.class1247{color: #008000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1369{color: #458383; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1246{color: #008000; font-style: italic; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1371{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1245{color: #008000; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1244{color: #008000;  text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1365{color: #458383;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1367{color: #458383; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class33{color: #000000; font-weight: bold; background-color: #ffffcc; }
+span.class32{color: #000000;  background-color: #ffffcc; }
+span.class1241{color: #008000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class976{color: #00ff00;  background-color: #edfced; }
+span.class1239{color: #008000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1571{color: #7a7a2b; font-style: italic; font-weight: bold; background-color: #f7e9e9; }
+span.class1237{color: #008000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1570{color: #7a7a2b; font-style: italic; background-color: #f7e9e9; }
+span.class111{color: #000000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class110{color: #000000; font-style: italic; text-decoration: underline; ; background-color: #efefef; }
+span.class109{color: #000000; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class1243{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class108{color: #000000;  text-decoration: underline; ; background-color: #efefef; }
+span.class1569{color: #7a7a2b; font-weight: bold; background-color: #f7e9e9; }
+span.class333{color: #660e7a; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1568{color: #7a7a2b;  background-color: #f7e9e9; }
+span.class332{color: #660e7a;  text-decoration: underline; ; background-color: #ffffcc; }
+span.class595{color: #000080; font-style: italic; font-weight: bold; }
+span.class593{color: #000080; font-weight: bold; }
+span.class594{color: #000080; font-style: italic; }
+span.class979{color: #00ff00; font-style: italic; font-weight: bold; background-color: #edfced; }
+span.class978{color: #00ff00; font-style: italic; background-color: #edfced; }
+span.class592{color: #000080;  }
+span.class977{color: #00ff00; font-weight: bold; background-color: #edfced; }
+span.class578{color: #000080; font-style: italic; background-color: #ffffd7; }
+span.class577{color: #000080; font-weight: bold; background-color: #ffffd7; }
+span.class576{color: #000080;  background-color: #ffffd7; }
+span.class579{color: #000080; font-style: italic; font-weight: bold; background-color: #ffffd7; }
+span.class611{color: #000080; font-style: italic; font-weight: bold; background-color: #ffffcc; }
+span.class610{color: #000080; font-style: italic; background-color: #ffffcc; }
+span.class608{color: #000080;  background-color: #ffffcc; }
+span.class609{color: #000080; font-weight: bold; background-color: #ffffcc; }
+span.class1540{color: #7a7a2b;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class880{color: #00ff00;  }
+span.class881{color: #00ff00; font-weight: bold; }
+span.class882{color: #00ff00; font-style: italic; }
+span.class883{color: #00ff00; font-style: italic; font-weight: bold; }
+span.class1542{color: #7a7a2b; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1544{color: #7a7a2b; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1546{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class161{color: #0000ff; font-weight: bold; }
+span.class1221{color: #008000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class160{color: #0000ff;  }
+span.class195{color: #0000ff; font-style: italic; font-weight: bold; background-color: #ffcccc; }
+span.class163{color: #0000ff; font-style: italic; font-weight: bold; }
+span.class162{color: #0000ff; font-style: italic; }
+span.class1227{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class739{color: #808080; font-style: italic; font-weight: bold; }
+span.class1225{color: #008000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1223{color: #008000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class737{color: #808080; font-weight: bold; }
+span.class738{color: #808080; font-style: italic; }
+span.class736{color: #808080;  }
+span.class205{color: #0000ff; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class206{color: #0000ff; font-style: italic; text-decoration: underline; ; background-color: #ffcccc; }
+span.class207{color: #0000ff; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class1119{color: #808000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class1118{color: #808000; font-style: italic; text-decoration: underline; ; background-color: #efefef; }
+span.class204{color: #0000ff;  text-decoration: underline; ; background-color: #ffcccc; }
+span.class1117{color: #808000; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class1116{color: #808000;  text-decoration: underline; ; background-color: #efefef; }
+span.class192{color: #0000ff;  background-color: #ffcccc; }
+span.class193{color: #0000ff; font-weight: bold; background-color: #ffcccc; }
+span.class194{color: #0000ff; font-style: italic; background-color: #ffcccc; }
+span.class899{color: #00ff00; font-style: italic; font-weight: bold; background-color: #ffffcc; }
+span.class898{color: #00ff00; font-style: italic; background-color: #ffffcc; }
+span.class867{color: #00ff00; font-style: italic; font-weight: bold; background-color: #ffffd7; }
+span.class864{color: #00ff00;  background-color: #ffffd7; }
+span.class866{color: #00ff00; font-style: italic; background-color: #ffffd7; }
+span.class865{color: #00ff00; font-weight: bold; background-color: #ffffd7; }
+span.class896{color: #00ff00;  background-color: #ffffcc; }
+span.class897{color: #00ff00; font-weight: bold; background-color: #ffffcc; }
+span.class752{color: #808080;  background-color: #ffffcc; }
+span.class753{color: #808080; font-weight: bold; background-color: #ffffcc; }
+span.class176{color: #0000ff;  background-color: #ffffcc; }
+span.class178{color: #0000ff; font-style: italic; background-color: #ffffcc; }
+span.class177{color: #0000ff; font-weight: bold; background-color: #ffffcc; }
+span.class722{color: #808080; font-style: italic; background-color: #ffffd7; }
+span.class179{color: #0000ff; font-style: italic; font-weight: bold; background-color: #ffffcc; }
+span.class721{color: #808080; font-weight: bold; background-color: #ffffd7; }
+span.class720{color: #808080;  background-color: #ffffd7; }
+span.class723{color: #808080; font-style: italic; font-weight: bold; background-color: #ffffd7; }
+span.class144{color: #0000ff;  background-color: #ffffd7; }
+span.class145{color: #0000ff; font-weight: bold; background-color: #ffffd7; }
+span.class755{color: #808080; font-style: italic; font-weight: bold; background-color: #ffffcc; }
+span.class146{color: #0000ff; font-style: italic; background-color: #ffffd7; }
+span.class754{color: #808080; font-style: italic; background-color: #ffffcc; }
+span.class147{color: #0000ff; font-style: italic; font-weight: bold; background-color: #ffffd7; }
+span.class452{color: #ff0000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class454{color: #ff0000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class456{color: #ff0000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class458{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class554{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class552{color: #ff0000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class550{color: #ff0000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class548{color: #ff0000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1027{color: #808000; font-style: italic; font-weight: bold; }
+span.class538{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1026{color: #808000; font-style: italic; }
+span.class536{color: #ff0000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1025{color: #808000; font-weight: bold; }
+span.class534{color: #ff0000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1024{color: #808000;  }
+span.class532{color: #ff0000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class472{color: #ff0000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class470{color: #ff0000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class448{color: #ff0000;  }
+span.class828{color: #808080;  text-decoration: underline; ; background-color: #efefef; }
+span.class468{color: #ff0000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class449{color: #ff0000; font-weight: bold; }
+span.class450{color: #ff0000; font-style: italic; }
+span.class451{color: #ff0000; font-style: italic; font-weight: bold; }
+span.class255{color: #0000ff; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class254{color: #0000ff; font-style: italic; text-decoration: underline; ; background-color: #efefef; }
+span.class474{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class253{color: #0000ff; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class252{color: #0000ff;  text-decoration: underline; ; background-color: #efefef; }
+span.class442{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class831{color: #808080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class440{color: #ff0000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class438{color: #ff0000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class829{color: #808080; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class436{color: #ff0000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class830{color: #808080; font-style: italic; text-decoration: underline; ; background-color: #efefef; }
+span.class747{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class745{color: #808080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class743{color: #808080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class741{color: #808080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1131{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1129{color: #808000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1127{color: #808000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1125{color: #808000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class133{color: #000000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class135{color: #000000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class467{color: #ff0000; font-style: italic; font-weight: bold; background-color: #ffffcc; }
+span.class139{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class821{color: #808080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class466{color: #ff0000; font-style: italic; background-color: #ffffcc; }
+span.class137{color: #000000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class823{color: #808080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class972{color: #00ff00;  text-decoration: underline; ; background-color: #efefef; }
+span.class825{color: #808080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class827{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class975{color: #00ff00; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class435{color: #ff0000; font-style: italic; font-weight: bold; background-color: #ffffd7; }
+span.class973{color: #00ff00; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class974{color: #00ff00; font-style: italic; text-decoration: underline; ; background-color: #efefef; }
+span.class432{color: #ff0000;  background-color: #ffffd7; }
+span.class1041{color: #808000; font-weight: bold; background-color: #ffffcc; }
+span.class1040{color: #808000;  background-color: #ffffcc; }
+span.class434{color: #ff0000; font-style: italic; background-color: #ffffd7; }
+span.class433{color: #ff0000; font-weight: bold; background-color: #ffffd7; }
+span.class757{color: #808080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class759{color: #808080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1042{color: #808000; font-style: italic; background-color: #ffffcc; }
+span.class761{color: #808080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1043{color: #808000; font-style: italic; font-weight: bold; background-color: #ffffcc; }
+span.class763{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1009{color: #808000; font-weight: bold; background-color: #ffffd7; }
+span.class1529{color: #7a7a2b; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1010{color: #808000; font-style: italic; background-color: #ffffd7; }
+span.class1531{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class464{color: #ff0000;  background-color: #ffffcc; }
+span.class1525{color: #7a7a2b;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class465{color: #ff0000; font-weight: bold; background-color: #ffffcc; }
+span.class1008{color: #808000;  background-color: #ffffd7; }
+span.class1527{color: #7a7a2b; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class725{color: #808080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class727{color: #808080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class729{color: #808080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1011{color: #808000; font-style: italic; font-weight: bold; background-color: #ffffd7; }
+span.class731{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1316{color: #458383;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class62{color: #000000; font-style: italic; text-decoration: underline; ; background-color: #ffcccc; }
+span.class63{color: #000000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class60{color: #000000;  text-decoration: underline; ; background-color: #ffcccc; }
+span.class800{color: #808080;  background-color: #f6ebbc; }
+span.class61{color: #000000; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class801{color: #808080; font-weight: bold; background-color: #f6ebbc; }
+span.class226{color: #0000ff; font-style: italic; background-color: #f6ebbc; }
+span.class1320{color: #458383; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class225{color: #0000ff; font-weight: bold; background-color: #f6ebbc; }
+span.class1318{color: #458383; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class224{color: #0000ff;  background-color: #f6ebbc; }
+span.class1322{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class96{color: #000000;  background-color: #efefef; }
+span.class97{color: #000000; font-weight: bold; background-color: #efefef; }
+span.class98{color: #000000; font-style: italic; background-color: #efefef; }
+span.class99{color: #000000; font-style: italic; font-weight: bold; background-color: #efefef; }
+span.class1396{color: #458383;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1306{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1304{color: #458383; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1302{color: #458383; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1121{color: #808000; font-weight: bold; background-color: #edfced; }
+span.class1402{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1122{color: #808000; font-style: italic; background-color: #edfced; }
+span.class1123{color: #808000; font-style: italic; font-weight: bold; background-color: #edfced; }
+span.class1398{color: #458383; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1400{color: #458383; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class227{color: #0000ff; font-style: italic; font-weight: bold; background-color: #f6ebbc; }
+span.class1336{color: #458383; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1338{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1120{color: #808000;  background-color: #edfced; }
+span.class1332{color: #458383;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1334{color: #458383; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1300{color: #458383;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class803{color: #808080; font-style: italic; font-weight: bold; background-color: #f6ebbc; }
+span.class802{color: #808080; font-style: italic; background-color: #f6ebbc; }
+span.class604{color: #000080;  text-decoration: underline; ; }
+span.class1019{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1017{color: #808000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1015{color: #808000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1013{color: #808000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1480{color: #7a7a2b; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1482{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1476{color: #7a7a2b;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1478{color: #7a7a2b; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1051{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1049{color: #808000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class607{color: #000080; font-style: italic; font-weight: bold; text-decoration: underline; ; }
+span.class1047{color: #808000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class606{color: #000080; font-style: italic; text-decoration: underline; ; }
+span.class1045{color: #808000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class605{color: #000080; font-weight: bold; text-decoration: underline; ; }
+span.class1450{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1448{color: #7a7a2b; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1446{color: #7a7a2b; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class342{color: #660e7a; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1115{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class344{color: #660e7a; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1113{color: #808000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class346{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1111{color: #808000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1109{color: #808000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1444{color: #7a7a2b;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class340{color: #660e7a;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class590{color: #000080; font-style: italic; text-decoration: underline; ; background-color: #ffffd7; }
+span.class589{color: #000080; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class591{color: #000080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class620{color: #000080;  text-decoration: underline; ; background-color: #ffffcc; }
+span.class621{color: #000080; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class622{color: #000080; font-style: italic; text-decoration: underline; ; background-color: #ffffcc; }
+span.class623{color: #000080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1029{color: #808000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1395{color: #458383; font-style: italic; font-weight: bold; background-color: #efefef; }
+span.class1031{color: #808000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1394{color: #458383; font-style: italic; background-color: #efefef; }
+span.class1033{color: #808000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1393{color: #458383; font-weight: bold; background-color: #efefef; }
+span.class588{color: #000080;  text-decoration: underline; ; background-color: #ffffd7; }
+span.class1035{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1392{color: #458383;  background-color: #efefef; }
+span.class639{color: #000080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class638{color: #000080; font-style: italic; text-decoration: underline; ; background-color: #ffcccc; }
+span.class637{color: #000080; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class1089{color: #808000; font-weight: bold; background-color: #f6ebbc; }
+span.class636{color: #000080;  text-decoration: underline; ; background-color: #ffcccc; }
+span.class1088{color: #808000;  background-color: #f6ebbc; }
+span.class672{color: #000080;  background-color: #efefef; }
+span.class674{color: #000080; font-style: italic; background-color: #efefef; }
+span.class673{color: #000080; font-weight: bold; background-color: #efefef; }
+span.class675{color: #000080; font-style: italic; font-weight: bold; background-color: #efefef; }
+span.class834{color: #808080; font-style: italic; background-color: #edfced; }
+span.class833{color: #808080; font-weight: bold; background-color: #edfced; }
+span.class835{color: #808080; font-style: italic; font-weight: bold; background-color: #edfced; }
+span.class1354{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1352{color: #458383; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1350{color: #458383; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1348{color: #458383;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1090{color: #808000; font-style: italic; background-color: #f6ebbc; }
+span.class1091{color: #808000; font-style: italic; font-weight: bold; background-color: #f6ebbc; }
+span.class1419{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1415{color: #458383; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1417{color: #458383; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class832{color: #808080;  background-color: #edfced; }
+span.class1413{color: #458383;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class31{color: #000000; font-style: italic; font-weight: bold; text-decoration: underline; ; }
+span.class29{color: #000000; font-weight: bold; text-decoration: underline; ; }
+span.class30{color: #000000; font-style: italic; text-decoration: underline; ; }
+span.class28{color: #000000;  text-decoration: underline; ; }
+span.class999{color: #00ff00; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class997{color: #00ff00;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1518{color: #7a7a2b; font-style: italic; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class1517{color: #7a7a2b; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class1001{color: #00ff00; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1516{color: #7a7a2b;  text-decoration: underline; ; background-color: #e2ffe2; }
+span.class1003{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class400{color: #660e7a;  background-color: #edfced; }
+span.class401{color: #660e7a; font-weight: bold; background-color: #edfced; }
+span.class402{color: #660e7a; font-style: italic; background-color: #edfced; }
+span.class1519{color: #7a7a2b; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class403{color: #660e7a; font-style: italic; font-weight: bold; background-color: #edfced; }
+span.class13{color: #000000; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class14{color: #000000; font-style: italic; text-decoration: underline; ; background-color: #ffffd7; }
+span.class15{color: #000000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class12{color: #000000;  text-decoration: underline; ; background-color: #ffffd7; }
+span.class45{color: #000000; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class44{color: #000000;  text-decoration: underline; ; background-color: #ffffcc; }
+span.class47{color: #000000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class46{color: #000000; font-style: italic; text-decoration: underline; ; background-color: #ffffcc; }
+span.class242{color: #0000ff; font-style: italic; background-color: #efefef; }
+span.class243{color: #0000ff; font-style: italic; font-weight: bold; background-color: #efefef; }
+span.class240{color: #0000ff;  background-color: #efefef; }
+span.class241{color: #0000ff; font-weight: bold; background-color: #efefef; }
+span.class426{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class816{color: #808080;  background-color: #efefef; }
+span.class424{color: #660e7a; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class422{color: #660e7a; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class818{color: #808080; font-style: italic; background-color: #efefef; }
+span.class420{color: #660e7a;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class817{color: #808080; font-weight: bold; background-color: #efefef; }
+span.class819{color: #808080; font-style: italic; font-weight: bold; background-color: #efefef; }
+span.class783{color: #808080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class782{color: #808080; font-style: italic; text-decoration: underline; ; background-color: #ffcccc; }
+span.class81{color: #000000; font-weight: bold; background-color: #f6ebbc; }
+span.class781{color: #808080; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class80{color: #000000;  background-color: #f6ebbc; }
+span.class780{color: #808080;  text-decoration: underline; ; background-color: #ffcccc; }
+span.class82{color: #000000; font-style: italic; background-color: #f6ebbc; }
+span.class83{color: #000000; font-style: italic; font-weight: bold; background-color: #f6ebbc; }
+span.class688{color: #000080;  background-color: #edfced; }
+span.class963{color: #00ff00; font-style: italic; font-weight: bold; background-color: #efefef; }
+span.class690{color: #000080; font-style: italic; background-color: #edfced; }
+span.class962{color: #00ff00; font-style: italic; background-color: #efefef; }
+span.class689{color: #000080; font-weight: bold; background-color: #edfced; }
+span.class961{color: #00ff00; font-weight: bold; background-color: #efefef; }
+span.class960{color: #00ff00;  background-color: #efefef; }
+span.class691{color: #000080; font-style: italic; font-weight: bold; background-color: #edfced; }
+span.class1039{color: #808000; font-style: italic; font-weight: bold; text-decoration: underline; ; }
+span.class1037{color: #808000; font-weight: bold; text-decoration: underline; ; }
+span.class1038{color: #808000; font-style: italic; text-decoration: underline; ; }
+span.class1036{color: #808000;  text-decoration: underline; ; }
+span.class1020{color: #808000;  text-decoration: underline; ; background-color: #ffffd7; }
+span.class1053{color: #808000; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1052{color: #808000;  text-decoration: underline; ; background-color: #ffffcc; }
+span.class1055{color: #808000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1054{color: #808000; font-style: italic; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1021{color: #808000; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1022{color: #808000; font-style: italic; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1023{color: #808000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1104{color: #808000;  background-color: #efefef; }
+span.class1105{color: #808000; font-weight: bold; background-color: #efefef; }
+span.class1106{color: #808000; font-style: italic; background-color: #efefef; }
+span.class892{color: #00ff00;  text-decoration: underline; ; }
+span.class1107{color: #808000; font-style: italic; font-weight: bold; background-color: #efefef; }
+span.class895{color: #00ff00; font-style: italic; font-weight: bold; text-decoration: underline; ; }
+span.class894{color: #00ff00; font-style: italic; text-decoration: underline; ; }
+span.class893{color: #00ff00; font-weight: bold; text-decoration: underline; ; }
+span.class531{color: #ff0000; font-style: italic; font-weight: bold; background-color: #efefef; }
+span.class530{color: #ff0000; font-style: italic; background-color: #efefef; }
+span.class1070{color: #808000; font-style: italic; text-decoration: underline; ; background-color: #ffcccc; }
+span.class529{color: #ff0000; font-weight: bold; background-color: #efefef; }
+span.class1071{color: #808000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class656{color: #000080;  background-color: #f6ebbc; }
+span.class528{color: #ff0000;  background-color: #efefef; }
+span.class1068{color: #808000;  text-decoration: underline; ; background-color: #ffcccc; }
+span.class657{color: #000080; font-weight: bold; background-color: #f6ebbc; }
+span.class1069{color: #808000; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class878{color: #00ff00; font-style: italic; text-decoration: underline; ; background-color: #ffffd7; }
+span.class877{color: #00ff00; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class112{color: #000000;  background-color: #edfced; }
+span.class879{color: #00ff00; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1292{color: #008000;  text-decoration: underline; ; background-color: #f7e9e9; }
+span.class659{color: #000080; font-style: italic; font-weight: bold; background-color: #f6ebbc; }
+span.class1293{color: #008000; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class658{color: #000080; font-style: italic; background-color: #f6ebbc; }
+span.class1294{color: #008000; font-style: italic; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1295{color: #008000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class908{color: #00ff00;  text-decoration: underline; ; background-color: #ffffcc; }
+span.class909{color: #00ff00; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class910{color: #00ff00; font-style: italic; text-decoration: underline; ; background-color: #ffffcc; }
+span.class911{color: #00ff00; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class113{color: #000000; font-weight: bold; background-color: #edfced; }
+span.class114{color: #000000; font-style: italic; background-color: #edfced; }
+span.class115{color: #000000; font-style: italic; font-weight: bold; background-color: #edfced; }
+span.class876{color: #00ff00;  text-decoration: underline; ; background-color: #ffffd7; }
+span.class748{color: #808080;  text-decoration: underline; ; }
+span.class174{color: #0000ff; font-style: italic; text-decoration: underline; ; }
+span.class175{color: #0000ff; font-style: italic; font-weight: bold; text-decoration: underline; ; }
+span.class172{color: #0000ff;  text-decoration: underline; ; }
+span.class173{color: #0000ff; font-weight: bold; text-decoration: underline; ; }
+span.class751{color: #808080; font-style: italic; font-weight: bold; text-decoration: underline; ; }
+span.class750{color: #808080; font-style: italic; text-decoration: underline; ; }
+span.class749{color: #808080; font-weight: bold; text-decoration: underline; ; }
+span.class764{color: #808080;  text-decoration: underline; ; background-color: #ffffcc; }
+span.class157{color: #0000ff; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class765{color: #808080; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class156{color: #0000ff;  text-decoration: underline; ; background-color: #ffffd7; }
+span.class766{color: #808080; font-style: italic; text-decoration: underline; ; background-color: #ffffcc; }
+span.class767{color: #808080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class191{color: #0000ff; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class190{color: #0000ff; font-style: italic; text-decoration: underline; ; background-color: #ffffcc; }
+span.class732{color: #808080;  text-decoration: underline; ; background-color: #ffffd7; }
+span.class189{color: #0000ff; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class188{color: #0000ff;  text-decoration: underline; ; background-color: #ffffcc; }
+span.class1279{color: #008000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class734{color: #808080; font-style: italic; text-decoration: underline; ; background-color: #ffffd7; }
+span.class733{color: #808080; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class735{color: #808080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1276{color: #008000;  text-decoration: underline; ; background-color: #edfced; }
+span.class158{color: #0000ff; font-style: italic; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1277{color: #008000; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class159{color: #0000ff; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1278{color: #008000; font-style: italic; text-decoration: underline; ; background-color: #edfced; }
+span.class1044{color: #808000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1048{color: #808000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1046{color: #808000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class64{color: #000000;  background-color: #e2ffe2; }
+span.class65{color: #000000; font-weight: bold; background-color: #e2ffe2; }
+span.class1050{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class66{color: #000000; font-style: italic; background-color: #e2ffe2; }
+span.class67{color: #000000; font-style: italic; font-weight: bold; background-color: #e2ffe2; }
+span.class1014{color: #808000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1012{color: #808000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1018{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1016{color: #808000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1344{color: #458383;  background-color: #ffcccc; }
+span.class1345{color: #458383; font-weight: bold; background-color: #ffcccc; }
+span.class1346{color: #458383; font-style: italic; background-color: #ffcccc; }
+span.class1110{color: #808000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1347{color: #458383; font-style: italic; font-weight: bold; background-color: #ffcccc; }
+span.class1108{color: #808000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1114{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1112{color: #808000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1032{color: #808000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1034{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1028{color: #808000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1030{color: #808000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class519{color: #ff0000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1238{color: #008000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class521{color: #ff0000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1240{color: #008000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class517{color: #ff0000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1236{color: #008000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class523{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1242{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class811{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class805{color: #808080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class807{color: #808080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class809{color: #808080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class641{color: #000080; font-weight: bold; background-color: #e2ffe2; }
+span.class640{color: #000080;  background-color: #e2ffe2; }
+span.class643{color: #000080; font-style: italic; font-weight: bold; background-color: #e2ffe2; }
+span.class642{color: #000080; font-style: italic; background-color: #e2ffe2; }
+span.class1435{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1433{color: #458383; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1431{color: #458383; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1429{color: #458383;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1494{color: #7a7a2b; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1492{color: #7a7a2b;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1498{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1496{color: #7a7a2b; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class584{color: #000080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class586{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class580{color: #000080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class582{color: #000080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class618{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class614{color: #000080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class616{color: #000080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class612{color: #000080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1173{color: #008000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class208{color: #0000ff;  background-color: #e2ffe2; }
+span.class1175{color: #008000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1177{color: #008000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1179{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class211{color: #0000ff; font-style: italic; font-weight: bold; background-color: #e2ffe2; }
+span.class209{color: #0000ff; font-weight: bold; background-color: #e2ffe2; }
+span.class210{color: #0000ff; font-style: italic; background-color: #e2ffe2; }
+span.class680{color: #000080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class391{color: #660e7a; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1372{color: #458383;  text-decoration: underline; ; background-color: #e2ffe2; }
+span.class682{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class389{color: #660e7a;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class676{color: #000080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1374{color: #458383; font-style: italic; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class678{color: #000080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1373{color: #458383; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class785{color: #808080; font-weight: bold; background-color: #e2ffe2; }
+span.class784{color: #808080;  background-color: #e2ffe2; }
+span.class787{color: #808080; font-style: italic; font-weight: bold; background-color: #e2ffe2; }
+span.class786{color: #808080; font-style: italic; background-color: #e2ffe2; }
+span.class1195{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class393{color: #660e7a; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class927{color: #00ff00; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class1193{color: #008000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class395{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class926{color: #00ff00; font-style: italic; text-decoration: underline; ; background-color: #ffcccc; }
+span.class1191{color: #008000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class925{color: #00ff00; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class1189{color: #008000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1375{color: #458383; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class924{color: #00ff00;  text-decoration: underline; ; background-color: #ffcccc; }
+span.class1163{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1161{color: #008000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1159{color: #008000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1157{color: #008000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1259{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1257{color: #008000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1255{color: #008000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1253{color: #008000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class598{color: #000080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class596{color: #000080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class602{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class600{color: #000080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class186{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class886{color: #00ff00; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class184{color: #0000ff; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class884{color: #00ff00;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class182{color: #0000ff; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class890{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class180{color: #0000ff;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class888{color: #00ff00; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class154{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class152{color: #0000ff; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class150{color: #0000ff; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class148{color: #0000ff;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class988{color: #00ff00;  text-decoration: underline; ; background-color: #edfced; }
+span.class250{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class248{color: #0000ff; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class990{color: #00ff00; font-style: italic; text-decoration: underline; ; background-color: #edfced; }
+span.class246{color: #0000ff; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class989{color: #00ff00; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class244{color: #0000ff;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1072{color: #808000;  background-color: #e2ffe2; }
+span.class1073{color: #808000; font-weight: bold; background-color: #e2ffe2; }
+span.class1074{color: #808000; font-style: italic; background-color: #e2ffe2; }
+span.class1075{color: #808000; font-style: italic; font-weight: bold; background-color: #e2ffe2; }
+span.class991{color: #00ff00; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class968{color: #00ff00; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class970{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class964{color: #00ff00;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class966{color: #00ff00; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class166{color: #0000ff; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class902{color: #00ff00; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class168{color: #0000ff; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class904{color: #00ff00; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class170{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class900{color: #00ff00;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class906{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class164{color: #0000ff;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class872{color: #00ff00; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class874{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class868{color: #00ff00;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class870{color: #00ff00; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class507{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1226{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class503{color: #ff0000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1222{color: #008000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class505{color: #ff0000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1224{color: #008000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1460{color: #7a7a2b;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class501{color: #ff0000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1220{color: #008000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class789{color: #808080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1464{color: #7a7a2b; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1462{color: #7a7a2b; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1466{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class791{color: #808080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class793{color: #808080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class795{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1577{color: #7a7a2b; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1575{color: #7a7a2b; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1573{color: #7a7a2b;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1504{color: #7a7a2b;  background-color: #e2ffe2; }
+span.class1579{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1283{color: #008000; font-style: italic; font-weight: bold; background-color: #f7e9e9; }
+span.class713{color: #000080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1282{color: #008000; font-style: italic; background-color: #f7e9e9; }
+span.class715{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1281{color: #008000; font-weight: bold; background-color: #f7e9e9; }
+span.class1280{color: #008000;  background-color: #f7e9e9; }
+span.class1505{color: #7a7a2b; font-weight: bold; background-color: #e2ffe2; }
+span.class1509{color: #7a7a2b;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1506{color: #7a7a2b; font-style: italic; background-color: #e2ffe2; }
+span.class1511{color: #7a7a2b; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1507{color: #7a7a2b; font-style: italic; font-weight: bold; background-color: #e2ffe2; }
+span.class1513{color: #7a7a2b; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1515{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class399{color: #660e7a; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class398{color: #660e7a; font-style: italic; text-decoration: underline; ; background-color: #efefef; }
+span.class397{color: #660e7a; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class396{color: #660e7a;  text-decoration: underline; ; background-color: #efefef; }
+span.class711{color: #000080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class709{color: #000080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1364{color: #458383;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1366{color: #458383; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1368{color: #458383; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1370{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1083{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1081{color: #808000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1079{color: #808000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1077{color: #808000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class203{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class201{color: #0000ff; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class199{color: #0000ff; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class197{color: #0000ff;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class919{color: #00ff00; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class921{color: #00ff00; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class917{color: #00ff00;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class923{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class553{color: #ff0000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1272{color: #008000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class555{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1274{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class549{color: #ff0000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1268{color: #008000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class551{color: #ff0000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1270{color: #008000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class24{color: #000000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class26{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class20{color: #000000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class22{color: #000000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class283{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class102{color: #000000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class100{color: #000000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class277{color: #0000ff;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class106{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class279{color: #0000ff; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class104{color: #000000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class281{color: #0000ff; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class813{color: #808080; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class812{color: #808080;  text-decoration: underline; ; background-color: #f6ebbc; }
+span.class815{color: #808080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class814{color: #808080; font-style: italic; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class36{color: #000000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class40{color: #000000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class38{color: #000000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class42{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1275{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1273{color: #008000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class6{color: #000000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1271{color: #008000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class4{color: #000000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1269{color: #008000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class10{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class8{color: #000000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class487{color: #ff0000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1206{color: #008000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class489{color: #ff0000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1208{color: #008000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class485{color: #ff0000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1204{color: #008000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class491{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1210{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class955{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class951{color: #00ff00; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class953{color: #00ff00; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class949{color: #00ff00;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class635{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class631{color: #000080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class633{color: #000080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class629{color: #000080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class325{color: #660e7a;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class329{color: #660e7a; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class327{color: #660e7a; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class331{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class556{color: #ff0000;  text-decoration: underline; ; background-color: #edfced; }
+span.class558{color: #ff0000; font-style: italic; text-decoration: underline; ; background-color: #edfced; }
+span.class557{color: #ff0000; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class559{color: #ff0000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class669{color: #000080; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class668{color: #000080;  text-decoration: underline; ; background-color: #f6ebbc; }
+span.class671{color: #000080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class670{color: #000080; font-style: italic; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class572{color: #ff0000;  text-decoration: underline; ; background-color: #f7e9e9; }
+span.class59{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class574{color: #ff0000; font-style: italic; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class573{color: #ff0000; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class53{color: #000000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class315{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class575{color: #ff0000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class313{color: #660e7a; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class57{color: #000000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class55{color: #000000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class309{color: #660e7a;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class311{color: #660e7a; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class293{color: #660e7a;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class295{color: #660e7a; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class297{color: #660e7a; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class299{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class742{color: #808080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class740{color: #808080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class746{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class744{color: #808080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class824{color: #808080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class826{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class820{color: #808080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class822{color: #808080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class728{color: #808080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class730{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class724{color: #808080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class726{color: #808080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class236{color: #0000ff;  text-decoration: underline; ; background-color: #f6ebbc; }
+span.class237{color: #0000ff; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class238{color: #0000ff; font-style: italic; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class239{color: #0000ff; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class762{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class758{color: #808080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class760{color: #808080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class756{color: #808080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class933{color: #00ff00;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1097{color: #808000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1095{color: #808000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1093{color: #808000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class939{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class937{color: #00ff00; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class935{color: #00ff00; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1099{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1379{color: #458383; font-style: italic; font-weight: bold; background-color: #f6ebbc; }
+span.class1376{color: #458383;  background-color: #f6ebbc; }
+span.class1378{color: #458383; font-style: italic; background-color: #f6ebbc; }
+span.class1377{color: #458383; font-weight: bold; background-color: #f6ebbc; }
+span.class1362{color: #458383; font-style: italic; background-color: #e2ffe2; }
+span.class1361{color: #458383; font-weight: bold; background-color: #e2ffe2; }
+span.class1363{color: #458383; font-style: italic; font-weight: bold; background-color: #e2ffe2; }
+span.class1403{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1399{color: #458383; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1401{color: #458383; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1572{color: #7a7a2b;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1397{color: #458383;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1576{color: #7a7a2b; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1425{color: #458383; font-weight: bold; background-color: #f7e9e9; }
+span.class1574{color: #7a7a2b; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1424{color: #458383;  background-color: #f7e9e9; }
+span.class1578{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1307{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1305{color: #458383; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1360{color: #458383;  background-color: #e2ffe2; }
+span.class1303{color: #458383; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1301{color: #458383;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1426{color: #458383; font-style: italic; background-color: #f7e9e9; }
+span.class1427{color: #458383; font-style: italic; font-weight: bold; background-color: #f7e9e9; }
+span.class1337{color: #458383; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1339{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1333{color: #458383;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1335{color: #458383; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class75{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class73{color: #000000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class71{color: #000000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class406{color: #660e7a; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1321{color: #458383; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class404{color: #660e7a;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1319{color: #458383; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class410{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class408{color: #660e7a; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1323{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class768{color: #808080;  background-color: #ffcccc; }
+span.class1317{color: #458383;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class769{color: #808080; font-weight: bold; background-color: #ffcccc; }
+span.class69{color: #000000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class796{color: #808080;  text-decoration: underline; ; background-color: #e2ffe2; }
+span.class797{color: #808080; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class771{color: #808080; font-style: italic; font-weight: bold; background-color: #ffcccc; }
+span.class770{color: #808080; font-style: italic; background-color: #ffcccc; }
+span.class798{color: #808080; font-style: italic; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class799{color: #808080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class220{color: #0000ff;  text-decoration: underline; ; background-color: #e2ffe2; }
+span.class222{color: #0000ff; font-style: italic; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class221{color: #0000ff; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class223{color: #0000ff; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class234{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class998{color: #00ff00; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class232{color: #0000ff; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class996{color: #00ff00;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class230{color: #0000ff; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class228{color: #0000ff;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1380{color: #458383;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1382{color: #458383; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1384{color: #458383; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1386{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class855{color: #808080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class853{color: #808080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class516{color: #ff0000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class520{color: #ff0000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class518{color: #ff0000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class522{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1523{color: #7a7a2b; font-style: italic; font-weight: bold; background-color: #f6ebbc; }
+span.class1522{color: #7a7a2b; font-style: italic; background-color: #f6ebbc; }
+span.class1521{color: #7a7a2b; font-weight: bold; background-color: #f6ebbc; }
+span.class1520{color: #7a7a2b;  background-color: #f6ebbc; }
+span.class857{color: #808080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class859{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1000{color: #00ff00; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1002{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1355{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1353{color: #458383; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1351{color: #458383; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1349{color: #458383;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1582{color: #7a7a2b; font-style: italic; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1583{color: #7a7a2b; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1580{color: #7a7a2b;  text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1581{color: #7a7a2b; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1414{color: #458383; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1416{color: #458383; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1412{color: #458383;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1418{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1057{color: #808000; font-weight: bold; background-color: #ffcccc; }
+span.class1056{color: #808000;  background-color: #ffcccc; }
+span.class483{color: #ff0000; font-style: italic; font-weight: bold; background-color: #ffcccc; }
+span.class482{color: #ff0000; font-style: italic; background-color: #ffcccc; }
+span.class480{color: #ff0000;  background-color: #ffcccc; }
+span.class481{color: #ff0000; font-weight: bold; background-color: #ffcccc; }
+span.class1085{color: #808000; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class1084{color: #808000;  text-decoration: underline; ; background-color: #e2ffe2; }
+span.class779{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class775{color: #808080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1058{color: #808000; font-style: italic; background-color: #ffcccc; }
+span.class777{color: #808080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1059{color: #808000; font-style: italic; font-weight: bold; background-color: #ffcccc; }
+span.class1087{color: #808000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class773{color: #808080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1086{color: #808000; font-style: italic; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class666{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1411{color: #458383; font-style: italic; font-weight: bold; background-color: #edfced; }
+span.class1410{color: #458383; font-style: italic; background-color: #edfced; }
+span.class662{color: #000080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1409{color: #458383; font-weight: bold; background-color: #edfced; }
+span.class664{color: #000080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1408{color: #458383;  background-color: #edfced; }
+span.class660{color: #000080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1285{color: #008000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1534{color: #7a7a2b; font-style: italic; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1287{color: #008000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1533{color: #7a7a2b; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1535{color: #7a7a2b; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1103{color: #808000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1102{color: #808000; font-style: italic; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1101{color: #808000; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1100{color: #808000;  text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1291{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1289{color: #008000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1532{color: #7a7a2b;  text-decoration: underline; ; background-color: #f6ebbc; }
+span.class524{color: #ff0000;  text-decoration: underline; ; background-color: #f6ebbc; }
+span.class525{color: #ff0000; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class526{color: #ff0000; font-style: italic; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class527{color: #ff0000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class388{color: #660e7a;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class390{color: #660e7a; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1459{color: #7a7a2b; font-style: italic; font-weight: bold; }
+span.class1458{color: #7a7a2b; font-style: italic; }
+span.class1457{color: #7a7a2b; font-weight: bold; }
+span.class1456{color: #7a7a2b;  }
+span.class351{color: #660e7a; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class350{color: #660e7a; font-style: italic; text-decoration: underline; ; background-color: #ffcccc; }
+span.class1067{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1488{color: #7a7a2b;  background-color: #ffcccc; }
+span.class1489{color: #7a7a2b; font-weight: bold; background-color: #ffcccc; }
+span.class1490{color: #7a7a2b; font-style: italic; background-color: #ffcccc; }
+span.class1061{color: #808000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1491{color: #7a7a2b; font-style: italic; font-weight: bold; background-color: #ffcccc; }
+span.class1065{color: #808000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1063{color: #808000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class77{color: #000000; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class76{color: #000000;  text-decoration: underline; ; background-color: #e2ffe2; }
+span.class1405{color: #458383; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class1404{color: #458383;  text-decoration: underline; ; background-color: #efefef; }
+span.class50{color: #000000; font-style: italic; background-color: #ffcccc; }
+span.class1407{color: #458383; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class51{color: #000000; font-style: italic; font-weight: bold; background-color: #ffcccc; }
+span.class1406{color: #458383; font-style: italic; text-decoration: underline; ; background-color: #efefef; }
+span.class79{color: #000000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class78{color: #000000; font-style: italic; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class49{color: #000000; font-weight: bold; background-color: #ffcccc; }
+span.class48{color: #000000;  background-color: #ffcccc; }
+span.class1171{color: #008000; font-style: italic; font-weight: bold; }
+span.class1170{color: #008000; font-style: italic; }
+span.class1169{color: #008000; font-weight: bold; }
+span.class394{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1168{color: #008000;  }
+span.class392{color: #660e7a; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1310{color: #458383; font-style: italic; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1311{color: #458383; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class650{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class646{color: #000080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1308{color: #458383;  text-decoration: underline; ; background-color: #ffffd7; }
+span.class648{color: #000080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1309{color: #458383; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class644{color: #000080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1340{color: #458383;  text-decoration: underline; ; background-color: #ffffcc; }
+span.class1342{color: #458383; font-style: italic; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1341{color: #458383; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1343{color: #458383; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1153{color: #008000; font-weight: bold; background-color: #ffffd7; }
+span.class1154{color: #008000; font-style: italic; background-color: #ffffd7; }
+span.class1152{color: #008000;  background-color: #ffffd7; }
+span.class1155{color: #008000; font-style: italic; font-weight: bold; background-color: #ffffd7; }
+span.class1186{color: #008000; font-style: italic; background-color: #ffffcc; }
+span.class1326{color: #458383; font-style: italic; text-decoration: underline; ; }
+span.class1187{color: #008000; font-style: italic; font-weight: bold; background-color: #ffffcc; }
+span.class1327{color: #458383; font-style: italic; font-weight: bold; text-decoration: underline; ; }
+span.class1324{color: #458383;  text-decoration: underline; ; }
+span.class1325{color: #458383; font-weight: bold; text-decoration: underline; ; }
+span.class1185{color: #008000; font-weight: bold; background-color: #ffffcc; }
+span.class1184{color: #008000;  background-color: #ffffcc; }
+span.class95{color: #000000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class94{color: #000000; font-style: italic; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class93{color: #000000; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class92{color: #000000;  text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1563{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1557{color: #7a7a2b;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1559{color: #7a7a2b; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1554{color: #7a7a2b; font-style: italic; background-color: #edfced; }
+span.class1561{color: #7a7a2b; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1555{color: #7a7a2b; font-style: italic; font-weight: bold; background-color: #edfced; }
+span.class1552{color: #7a7a2b;  background-color: #edfced; }
+span.class1553{color: #7a7a2b; font-weight: bold; background-color: #edfced; }
+span.class652{color: #000080;  text-decoration: underline; ; background-color: #e2ffe2; }
+span.class1260{color: #008000;  text-decoration: underline; ; background-color: #efefef; }
+span.class653{color: #000080; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class627{color: #000080; font-style: italic; font-weight: bold; background-color: #ffcccc; }
+span.class626{color: #000080; font-style: italic; background-color: #ffcccc; }
+span.class654{color: #000080; font-style: italic; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class655{color: #000080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class89{color: #000000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class87{color: #000000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class85{color: #000000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1263{color: #008000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class1262{color: #008000; font-style: italic; text-decoration: underline; ; background-color: #efefef; }
+span.class91{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1261{color: #008000; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class624{color: #000080;  background-color: #ffcccc; }
+span.class625{color: #000080; font-weight: bold; background-color: #ffcccc; }
+span.class214{color: #0000ff; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class270{color: #0000ff; font-style: italic; text-decoration: underline; ; background-color: #edfced; }
+span.class212{color: #0000ff;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class271{color: #0000ff; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class268{color: #0000ff;  text-decoration: underline; ; background-color: #edfced; }
+span.class269{color: #0000ff; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class1146{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1144{color: #808000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class928{color: #00ff00;  background-color: #e2ffe2; }
+span.class929{color: #00ff00; font-weight: bold; background-color: #e2ffe2; }
+span.class218{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class930{color: #00ff00; font-style: italic; background-color: #e2ffe2; }
+span.class216{color: #0000ff; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class931{color: #00ff00; font-style: italic; font-weight: bold; background-color: #e2ffe2; }
+span.class500{color: #ff0000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class504{color: #ff0000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class502{color: #ff0000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class506{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1475{color: #7a7a2b; font-style: italic; font-weight: bold; background-color: #ffffcc; }
+span.class1474{color: #7a7a2b; font-style: italic; background-color: #ffffcc; }
+span.class1473{color: #7a7a2b; font-weight: bold; background-color: #ffffcc; }
+span.class1472{color: #7a7a2b;  background-color: #ffffcc; }
+span.class1440{color: #7a7a2b;  background-color: #ffffd7; }
+span.class1441{color: #7a7a2b; font-weight: bold; background-color: #ffffd7; }
+span.class349{color: #660e7a; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class1442{color: #7a7a2b; font-style: italic; background-color: #ffffd7; }
+span.class348{color: #660e7a;  text-decoration: underline; ; background-color: #ffcccc; }
+span.class1443{color: #7a7a2b; font-style: italic; font-weight: bold; background-color: #ffffd7; }
+span.class497{color: #ff0000; font-weight: bold; background-color: #e2ffe2; }
+span.class496{color: #ff0000;  background-color: #e2ffe2; }
+span.class499{color: #ff0000; font-style: italic; font-weight: bold; background-color: #e2ffe2; }
+span.class498{color: #ff0000; font-style: italic; background-color: #e2ffe2; }
+span.class1140{color: #808000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1142{color: #808000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class667{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class661{color: #000080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class663{color: #000080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1233{color: #008000; font-weight: bold; background-color: #f6ebbc; }
+span.class665{color: #000080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1232{color: #008000;  background-color: #f6ebbc; }
+span.class307{color: #660e7a; font-style: italic; font-weight: bold; }
+span.class306{color: #660e7a; font-style: italic; }
+span.class305{color: #660e7a; font-weight: bold; }
+span.class304{color: #660e7a;  }
+span.class716{color: #000080;  text-decoration: underline; ; background-color: #f7e9e9; }
+span.class718{color: #000080; font-style: italic; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1234{color: #008000; font-style: italic; background-color: #f6ebbc; }
+span.class717{color: #000080; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1235{color: #008000; font-style: italic; font-weight: bold; background-color: #f6ebbc; }
+span.class338{color: #660e7a; font-style: italic; background-color: #ffcccc; }
+span.class719{color: #000080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class339{color: #660e7a; font-style: italic; font-weight: bold; background-color: #ffcccc; }
+span.class336{color: #660e7a;  background-color: #ffcccc; }
+span.class915{color: #00ff00; font-style: italic; font-weight: bold; background-color: #ffcccc; }
+span.class337{color: #660e7a; font-weight: bold; background-color: #ffcccc; }
+span.class914{color: #00ff00; font-style: italic; background-color: #ffcccc; }
+span.class912{color: #00ff00;  background-color: #ffcccc; }
+span.class913{color: #00ff00; font-weight: bold; background-color: #ffcccc; }
+span.class544{color: #ff0000;  background-color: #edfced; }
+span.class320{color: #660e7a;  background-color: #ffffcc; }
+span.class321{color: #660e7a; font-weight: bold; background-color: #ffffcc; }
+span.class322{color: #660e7a; font-style: italic; background-color: #ffffcc; }
+span.class323{color: #660e7a; font-style: italic; font-weight: bold; background-color: #ffffcc; }
+span.class703{color: #000080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class288{color: #660e7a;  background-color: #ffffd7; }
+span.class992{color: #00ff00;  background-color: #f7e9e9; }
+span.class290{color: #660e7a; font-style: italic; background-color: #ffffd7; }
+span.class993{color: #00ff00; font-weight: bold; background-color: #f7e9e9; }
+span.class289{color: #660e7a; font-weight: bold; background-color: #ffffd7; }
+span.class994{color: #00ff00; font-style: italic; background-color: #f7e9e9; }
+span.class995{color: #00ff00; font-style: italic; font-weight: bold; background-color: #f7e9e9; }
+span.class291{color: #660e7a; font-style: italic; font-weight: bold; background-color: #ffffd7; }
+span.class956{color: #00ff00;  text-decoration: underline; ; background-color: #f6ebbc; }
+span.class957{color: #00ff00; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class958{color: #00ff00; font-style: italic; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class959{color: #00ff00; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class700{color: #000080;  text-decoration: underline; ; background-color: #edfced; }
+span.class547{color: #ff0000; font-style: italic; font-weight: bold; background-color: #edfced; }
+span.class702{color: #000080; font-style: italic; text-decoration: underline; ; background-color: #edfced; }
+span.class546{color: #ff0000; font-style: italic; background-color: #edfced; }
+span.class701{color: #000080; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class545{color: #ff0000; font-weight: bold; background-color: #edfced; }
+span.class355{color: #660e7a; font-style: italic; font-weight: bold; background-color: #e2ffe2; }
+span.class354{color: #660e7a; font-style: italic; background-color: #e2ffe2; }
+span.class231{color: #0000ff; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class229{color: #0000ff;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class235{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class233{color: #0000ff; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class140{color: #000000;  text-decoration: underline; ; background-color: #f7e9e9; }
+span.class141{color: #000000; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class142{color: #000000; font-style: italic; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class143{color: #000000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1264{color: #008000;  background-color: #edfced; }
+span.class1265{color: #008000; font-weight: bold; background-color: #edfced; }
+span.class1266{color: #008000; font-style: italic; background-color: #edfced; }
+span.class1267{color: #008000; font-style: italic; font-weight: bold; background-color: #edfced; }
+span.class484{color: #ff0000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class488{color: #ff0000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class486{color: #ff0000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1499{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class490{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1497{color: #7a7a2b; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1495{color: #7a7a2b; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1493{color: #7a7a2b;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class124{color: #000000;  text-decoration: underline; ; background-color: #edfced; }
+span.class125{color: #000000; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class68{color: #000000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class126{color: #000000; font-style: italic; text-decoration: underline; ; background-color: #edfced; }
+span.class127{color: #000000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class72{color: #000000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class376{color: #660e7a; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class70{color: #000000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class374{color: #660e7a; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class352{color: #660e7a;  background-color: #e2ffe2; }
+span.class74{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class353{color: #660e7a; font-weight: bold; background-color: #e2ffe2; }
+span.class378{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class372{color: #660e7a;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class384{color: #660e7a;  background-color: #efefef; }
+span.class385{color: #660e7a; font-weight: bold; background-color: #efefef; }
+span.class386{color: #660e7a; font-style: italic; background-color: #efefef; }
+span.class1391{color: #458383; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class387{color: #660e7a; font-style: italic; font-weight: bold; background-color: #efefef; }
+span.class1390{color: #458383; font-style: italic; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1389{color: #458383; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1388{color: #458383;  text-decoration: underline; ; background-color: #f6ebbc; }
+span.class428{color: #660e7a;  text-decoration: underline; ; background-color: #f7e9e9; }
+span.class431{color: #660e7a; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1214{color: #008000; font-style: italic; text-decoration: underline; ; background-color: #ffcccc; }
+span.class1215{color: #008000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class429{color: #660e7a; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1212{color: #008000;  text-decoration: underline; ; background-color: #ffcccc; }
+span.class430{color: #660e7a; font-style: italic; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1213{color: #008000; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class324{color: #660e7a;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class219{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class330{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class217{color: #0000ff; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class326{color: #660e7a; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class328{color: #660e7a; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1248{color: #008000;  background-color: #efefef; }
+span.class215{color: #0000ff; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1249{color: #008000; font-weight: bold; background-color: #efefef; }
+span.class213{color: #0000ff;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1250{color: #008000; font-style: italic; background-color: #efefef; }
+span.class1251{color: #008000; font-style: italic; font-weight: bold; background-color: #efefef; }
+span.class362{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class356{color: #660e7a;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class360{color: #660e7a; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class358{color: #660e7a; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1148{color: #808000;  text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1149{color: #808000; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1150{color: #808000; font-style: italic; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1151{color: #808000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class310{color: #660e7a; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class308{color: #660e7a;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class132{color: #000000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class134{color: #000000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class312{color: #660e7a; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class314{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class298{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class296{color: #660e7a; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1132{color: #808000;  text-decoration: underline; ; background-color: #edfced; }
+span.class1133{color: #808000; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class1134{color: #808000; font-style: italic; text-decoration: underline; ; background-color: #edfced; }
+span.class1135{color: #808000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class294{color: #660e7a; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class292{color: #660e7a;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class84{color: #000000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class88{color: #000000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class86{color: #000000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class90{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class138{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class136{color: #000000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1537{color: #7a7a2b; font-weight: bold; background-color: #efefef; }
+span.class1536{color: #7a7a2b;  background-color: #efefef; }
+span.class1539{color: #7a7a2b; font-style: italic; font-weight: bold; background-color: #efefef; }
+span.class1538{color: #7a7a2b; font-style: italic; background-color: #efefef; }
+span.class645{color: #000080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class647{color: #000080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class649{color: #000080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class651{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class286{color: #0000ff; font-style: italic; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class287{color: #0000ff; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class284{color: #0000ff;  text-decoration: underline; ; background-color: #f7e9e9; }
+span.class285{color: #0000ff; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class860{color: #808080;  text-decoration: underline; ; background-color: #f7e9e9; }
+span.class862{color: #808080; font-style: italic; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class861{color: #808080; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class863{color: #808080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1180{color: #008000;  text-decoration: underline; ; }
+span.class381{color: #660e7a; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class380{color: #660e7a;  text-decoration: underline; ; background-color: #f6ebbc; }
+span.class1183{color: #008000; font-style: italic; font-weight: bold; text-decoration: underline; ; }
+span.class1181{color: #008000; font-weight: bold; text-decoration: underline; ; }
+span.class1182{color: #008000; font-style: italic; text-decoration: underline; ; }
+span.class1461{color: #7a7a2b;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1528{color: #7a7a2b; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1530{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1524{color: #7a7a2b;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1526{color: #7a7a2b; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class382{color: #660e7a; font-style: italic; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class383{color: #660e7a; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f6ebbc; }
+span.class847{color: #808080; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class1165{color: #008000; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1166{color: #008000; font-style: italic; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1167{color: #008000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class844{color: #808080;  text-decoration: underline; ; background-color: #edfced; }
+span.class846{color: #808080; font-style: italic; text-decoration: underline; ; background-color: #edfced; }
+span.class845{color: #808080; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class1197{color: #008000; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1196{color: #008000;  text-decoration: underline; ; background-color: #ffffcc; }
+span.class1467{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1199{color: #008000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1465{color: #7a7a2b; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1198{color: #008000; font-style: italic; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1463{color: #7a7a2b; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1164{color: #008000;  text-decoration: underline; ; background-color: #ffffd7; }
+span.class282{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class21{color: #000000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class23{color: #000000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class25{color: #000000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class27{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class11{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class9{color: #000000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class7{color: #000000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class5{color: #000000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class43{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class41{color: #000000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class39{color: #000000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class37{color: #000000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1508{color: #7a7a2b;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1510{color: #7a7a2b; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1512{color: #7a7a2b; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1514{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class107{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class278{color: #0000ff; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class105{color: #000000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class280{color: #0000ff; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class103{color: #000000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class101{color: #000000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class276{color: #0000ff;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class942{color: #00ff00; font-style: italic; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class628{color: #000080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class943{color: #00ff00; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class630{color: #000080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class632{color: #000080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class634{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class564{color: #ff0000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class566{color: #ff0000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class940{color: #00ff00;  text-decoration: underline; ; background-color: #e2ffe2; }
+span.class941{color: #00ff00; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class980{color: #00ff00;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class982{color: #00ff00; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1477{color: #7a7a2b;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1479{color: #7a7a2b; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class984{color: #00ff00; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1481{color: #7a7a2b; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class986{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1483{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class948{color: #00ff00;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class950{color: #00ff00; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class952{color: #00ff00; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class954{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1445{color: #7a7a2b;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1449{color: #7a7a2b; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1447{color: #7a7a2b; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1451{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1076{color: #808000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1082{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1080{color: #808000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1078{color: #808000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class367{color: #660e7a; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class366{color: #660e7a; font-style: italic; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class365{color: #660e7a; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class364{color: #660e7a;  text-decoration: underline; ; background-color: #e2ffe2; }
+span.class570{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class568{color: #ff0000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class266{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class264{color: #0000ff; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class262{color: #0000ff; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class260{color: #0000ff;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1500{color: #7a7a2b;  text-decoration: underline; ; background-color: #ffcccc; }
+span.class712{color: #000080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class714{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1503{color: #7a7a2b; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class1502{color: #7a7a2b; font-style: italic; text-decoration: underline; ; background-color: #ffcccc; }
+span.class1501{color: #7a7a2b; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class710{color: #000080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class708{color: #000080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class198{color: #0000ff; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class196{color: #0000ff;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class202{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class200{color: #0000ff; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class411{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class409{color: #660e7a; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class696{color: #000080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class407{color: #660e7a; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class698{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class405{color: #660e7a;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class692{color: #000080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class694{color: #000080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class922{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class916{color: #00ff00;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class918{color: #00ff00; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class920{color: #00ff00; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1216{color: #008000;  background-color: #e2ffe2; }
+span.class1217{color: #008000; font-weight: bold; background-color: #e2ffe2; }
+span.class1218{color: #008000; font-style: italic; background-color: #e2ffe2; }
+span.class1219{color: #008000; font-style: italic; font-weight: bold; background-color: #e2ffe2; }
+span.class543{color: #ff0000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class541{color: #ff0000; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class542{color: #ff0000; font-style: italic; text-decoration: underline; ; background-color: #efefef; }
+span.class540{color: #ff0000;  text-decoration: underline; ; background-color: #efefef; }
+span.class1422{color: #458383; font-style: italic; text-decoration: underline; ; background-color: #edfced; }
+span.class1423{color: #458383; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class1420{color: #458383;  text-decoration: underline; ; background-color: #edfced; }
+span.class1421{color: #458383; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class122{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class120{color: #000000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class256{color: #0000ff;  background-color: #edfced; }
+span.class257{color: #0000ff; font-weight: bold; background-color: #edfced; }
+span.class118{color: #000000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class116{color: #000000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class259{color: #0000ff; font-style: italic; font-weight: bold; background-color: #edfced; }
+span.class258{color: #0000ff; font-style: italic; background-color: #edfced; }
+span.class459{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1178{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class457{color: #ff0000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1176{color: #008000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class455{color: #ff0000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1174{color: #008000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class453{color: #ff0000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1172{color: #008000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class437{color: #ff0000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1156{color: #008000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class439{color: #ff0000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1158{color: #008000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class441{color: #ff0000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1160{color: #008000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class443{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1162{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class469{color: #ff0000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1188{color: #008000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class471{color: #ff0000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1190{color: #008000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class473{color: #ff0000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1192{color: #008000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class475{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class1194{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class533{color: #ff0000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1252{color: #008000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class535{color: #ff0000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1254{color: #008000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class537{color: #ff0000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1256{color: #008000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class539{color: #ff0000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1258{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class932{color: #00ff00;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class56{color: #000000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class934{color: #00ff00; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class54{color: #000000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class936{color: #00ff00; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class52{color: #000000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class938{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class58{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1096{color: #808000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1094{color: #808000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1092{color: #808000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1098{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class851{color: #808080; font-style: italic; font-weight: bold; background-color: #f7e9e9; }
+span.class854{color: #808080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class852{color: #808080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class849{color: #808080; font-weight: bold; background-color: #f7e9e9; }
+span.class850{color: #808080; font-style: italic; background-color: #f7e9e9; }
+span.class848{color: #808080;  background-color: #f7e9e9; }
+span.class275{color: #0000ff; font-style: italic; font-weight: bold; background-color: #f7e9e9; }
+span.class274{color: #0000ff; font-style: italic; background-color: #f7e9e9; }
+span.class273{color: #0000ff; font-weight: bold; background-color: #f7e9e9; }
+span.class272{color: #0000ff;  background-color: #f7e9e9; }
+span.class1487{color: #7a7a2b; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1485{color: #7a7a2b; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class1486{color: #7a7a2b; font-style: italic; text-decoration: underline; ; background-color: #ffffcc; }
+span.class697{color: #000080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1452{color: #7a7a2b;  text-decoration: underline; ; background-color: #ffffd7; }
+span.class699{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1453{color: #7a7a2b; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1567{color: #7a7a2b; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class1566{color: #7a7a2b; font-style: italic; text-decoration: underline; ; background-color: #edfced; }
+span.class1565{color: #7a7a2b; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class693{color: #000080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1454{color: #7a7a2b; font-style: italic; text-decoration: underline; ; background-color: #ffffd7; }
+span.class1564{color: #7a7a2b;  text-decoration: underline; ; background-color: #edfced; }
+span.class695{color: #000080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1455{color: #7a7a2b; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class856{color: #808080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1484{color: #7a7a2b;  text-decoration: underline; ; background-color: #ffffcc; }
+span.class858{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class347{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class345{color: #660e7a; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class840{color: #808080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class343{color: #660e7a; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class842{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class341{color: #660e7a;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class836{color: #808080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class838{color: #808080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1211{color: #008000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1205{color: #008000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1209{color: #008000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1207{color: #008000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class810{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class804{color: #808080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class806{color: #808080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class944{color: #00ff00;  background-color: #f6ebbc; }
+span.class808{color: #808080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class945{color: #00ff00; font-weight: bold; background-color: #f6ebbc; }
+span.class947{color: #00ff00; font-style: italic; font-weight: bold; background-color: #f6ebbc; }
+span.class946{color: #00ff00; font-style: italic; background-color: #f6ebbc; }
+span.class1550{color: #7a7a2b; font-style: italic; text-decoration: underline; ; background-color: #efefef; }
+span.class1471{color: #7a7a2b; font-style: italic; font-weight: bold; text-decoration: underline; ; }
+span.class1551{color: #7a7a2b; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class1470{color: #7a7a2b; font-style: italic; text-decoration: underline; ; }
+span.class1548{color: #7a7a2b;  text-decoration: underline; ; background-color: #efefef; }
+span.class1469{color: #7a7a2b; font-weight: bold; text-decoration: underline; ; }
+span.class1549{color: #7a7a2b; font-weight: bold; text-decoration: underline; ; background-color: #efefef; }
+span.class1468{color: #7a7a2b;  text-decoration: underline; ; }
+span.class1139{color: #808000; font-style: italic; font-weight: bold; background-color: #f7e9e9; }
+span.class1138{color: #808000; font-style: italic; background-color: #f7e9e9; }
+span.class1137{color: #808000; font-weight: bold; background-color: #f7e9e9; }
+span.class1136{color: #808000;  background-color: #f7e9e9; }
+span.class981{color: #00ff00;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class983{color: #00ff00; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class985{color: #00ff00; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class987{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class560{color: #ff0000;  background-color: #f7e9e9; }
+span.class561{color: #ff0000; font-weight: bold; background-color: #f7e9e9; }
+span.class562{color: #ff0000; font-style: italic; background-color: #f7e9e9; }
+span.class563{color: #ff0000; font-style: italic; font-weight: bold; background-color: #f7e9e9; }
+span.class267{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class261{color: #0000ff;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class265{color: #0000ff; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class263{color: #0000ff; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class515{color: #ff0000; font-style: italic; font-weight: bold; background-color: #f6ebbc; }
+span.class514{color: #ff0000; font-style: italic; background-color: #f6ebbc; }
+span.class1434{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1432{color: #458383; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1430{color: #458383; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1428{color: #458383;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class772{color: #808080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class774{color: #808080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class776{color: #808080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class778{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class512{color: #ff0000;  background-color: #f6ebbc; }
+span.class513{color: #ff0000; font-weight: bold; background-color: #f6ebbc; }
+span.class245{color: #0000ff;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1541{color: #7a7a2b;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class446{color: #ff0000; font-style: italic; text-decoration: underline; ; background-color: #ffffd7; }
+span.class249{color: #0000ff; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class445{color: #ff0000; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class247{color: #0000ff; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class447{color: #ff0000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffd7; }
+span.class251{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1547{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class421{color: #660e7a;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class423{color: #660e7a; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1543{color: #7a7a2b; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class425{color: #660e7a; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class149{color: #0000ff;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1545{color: #7a7a2b; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class444{color: #ff0000;  text-decoration: underline; ; background-color: #ffffd7; }
+span.class427{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class153{color: #0000ff; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class151{color: #0000ff; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class155{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class476{color: #ff0000;  text-decoration: underline; ; background-color: #ffffcc; }
+span.class183{color: #0000ff; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class891{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class477{color: #ff0000; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class181{color: #0000ff;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class131{color: #000000; font-style: italic; font-weight: bold; background-color: #f7e9e9; }
+span.class889{color: #00ff00; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class478{color: #ff0000; font-style: italic; text-decoration: underline; ; background-color: #ffffcc; }
+span.class187{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class130{color: #000000; font-style: italic; background-color: #f7e9e9; }
+span.class887{color: #00ff00; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class479{color: #ff0000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffffcc; }
+span.class185{color: #0000ff; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class129{color: #000000; font-weight: bold; background-color: #f7e9e9; }
+span.class885{color: #00ff00;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class128{color: #000000;  background-color: #f7e9e9; }
+span.class869{color: #00ff00;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class871{color: #00ff00; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class873{color: #00ff00; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class875{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class463{color: #ff0000; font-style: italic; font-weight: bold; text-decoration: underline; ; }
+span.class462{color: #ff0000; font-style: italic; text-decoration: underline; ; }
+span.class461{color: #ff0000; font-weight: bold; text-decoration: underline; ; }
+span.class460{color: #ff0000;  text-decoration: underline; ; }
+span.class907{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class165{color: #0000ff;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class171{color: #0000ff; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class901{color: #00ff00;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class167{color: #0000ff; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class903{color: #00ff00; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class169{color: #0000ff; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class905{color: #00ff00; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class965{color: #00ff00;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class967{color: #00ff00; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class969{color: #00ff00; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class373{color: #660e7a;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class971{color: #00ff00; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class375{color: #660e7a; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class377{color: #660e7a; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class379{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class510{color: #ff0000; font-style: italic; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class511{color: #ff0000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class508{color: #ff0000;  text-decoration: underline; ; background-color: #e2ffe2; }
+span.class509{color: #ff0000; font-weight: bold; text-decoration: underline; ; background-color: #e2ffe2; }
+span.class1064{color: #808000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1062{color: #808000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1060{color: #808000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class1066{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffcccc; }
+span.class359{color: #660e7a; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class361{color: #660e7a; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class357{color: #660e7a;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class363{color: #660e7a; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class677{color: #000080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1147{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class679{color: #000080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class1145{color: #808000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class681{color: #000080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class683{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #efefef; }
+span.class707{color: #000080; font-style: italic; font-weight: bold; background-color: #f7e9e9; }
+span.class613{color: #000080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class705{color: #000080; font-weight: bold; background-color: #f7e9e9; }
+span.class615{color: #000080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class706{color: #000080; font-style: italic; background-color: #f7e9e9; }
+span.class617{color: #000080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class619{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffcc; }
+span.class704{color: #000080;  background-color: #f7e9e9; }
+span.class581{color: #000080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1381{color: #458383;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class583{color: #000080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1383{color: #458383; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class585{color: #000080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1385{color: #458383; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class587{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #ffffd7; }
+span.class1387{color: #458383; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f6ebbc; }
+span.class1007{color: #00ff00; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class603{color: #000080; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1004{color: #00ff00;  text-decoration: underline; ; background-color: #f7e9e9; }
+span.class601{color: #000080; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class599{color: #000080; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1006{color: #00ff00; font-style: italic; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class597{color: #000080;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; }
+span.class1005{color: #00ff00; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class123{color: #000000; font-style: italic; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class121{color: #000000; font-style: italic; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class119{color: #000000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class117{color: #000000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1141{color: #808000;  background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1143{color: #808000; font-weight: bold; background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #f7e9e9; }
+span.class1436{color: #458383;  text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1356{color: #458383;  text-decoration: underline; ; background-color: #ffcccc; }
+span.class1437{color: #458383; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1438{color: #458383; font-style: italic; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1562{color: #7a7a2b; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1439{color: #458383; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #f7e9e9; }
+span.class1359{color: #458383; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class415{color: #660e7a; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class414{color: #660e7a; font-style: italic; text-decoration: underline; ; background-color: #edfced; }
+span.class1357{color: #458383; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class413{color: #660e7a; font-weight: bold; text-decoration: underline; ; background-color: #edfced; }
+span.class1358{color: #458383; font-style: italic; text-decoration: underline; ; background-color: #ffcccc; }
+span.class790{color: #808080; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class792{color: #808080; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class794{color: #808080; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1130{color: #808000; font-style: italic; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1128{color: #808000; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class788{color: #808080;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #e2ffe2; }
+span.class1558{color: #7a7a2b; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1560{color: #7a7a2b; font-style: italic; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1126{color: #808000; font-weight: bold; background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1556{color: #7a7a2b;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class1124{color: #808000;  background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ; background-color: #edfced; }
+span.class495{color: #ff0000; font-style: italic; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class494{color: #ff0000; font-style: italic; text-decoration: underline; ; background-color: #ffcccc; }
+span.class493{color: #ff0000; font-weight: bold; text-decoration: underline; ; background-color: #ffcccc; }
+span.class492{color: #ff0000;  text-decoration: underline; ; background-color: #ffcccc; }
+span.class416{color: #660e7a;  background-color: #f7e9e9; }
+span.class418{color: #660e7a; font-style: italic; background-color: #f7e9e9; }
+span.class417{color: #660e7a; font-weight: bold; background-color: #f7e9e9; }
+span.class412{color: #660e7a;  text-decoration: underline; ; background-color: #edfced; }
+span.class371{color: #660e7a; font-style: italic; font-weight: bold; background-color: #f6ebbc; }
+span.class370{color: #660e7a; font-style: italic; background-color: #f6ebbc; }
+span.class369{color: #660e7a; font-weight: bold; background-color: #f6ebbc; }
+span.class368{color: #660e7a;  background-color: #f6ebbc; }
+span.class419{color: #660e7a; font-style: italic; font-weight: bold; background-color: #f7e9e9; }

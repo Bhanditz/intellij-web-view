@@ -4,8 +4,8 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.sun.net.httpserver.HttpServer;
 import org.jetbrains.annotations.NotNull;
-import web.view.ukhorskaya.handlers.MyBaseHandler;
-import web.view.ukhorskaya.handlers.MyMainHandler;
+import web.view.ukhorskaya.handlers.BaseHandler;
+import web.view.ukhorskaya.handlers.MainHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -19,10 +19,10 @@ import java.net.InetSocketAddress;
 public class IdeaHttpServer implements ApplicationComponent {
     private boolean isServerRunning = false;
     private HttpServer server;
-    private MyBaseHandler myHandler;
+    private BaseHandler myHandler;
 
 
-    public static Class<? extends MyBaseHandler> ourHandlerClass = MyMainHandler.class;
+    public static Class<? extends BaseHandler> ourHandlerClass = MainHandler.class;
 
     public static IdeaHttpServer getInstance() {
         return ApplicationManager.getApplication().getComponent(IdeaHttpServer.class);
@@ -57,7 +57,7 @@ public class IdeaHttpServer implements ApplicationComponent {
     }
 
 
-    public MyBaseHandler getMyHandler() {
+    public BaseHandler getMyHandler() {
         return myHandler;
     }
 

@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Web View</title>
+
+
+    <link rel="stylesheet" type="text/css" href="/styles.css?type=css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="/highlighting.js?file=highlighting.js"></script>
+
+    <script src="/dialog.js?file=dialog.js"></script>
+    <script src="/jquery/rangy/rangy-core.js?type=jquery_lib"></script>
+    <script src="/jquery/rangy/rangy-cssclassapplier.js?type=jquery_lib"></script>
+    <script src="/jquery/rangy/rangy-selectionsaverestore.js?type=jquery_lib"></script>
+    <script src="/jquery/rangy/rangy-serializer.js?type=jquery_lib"></script>
+    <script src="/jquery/development-bundle/jquery-1.6.2.js?type=jquery_lib"></script>
+    <script src="/jquery/development-bundle/external/jquery.bgiframe-2.1.2.js?type=jquery_lib"></script>
+    <script src="/jquery/development-bundle/ui/jquery.ui.core.js?type=jquery_lib"></script>
+    <script src="/jquery/development-bundle/ui/jquery.ui.widget.js?type=jquery_lib"></script>
+    <script src="/jquery/development-bundle/ui/jquery.ui.mouse.js?type=jquery_lib"></script>
+    <!--<script src="/resources/jquery/development-bundle/ui/jquery.ui.draggable.js?type=jquery_lib"></script>
+    <script src="/resources/jquery/development-bundle/ui/jquery.ui.position.js?type=jquery_lib"></script>
+    <script src="/resources/jquery/development-bundle/ui/jquery.ui.resizable.js?type=jquery_lib"></script> -->
+    <script src="/jquery/development-bundle/ui/jquery.ui.dialog.js?type=jquery_lib"></script>
+    <link rel="stylesheet" href="/jquery/development-bundle/themes/base/jquery.ui.all.css?type=jquery_lib">
+    <link type="text/css" href="/jquery/css/ui-lightness/jquery-ui-1.8.16.custom.css?type=jquery_lib" rel="stylesheet"/>
+    <script src="/jquery/js/jquery-ui-1.8.16.custom.min.js?type=jquery_lib" type="text/javascript"></script>
+
+</head>
+
+<body spellcheck="false"
+      onload="setGotoFileShortcut(GOTOFILESHORTCUT); setGotoClassShortcut(GOTOCLASSSHORTCUT); setGotoSymbolShortcut(GOTOSYMBOLSHORTCUT); setProjectName('PROJECTNAME');">
+<div id="fake-body">
+    <div style="margin-top: 10px;">
+        <img src="/execute.png" id="run"/>
+        <img src="/compile.png" id="compile"/>
+    </div>
+    <table>
+        <tr>
+            <td style="vertical-align: top;">
+                <div id="numberLineDiv" onload="addLinesNumbers()"></div>
+            </td>
+            <td style="vertical-align: top;">
+                <div id="editableText" contenteditable="true" style="margin: 0; padding: 0;">RESPONSEBODY</div>
+				<div id="nonEditableText" style="margin: 0; padding: 0; visibility: hidden;">RESPONSEBODY</div>
+            </td>
+            <td style="vertical-align: top; padding-left: 50px;">
+                <div id="compilationResult"></div>
+            </td>
+        </tr>
+    </table>
+
+    <button id="compile3" name="compile3">compile</button>
+
+
+    <div id="dialog" style="min-height: 26px !important; height: 26px !important;">
+        <div class="ui-widget">
+            <input id="tags" value="" type="text" style="width: 468px;"/>
+        </div>
+    </div>
+</div>
+<div id="dock">
+    <div>
+        Go to file: <b>GOTOFILESHORTCUTSTRING</b>
+        Go to class: <b>GOTOCLASSSHORTCUTSTRING</b>
+        Go to symbol: <b>GOTOSYMBOLSHORTCUTSTRING</b>
+    </div>
+</div>
+</body>
+</html>

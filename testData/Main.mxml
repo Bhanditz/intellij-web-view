@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+               skinClass="PlaygroundSkin" creationComplete="creationComplete();">
+    <fx:Style source="default.css"/>
+    <s:SkinnableContainer id="_playground" width="100%" height="100%">
+        <s:layout>
+            <s:BasicLayout clipAndEnableScrolling="true"/>
+        </s:layout>
+    </s:SkinnableContainer>
+
+    <s:Label id="_scoreLabel" styleName="scoreLabel"/>
+    <s:Label id="_timeLabel" styleName="timeLabel"/>
+
+    <fx:Script><![CDATA[
+        import model.IDuck;
+        import model.PlayModel;
+        import model.ScoreChangeEvent;
+
+        import mx.core.BitmapAsset;
+        import mx.managers.CursorManagerPriority;
+        import spark.layouts.VerticalLayout;
+
+        import view.DuckShape;
+
+        /**
+         * game frame rate in ms
+         */
+        private static const ADVANCE_DELAY: int = 50;
+
+        /**
+         * next duck appearance delay
+         */
+        private static const NEW_DUCK_DELAY: int = 1500;
+
+        /**
+         * play time in ms
+         */
+        private static const PLAY_TIME: int = 60 * 1000;
+
+        private static const RESTORE_CURSOR_DELAY: int = 100; // ms
+
+        private var _model: PlayModel;
+        private var _startTime: Number;
+        private var _advanceTimer: Timer;
+        private var _newDuckTimer: Timer;
+
+        // id of a temporary cursor shown on shot
+        private var _shotCursorId: int;
+
+
+        [Embed(source="/cursor.png")]
+        private static var _cursorClass: Class;
+
+        [Embed(source="/cursor-fire.png")]
+        private static var _fireCursorClass: Class;
+
+
+        private function creationComplete(): void {
+            var cursorAsset: BitmapAsset = new _cursorClass();
+            cursorManager.setCursor(_cursorClass, CursorManagerPriority.MEDIUM, -cursorAsset.width / 2, -cursorAsset.height / 2);
+
+            _model = new PlayModel(visibleAreaProvider);
+
+            _model.addEventListener(ScoreChangeEvent.NAME, function(event: ScoreChangeEvent): void {
+                updateStatistics();
+            });
+
+            addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+
+            _advanceTimer = new Timer(ADVANCE_DELAY);
+            _advanceTimer.addEventListener(TimerEvent.TIMER, function(e: TimerEvent): void {
+                if (getTimeLeft() <= 0) {
+                    gameOver();
+                }
+                _model.advanceAllDucks();
+                updateStatistics();
+            });
+
+            _newDuckTimer = new Timer(NEW_DUCK_DELAY);
+            _newDuckTimer.addEventListener(TimerEvent.TIMER, function(e: TimerEvent): void {
+                newDuck();
+            });
+
+            updateStatistics();
+
+            newDuck();
+            _advanceTimer.start();
+            _newDuckTimer.start();
+
+            _startTime = new Date().getTime();
+        }
+
+        private function gameOver(): void {
+            _advanceTimer.stop();
+            _newDuckTimer.stop();
+
+            var gameOverPanel: SkinnableContainer = new SkinnableContainer();
+            var layout: VerticalLayout = new VerticalLayout();
+            layout.verticalAlign = "middle";
+            layout.horizontalAlign = "center";
+            gameOverPanel.layout = layout;
+            gameOverPanel.styleName = "gameOverPanel";
+            gameOverPanel.addEventListener(MouseEvent.MOUSE_DOWN, function(e: MouseEvent): void {
+                e.stopPropagation();
+            });
+            addElement(gameOverPanel);
+
+            var label: Label = new Label();
+            label.text = "Game over!\nYour score: " + _model.score;
+            label.styleName = "gameOverLabel";
+            gameOverPanel.addElement(label);
+        }
+
+
+        private function mouseDown(event: MouseEvent): void {
+            var cursorAsset: BitmapAsset = new _cursorClass();
+            _shotCursorId = cursorManager.setCursor(_fireCursorClass, CursorManagerPriority.HIGH, -cursorAsset.width / 2, -cursorAsset.height / 2);
+            var restoreCursorTimer: Timer = new Timer(RESTORE_CURSOR_DELAY, 1);
+            restoreCursorTimer.addEventListener(TimerEvent.TIMER, function(e: TimerEvent): void {
+                cursorManager.removeCursor(_shotCursorId);
+            });
+            restoreCursorTimer.start();
+
+
+            if (!(event.target is DuckShape)) {
+                _model.miss();
+            }
+        }
+
+        private function visibleAreaProvider(): Rectangle {
+            return new Rectangle(0, 0, _playground.width, _playground.height);
+        }
+
+        private function newDuck(): void {
+            var duck: IDuck = _model.createNewDuck();
+            var shape: DuckShape = new DuckShape(duck);
+            _playground.addElement(shape);
+        }
+
+        /**
+         * @return The time left to play, in seconds
+         */
+        private function getTimeLeft(): int {
+            var currentTime: Number = new Date().getTime();
+            return (_startTime + PLAY_TIME - currentTime) / 1000;
+        }
+
+        private function updateStatistics(): void {
+            _scoreLabel.text = "Score: " + _model.score;
+            _timeLabel.text = "Time: " + Math.max(0, getTimeLeft());
+        }
+
+        ]]></fx:Script>
+</s:Application>
