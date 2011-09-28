@@ -12,6 +12,7 @@ import web.view.ukhorskaya.css.GlobalCssMap;
 import web.view.ukhorskaya.handlers.BaseHandler;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -34,7 +35,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
     private int relPosIS = 0;
 
     //Link TextRange of link in current file with PsiReferense
-    private HashMap<TextRange, PsiReference> mapLinks = new HashMap<TextRange, PsiReference>();
+    private Map<TextRange, PsiReference> mapLinks = new HashMap<TextRange, PsiReference>();
 
 
     private PsiReference ref = null;
@@ -60,6 +61,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
 
     @Override
     public void visitElement(final PsiElement element) {
+
         if (element instanceof PsiFile) {
             myDocument = PsiDocumentManager.getInstance(ProjectUtil.guessProjectForFile(currentFile)).getDocument((PsiFile) element);
         }
@@ -121,6 +123,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
     }
 
     private void addTextToResult(final PsiElement element) {
+        System.out.println(element.getText());
         int textOffset = element.getTextOffset();
         TextRange textRange = element.getTextRange();
 
@@ -198,7 +201,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
             result.append(BaseHandler.escapeString(element.getText()));
         }
 
-        if (iterationState.getEndOffset() < textRange.getStartOffset() + relPosIS) {
+        if ((!(iterationState.atEnd()) && (iterationState.getEndOffset() < textRange.getStartOffset() + relPosIS))) {
             System.err.println("WARNING: iteration state and element have different end and start position. " + element.getText()
                     + " " + element.getTextRange().toString() +
                     ", (" + iterationState.getStartOffset() + ", " + iterationState.getEndOffset() + ")");
@@ -223,7 +226,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
         StringBuilder result = new StringBuilder();
         int iterStateBegin = iterationState.getStartOffset();
 
-        while (iterationState.getEndOffset() <= iterStateBegin + element.getTextLength()) {
+        while (!(iterationState.atEnd()) &&(iterationState.getEndOffset() <= iterStateBegin + element.getTextLength())) {
            /* MyTextAttributes textAttributes = new MyTextAttributes(iterationState.getMergedAttributes());
             if ((iterationState.getEndOffset() < intPositionState) && (BaseHandler.getColor(textAttributes.getTextAttributes().getBackgroundColor()).equals("#ffffd7"))) {
                 textAttributes.setBackgroundColor(Color.white);
@@ -237,6 +240,7 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
             result.append(addHighlightingStart(className, String.valueOf(iterationState.getStartOffset()) + element.getContainingFile()));
             result.append(BaseHandler.escapeString(element.getText().substring(iterationState.getStartOffset() - iterStateBegin, iterationState.getEndOffset() - iterStateBegin)));
             result.append(addHighlightingEnd());
+            if (iterationState.atEnd()) break;
             iterationState.advance();
         }
         return result.toString();
@@ -299,11 +303,11 @@ public class MyRecursiveVisitor extends PsiRecursiveElementVisitor {
     }
 
     private String addLinePStart() {
-        return "<p class=\"newLineClass\">";
+        return "<p class=\"newLineClass\"><span>";
     }
 
     private String addLinePEnd() {
-        return "</p>";
+        return "</span></p>";
     }
 
     private boolean isLeaf(final PsiElement element) {

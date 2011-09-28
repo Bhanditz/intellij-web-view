@@ -152,6 +152,9 @@ $(document).ready(function() {
             if (node == null) {
                 return _result;
             }
+			/*if (node.className == "rangySelectionBoundary") {
+				return _result;
+			}*/
             var childrens = node.childNodes;
             var i = 0;
             while (i < childrens.length) {
@@ -197,6 +200,7 @@ $(document).ready(function() {
             return _result;
         }(node));
     }
+	
 
     function htmlDecode(input) {
         var e = document.createElement('div');
@@ -294,12 +298,13 @@ $(document).ready(function() {
              theParent.removeChild(theParent.firstChild);
              }*/
             //alert(getElemText(data));
+			savedSel = rangy.saveSelection();
             if (data.length > 0) {
 
                 //document.getElementById("nonEditableText").innerHTML = data + document.getElementById("editableText").innerHTML;
                 document.getElementById("nonEditableText").innerHTML = data;
             }
-            savedSel = rangy.saveSelection();
+            
             if (document.getElementById("editableText").childNodes[0].nodeType == 3) {
                 document.getElementById("editableText").removeChild(document.getElementById("editableText").firstChild);
             }
