@@ -32,10 +32,12 @@ public class MainHttpSession extends HttpSession {
             public void run() {
                 psiFileRef.set(PsiManager.getInstance(currentProject).findFile(file));
                 Document document = PsiDocumentManager.getInstance(currentProject).getDocument(psiFileRef.get());
+
                 if (document == null) {
                     return;
                 }
                 Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, file, true);
+
                 editorRef.set(editor);
                 stateRef.set(new IterationState((EditorEx) editor, 0, false));
                 intPositionRef.set(editor.getCaretModel().getVisualLineEnd());
@@ -50,7 +52,7 @@ public class MainHttpSession extends HttpSession {
                 throw new IllegalArgumentException("Impossible to create an editor.");
             }
         }
-
+        currentEditor = editorRef.get();
         iterationState = stateRef.get();
         intPositionState = intPositionRef.get();
     }

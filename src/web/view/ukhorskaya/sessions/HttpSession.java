@@ -1,5 +1,6 @@
 package web.view.ukhorskaya.sessions;
 
+import com.intellij.codeInsight.completion.*;
 import com.intellij.execution.*;
 import com.intellij.execution.executors.DefaultRunExecutor;
 import com.intellij.execution.impl.RunManagerImpl;
@@ -17,6 +18,9 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.compiler.*;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.EditorFactory;
+import com.intellij.openapi.editor.VisualPosition;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
@@ -27,13 +31,16 @@ import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiCompiledElement;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.sun.net.httpserver.HttpExchange;
 import org.apache.commons.httpclient.HttpStatus;
+import web.view.ukhorskaya.JsonResponseForHighlighting;
 import web.view.ukhorskaya.LineOutOfUpdateException;
 import web.view.ukhorskaya.MyRecursiveVisitor;
 import web.view.ukhorskaya.MyRecursiveVisitorWithJson;
+import web.view.ukhorskaya.completion.MyCodeCompletionHandlerBase;
 import web.view.ukhorskaya.handlers.BaseHandler;
 
 import java.awt.event.InputEvent;
@@ -60,6 +67,7 @@ public abstract class HttpSession {
     protected IterationState iterationState;
     protected Project currentProject;
     protected VirtualFile currentFile;
+    protected Editor currentEditor;
 
     private HttpExchange exchange;
 
@@ -74,6 +82,8 @@ public abstract class HttpSession {
             if (param.contains("compile=true") || param.contains("run=true")) {
                 sendExecutorResult();
                 return;
+            } else if (param.contains("complete=true")) {
+                sendCompletionResult();
             } else {
                 sendProjectSourceFile();
                 return;
@@ -88,46 +98,62 @@ public abstract class HttpSession {
         writeResponse("Wrong request: " + exchange.getRequestURI().toString(), 404, true);
     }
 
-    private void sendProjectSourceFile() {
-        String param = exchange.getRequestURI().getQuery();
-        String lineNumber = "";
-        if (param != null) {
-            if (param.contains("lineNumber=")) {
-                lineNumber = param.substring(param.indexOf("lineNumber=") + 11);
-            }
-        }
-
+    private void setGlobalVariables() {
         String requestURI = exchange.getRequestURI().getPath().substring(6);
         requestURI = requestURI.replace("%20", " ");
-
         currentFile = VirtualFileManager.getInstance().findFileByUrl(requestURI);
-
-        if ((param != null) && (param.contains("sendData=true"))) {
-            writeDataToFile();
-        }
-
         String response;
         if (currentFile == null) {
             response = "File with path " + requestURI + " not found ";
             writeResponse(response, HttpStatus.SC_NOT_FOUND);
             return;
         }
-
         currentProject = ProjectUtil.guessProjectForFile(currentFile);
-        if (lineNumber.equals("")) {
-            response = getContentWithDecoration();
-        } else {
-            response = getContentWithDecoration(Integer.parseInt(lineNumber));
+    }
 
+
+    private void sendCompletionResult() {
+        setGlobalVariables();
+        writeDataToFile();
+
+        String param = exchange.getRequestURI().getQuery();
+        String[] position = null;
+        if (param.contains("cursorAt")) {
+            position = (param.substring(param.indexOf("cursorAt=") + 9)).split(",");
         }
 
-        //System.out.println("Count of newLineClass = " + (response.split("newLineClass").length - 2));
-        response = response.replaceAll("\\n", "");
+        setVariables(currentFile);
 
-        if (lineNumber.equals("")) {
-            writeResponse(response, HttpStatus.SC_OK);
-        } else {
+        final VisualPosition visualPosition = new VisualPosition(Integer.parseInt(position[0]), Integer.parseInt(position[1]));
+
+        final Ref<String> stringRef = new Ref<String>();
+        ApplicationManager.getApplication().invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("begin setCaret()  = " + (System.currentTimeMillis() - startTime));
+                currentEditor.getCaretModel().moveToVisualPosition(visualPosition);
+                System.out.println("end setCaret()  = " + (System.currentTimeMillis() - startTime));
+                MyCodeCompletionHandlerBase base = new MyCodeCompletionHandlerBase(CompletionType.BASIC);
+                base.invokeCompletion(currentProject, currentEditor);
+                System.out.println("end getCompletion()  = " + (System.currentTimeMillis() - startTime));
+                stringRef.set(base.getResultString());
+                System.out.println("RESULT " + base.getResultString());
+            }
+        }, ModalityState.defaultModalityState());
+        writeResponse("[{\"content\": \"" + stringRef.get() + "\"}]", HttpStatus.SC_OK, true);
+    }
+
+    private void sendProjectSourceFile() {
+        String param = exchange.getRequestURI().getQuery();
+
+        setGlobalVariables();
+        if ((param != null) && (param.contains("sendData=true"))) {
+            writeDataToFile();
+            String response = getContentWithDecoration();
+            response = response.replaceAll("\\n", "");
             writeResponse(response, HttpStatus.SC_OK, true);
+        } else {
+            writeResponse("", HttpStatus.SC_OK);
         }
     }
 
@@ -138,7 +164,6 @@ public abstract class HttpSession {
 
         try {
             reader = new InputStreamReader(exchange.getRequestBody(), "UTF-8");
-
         } catch (UnsupportedEncodingException e) {
             LOG.error("Impossible to write to file in UTF-8");
         }
@@ -200,21 +225,7 @@ public abstract class HttpSession {
     }
 
     private void sendExecutorResult() {
-        String requestURI = exchange.getRequestURI().getPath().substring(6);
-        requestURI = requestURI.replace("%20", " ");
-
-        currentFile = VirtualFileManager.getInstance().findFileByUrl(requestURI);
-
-        writeDataToFile();
-
-        String response;
-        if (currentFile == null) {
-            response = "File with path " + requestURI + " not found ";
-            writeResponse(response, HttpStatus.SC_NOT_FOUND);
-            return;
-        }
-
-        currentProject = ProjectUtil.guessProjectForFile(currentFile);
+        setGlobalVariables();
 
         if (exchange.getRequestURI().getQuery().contains("compile")) {
             compileOrRunProject(true);
@@ -230,50 +241,6 @@ public abstract class HttpSession {
 
 
     private String getContentWithDecoration() {
-         System.out.println("begin setVariables()  = " + (System.currentTimeMillis() - startTime));
-        try {
-            setVariables(currentFile);
-        } catch (IllegalArgumentException e) {
-            return e.getMessage();
-        }
-        System.out.println("end setVariables()  = " + (System.currentTimeMillis() - startTime));
-
-        PsiElement mirrorFile = null;
-        if (psiFile instanceof PsiCompiledElement) {
-            mirrorFile = ((PsiCompiledElement) psiFile).getMirror();
-        }
-        final Ref<MyRecursiveVisitor> visitorRef = new Ref<MyRecursiveVisitor>();
-        final PsiElement finalMirrorFile = mirrorFile;
-
-        System.out.println("getHighlighting = " + (System.currentTimeMillis() - startTime));
-        ApplicationManager.getApplication().runReadAction(new Runnable() {
-            @Override
-            public void run() {
-
-                MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, iterationState, intPositionState, -1);
-                try {
-                    if (finalMirrorFile instanceof PsiFile) {
-                        visitor.visitFile((PsiFile) finalMirrorFile);
-                    } else {
-                        visitor.visitFile(psiFile);
-                    }
-                } catch (LineOutOfUpdateException e) {
-                    // to exit from visitFile() when all lines are updated
-                }
-                visitorRef.set(visitor);
-
-
-            }
-        });
-
-        System.out.println("end highlighting = " + (System.currentTimeMillis() - startTime));
-
-
-        //return visitorRef.get().getResult();
-        return visitorRef.get().getResult();
-    }
-
-    private String getContentWithDecoration(final int lineNumber) {
         System.out.println("begin setVariables()  = " + (System.currentTimeMillis() - startTime));
         try {
             setVariables(currentFile);
@@ -286,38 +253,24 @@ public abstract class HttpSession {
         if (psiFile instanceof PsiCompiledElement) {
             mirrorFile = ((PsiCompiledElement) psiFile).getMirror();
         }
-        final Ref<MyRecursiveVisitor> visitorRef = new Ref<MyRecursiveVisitor>();
-        //final Ref<MyRecursiveVisitorWithJson> visitorRef = new Ref<MyRecursiveVisitorWithJson>();
+        //final Ref<MyRecursiveVisitor> visitorRef = new Ref<MyRecursiveVisitor>();
+        final Ref<MyRecursiveVisitorWithJson> visitorRef = new Ref<MyRecursiveVisitorWithJson>();
         final PsiElement finalMirrorFile = mirrorFile;
 
+        final Ref<String> stringRef = new Ref<String>();
         System.out.println("getHighlighting = " + (System.currentTimeMillis() - startTime));
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             @Override
             public void run() {
-
-                //MyRecursiveVisitorWithJson visitor = new MyRecursiveVisitorWithJson(currentFile, iterationState, intPositionState, lineNumber);
-                MyRecursiveVisitor visitor = new MyRecursiveVisitor(currentFile, iterationState, intPositionState, lineNumber);
-                try {
-                    if (finalMirrorFile instanceof PsiFile) {
-                        visitor.visitFile((PsiFile) finalMirrorFile);
-                    } else {
-                        visitor.visitFile(psiFile);
-                    }
-                } catch (LineOutOfUpdateException e) {
-                    // to exit from visitFile() when all lines are updated
-                }
-                visitorRef.set(visitor);
-
-
+                JsonResponseForHighlighting responseForHighlighting = new JsonResponseForHighlighting(PsiDocumentManager.getInstance(ProjectUtil.guessProjectForFile(currentFile)).getDocument(psiFile), iterationState);
+                stringRef.set(responseForHighlighting.getResult());
             }
         });
 
         System.out.println("end highlighting = " + (System.currentTimeMillis() - startTime));
-
-
-        //return visitorRef.get().getResult();
-        return visitorRef.get().getResult();
+        return stringRef.get();
     }
+
 
     private void writeResponse(String responseBody, int errorCode) {
         writeResponse(responseBody, errorCode, false);
@@ -464,22 +417,22 @@ public abstract class HttpSession {
             writeResponse(e.getMessage(), HttpStatus.SC_INTERNAL_SERVER_ERROR);
         }
 
-        ShortcutSet gotofile = ActionManager.getInstance().getAction("GotoFile").getShortcutSet();
-        ShortcutSet gotoclass = ActionManager.getInstance().getAction("GotoClass").getShortcutSet();
-        ShortcutSet gotosymbol = ActionManager.getInstance().getAction("GotoSymbol").getShortcutSet();
+        //ShortcutSet gotofile = ActionManager.getInstance().getAction("GotoFile").getShortcutSet();
+        //ShortcutSet gotoclass = ActionManager.getInstance().getAction("GotoClass").getShortcutSet();
+        //ShortcutSet gotosymbol = ActionManager.getInstance().getAction("GotoSymbol").getShortcutSet();
 
         String finalResponse = response.toString();
-        finalResponse = finalResponse.replaceFirst("GOTOFILESHORTCUT", getKeyboardShortcutFromShortcutSet(gotofile));
-        finalResponse = finalResponse.replaceFirst("GOTOCLASSSHORTCUT", getKeyboardShortcutFromShortcutSet(gotoclass));
-        finalResponse = finalResponse.replaceFirst("GOTOSYMBOLSHORTCUT", getKeyboardShortcutFromShortcutSet(gotosymbol));
+        //finalResponse = finalResponse.replaceFirst("GOTOFILESHORTCUT", getKeyboardShortcutFromShortcutSet(gotofile));
+        //finalResponse = finalResponse.replaceFirst("GOTOCLASSSHORTCUT", getKeyboardShortcutFromShortcutSet(gotoclass));
+        //finalResponse = finalResponse.replaceFirst("GOTOSYMBOLSHORTCUT", getKeyboardShortcutFromShortcutSet(gotosymbol));
 
-        if (currentProject != null) {
-            finalResponse = finalResponse.replaceFirst("PROJECTNAME", currentProject.getName());
-        }
+        //if (currentProject != null) {
+        //   finalResponse = finalResponse.replaceFirst("PROJECTNAME", currentProject.getName());
+        //}
 
-        finalResponse = finalResponse.replaceFirst("GOTOFILESHORTCUTSTRING", gotofile.getShortcuts()[0].toString());
-        finalResponse = finalResponse.replaceFirst("GOTOCLASSSHORTCUTSTRING", gotoclass.getShortcuts()[0].toString());
-        finalResponse = finalResponse.replaceFirst("GOTOSYMBOLSHORTCUTSTRING", gotosymbol.getShortcuts()[0].toString());
+        //finalResponse = finalResponse.replaceFirst("GOTOFILESHORTCUTSTRING", gotofile.getShortcuts()[0].toString());
+        // finalResponse = finalResponse.replaceFirst("GOTOCLASSSHORTCUTSTRING", gotoclass.getShortcuts()[0].toString());
+        // finalResponse = finalResponse.replaceFirst("GOTOSYMBOLSHORTCUTSTRING", gotosymbol.getShortcuts()[0].toString());
 
         finalResponse = finalResponse.replace("RESPONSEBODY", responseBody);
 

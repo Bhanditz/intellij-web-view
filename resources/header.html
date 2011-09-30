@@ -1,70 +1,98 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html>
 <head>
-    <title>Web View</title>
-
-
+    <title>Compiler</title>
     <link rel="stylesheet" type="text/css" href="/styles.css?type=css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <script src="/highlighting.js?file=highlighting.js"></script>
+    <link rel="stylesheet" href="/codemirror/lib/codemirror.css?type=jquery_lib">
+    <script src="/codemirror/lib/codemirror.js?type=jquery_lib"></script>
 
-    <script src="/dialog.js?file=dialog.js"></script>
-    <script src="/jquery/rangy/rangy-core.js?type=jquery_lib"></script>
-    <script src="/jquery/rangy/rangy-cssclassapplier.js?type=jquery_lib"></script>
-    <script src="/jquery/rangy/rangy-selectionsaverestore.js?type=jquery_lib"></script>
-    <script src="/jquery/rangy/rangy-serializer.js?type=jquery_lib"></script>
-    <script src="/jquery/development-bundle/jquery-1.6.2.js?type=jquery_lib"></script>
-    <script src="/jquery/development-bundle/external/jquery.bgiframe-2.1.2.js?type=jquery_lib"></script>
-    <script src="/jquery/development-bundle/ui/jquery.ui.core.js?type=jquery_lib"></script>
-    <script src="/jquery/development-bundle/ui/jquery.ui.widget.js?type=jquery_lib"></script>
-    <script src="/jquery/development-bundle/ui/jquery.ui.mouse.js?type=jquery_lib"></script>
-    <!--<script src="/resources/jquery/development-bundle/ui/jquery.ui.draggable.js?type=jquery_lib"></script>
-    <script src="/resources/jquery/development-bundle/ui/jquery.ui.position.js?type=jquery_lib"></script>
-    <script src="/resources/jquery/development-bundle/ui/jquery.ui.resizable.js?type=jquery_lib"></script> -->
-    <script src="/jquery/development-bundle/ui/jquery.ui.dialog.js?type=jquery_lib"></script>
-    <link rel="stylesheet" href="/jquery/development-bundle/themes/base/jquery.ui.all.css?type=jquery_lib">
-    <link type="text/css" href="/jquery/css/ui-lightness/jquery-ui-1.8.16.custom.css?type=jquery_lib" rel="stylesheet"/>
-    <script src="/jquery/js/jquery-ui-1.8.16.custom.min.js?type=jquery_lib" type="text/javascript"></script>
+    <script src="/codemirror/mode/clike/clike.js?type=jquery_lib"></script>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	<script src="/jquery/js/jquery-ui-1.8.16.custom.min.js?type=jquery_lib" type="text/javascript"></script>
+	<script src="/jquery/development-bundle/jquery-1.6.2.js?type=jquery_lib"></script>
 
+    <link rel="stylesheet" href="/codemirror/theme/default.css?type=jquery_lib">
+    <link rel="stylesheet" href="/codemirror/css/docs.css?type=jquery_lib">
+    <script>
+        /* var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+         lineNumbers: true,
+         matchBrackets: true,
+         mode: "text/x-java"
+         });
+         */
+        /*var newP = document.createElement('p');
+         newP.className = 'numberLineClass';
+         newP.innerHTML = 'numberLineClass';
+         alert("111");
+         editor.addWidget( {line: 0, ch: 0}, newP, false);
+         alert("111");*/
+        //editor.setLineClass(2, "newLine");
+        //  editor.markText({line: 0, ch: 0}, {line: 0, ch: 5}, "newLine");
+
+
+    </script>
+    <style>.CodeMirror {
+        border: 2px inset #dee;
+    }</style>
+    <style type="text/css">
+        .completions {
+            position: absolute;
+            z-index: 10;
+            overflow: hidden;
+            -webkit-box-shadow: 2px 3px 5px rgba(0, 0, 0, .2);
+            -moz-box-shadow: 2px 3px 5px rgba(0, 0, 0, .2);
+            box-shadow: 2px 3px 5px rgba(0, 0, 0, .2);
+        }
+
+        .completions select {
+            background: #fafafa;
+            outline: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            font-family: monospace;
+        }
+
+        .CodeMirror {
+            border: 1px solid #eee;
+        }
+    </style>
 </head>
+<body>
+<h1>Compiler</h1>
 
-<body spellcheck="false"
-      onload="setGotoFileShortcut(GOTOFILESHORTCUT); setGotoClassShortcut(GOTOCLASSSHORTCUT); setGotoSymbolShortcut(GOTOSYMBOLSHORTCUT); setProjectName('PROJECTNAME');">
-<div id="fake-body">
-    <div style="margin-top: 10px;">
-        <img src="/execute.png" id="run"/>
-        <img src="/compile.png" id="compile"/>
-    </div>
-    <table>
-        <tr>
-            <td style="vertical-align: top;">
-                <div id="numberLineDiv" onload="addLinesNumbers()"></div>
-            </td>
-            <td style="vertical-align: top;">
-                <div id="editableText" contenteditable="true" style="margin: 0; padding: 0;">RESPONSEBODY</div>
-				<div id="nonEditableText" style="margin: 0; padding: 0; visibility: hidden;">RESPONSEBODY</div>
-            </td>
-            <td style="vertical-align: top; padding-left: 50px;">
-                <div id="compilationResult"></div>
-            </td>
-        </tr>
-    </table>
-
-    <button id="compile3" name="compile3">compile</button>
-
-
-    <div id="dialog" style="min-height: 26px !important; height: 26px !important;">
-        <div class="ui-widget">
-            <input id="tags" value="" type="text" style="width: 468px;"/>
-        </div>
-    </div>
+<div style="margin-top: 10px;">
+    <img src="/execute.png" id="run"/>
+    <img src="/compile.png" id="compile"/>
 </div>
-<div id="dock">
-    <div>
-        Go to file: <b>GOTOFILESHORTCUTSTRING</b>
-        Go to class: <b>GOTOCLASSSHORTCUTSTRING</b>
-        Go to symbol: <b>GOTOSYMBOLSHORTCUTSTRING</b>
-    </div>
-</div>
+<form><textarea id="code" name="code">
+package com.jetbrains.ukhorskaya;
+
+public class Test {    
+  public void getName() {		
+    String name = "lskdjfldfkd";  
+    System.out.println(name);
+  }
+
+    public static void main(String[] args) {
+        Test test = new Test();
+        test.getName();
+    }
+}
+</textarea></form>
+<div id="compilationResult"></div>
+<div id="compilationResult0"></div>
+<div id="compilationResult1"></div>
+<div id="compilationResult2"></div>
+<div id="keywords">nawwww</div>
+
+<button name="stopH" id="stopH">Stop highlighting</button>
+<button name="startH" id="startH">Start highlighting</button>
+<button name="setKeywords" id="setKeywords">set keywords</button>
+
+<script src="/codemirror/lib/complete.js?type=jquery_lib"></script>
+
+
 </body>
 </html>

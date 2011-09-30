@@ -200,7 +200,7 @@ $(document).ready(function() {
             return _result;
         }(node));
     }
-	
+
 
     function htmlDecode(input) {
         var e = document.createElement('div');
@@ -304,7 +304,7 @@ $(document).ready(function() {
                 //document.getElementById("nonEditableText").innerHTML = data + document.getElementById("editableText").innerHTML;
                 document.getElementById("nonEditableText").innerHTML = data;
             }
-            
+
             if (document.getElementById("editableText").childNodes[0].nodeType == 3) {
                 document.getElementById("editableText").removeChild(document.getElementById("editableText").firstChild);
             }
@@ -318,7 +318,7 @@ $(document).ready(function() {
                      editChild.innerHTML = nonEditChild.innerHTML;
                 }
                /* var editChild = document.getElementById("editableText").childNodes[e];
-                
+
                 var editText = getElemText(editChild);
                var dataText = data[e].text;
 
