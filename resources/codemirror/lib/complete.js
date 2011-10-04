@@ -60,8 +60,8 @@
     window.setInterval(function() {
         //if ((isNecessairyToUpdate) && (!completionInProgress)) {
         //if ((isNecessairyToUpdate)) {
-            isNecessairyToUpdate = false;
-            getErrors();
+        isNecessairyToUpdate = false;
+        getErrors();
         //}
     }, 1000);
 
@@ -157,71 +157,70 @@
     }
 
     function beforeComplete() {
-		if (!completionInProgress) {
-        completionInProgress = true;
-        var i = editor.getValue();
-        $.ajax({
-            //url: document.location.href + "?sendData=true&" + new Date().getTime() + "&lineNumber=" + lineNumber,
-            url: document.location.href + "?complete=true&cursorAt=" + editor.getCursor(true).line + "," + editor.getCursor(true).ch ,
-            context: document.body,
-            success: startComplete,
-            dataType: "json",
-            type: "POST",
-            data: {text: i},
-            timeout: 10000
-        });
-		}
+        //if (!completionInProgress) {
+            completionInProgress = true;
+            var i = editor.getValue();
+            $.ajax({
+                //url: document.location.href + "?sendData=true&" + new Date().getTime() + "&lineNumber=" + lineNumber,
+                url: document.location.href + "?complete=true&cursorAt=" + editor.getCursor(true).line + "," + editor.getCursor(true).ch ,
+                context: document.body,
+                success: startComplete,
+                dataType: "json",
+                type: "POST",
+                data: {text: i},
+                timeout: 10000
+            });
+        //}
     }
 
     function startComplete(data) {
-        ideaKeywords = (data[0].content).split(" ");
+        //ideaKeywords = (data[0].content).split(" ");
         // We want a single cursor position.
         if (editor.somethingSelected()) return;
         // Find the token at the cursor
-        var cur = editor.getCursor(false), token = editor.getTokenAt(cur);
-        // If it's not a 'word-style' token, ignore the token.
-        //if (!/^[\w$_]*$/.test(token.string)) {
-        //    token = tprop = {start: cur.ch, end: cur.ch, string: "", state: token.state,
-        //        className: token.string == "." ? "property" : null};
-        //}
-        // If it is a property, find out what it is a property of.
-        //while (tprop.className == "property") {
-        //    tprop = editor.getTokenAt({line: cur.line, ch: tprop.start});
-        //    if (tprop.string != ".") return;
-        //    tprop = editor.getTokenAt({line: cur.line, ch: tprop.start});
-        //    if (!context) var context = [];
-        //    context.push(tprop);
-        //}
-        //var completions = getCompletions(token, context);
-        var completions = getCompletions(token);
-        if (!completions.length) return;
+        var cur = editor.getCursor(false), token = editor.getTokenAt(cur), tprop = token;
+
+        //var completions = ideaKeywords;
+
+
+
+        if (data == null) return;
         function insert(str) {
             editor.replaceRange(str, {line: cur.line, ch: token.start}, {line: cur.line, ch: token.end});
         }
 
+        completionInProgress = false;
         // When there is only one completion, use it directly.
-        if (completions.length == 1) {
+        /*if (completions.length == 1) {
             insert(completions[0]);
             return true;
-        }
+        }*/
 
         // Build the select widget
         var complete = document.createElement("div");
         complete.className = "completions";
         var sel = complete.appendChild(document.createElement("select"));
         sel.multiple = true;
-        for (var i = 0; i < completions.length; ++i) {
+		var i = 0;
+        while (typeof data[i] != "undefined") {
+
             var opt = sel.appendChild(document.createElement("option"));
-            opt.appendChild(document.createTextNode(completions[i]));
+            var image = document.createElement("img");
+            image.src = data[i].icon;
+            opt.appendChild(image);
+            opt.appendChild(document.createTextNode(data[i].name));
+            opt.appendChild(document.createTextNode(data[i].tail));
+			
+			i++;
         }
         sel.firstChild.selected = true;
-        sel.size = Math.min(10, completions.length);
+        sel.size = Math.min(10, i);
         var pos = editor.cursorCoords();
         complete.style.left = pos.x + "px";
         complete.style.top = pos.yBot + "px";
         document.body.appendChild(complete);
         // Hack to hide the scrollbar.
-        if (completions.length <= 10)
+        if (i <= 10)
             complete.style.width = (sel.clientWidth - 1) + "px";
 
         var done = false;
@@ -232,8 +231,9 @@
             complete.parentNode.removeChild(complete);
         }
 
+
         function pick() {
-            insert(sel.options[sel.selectedIndex].text);
+            insert(sel.options[sel.selectedIndex].childNodes[1].textContent);
             close();
             setTimeout(function() {
                 editor.focus();
@@ -276,19 +276,5 @@
         keywords = ("natalia ukhorskaya").split(" ");
     });
 
-    function getCompletions(token) {
-        var found = [], start = token.string;
 
-        function maybeAdd(str) {
-            if (str.indexOf(start) == 0) found.push(str);
-        }
-
-        function gatherCompletions() {
-            forEach(ideaKeywords, maybeAdd);
-        }
-
-        forEach(ideaKeywords, maybeAdd);
-		completionInProgress = false;
-        return found;
-    }
 })();

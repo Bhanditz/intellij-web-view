@@ -1,6 +1,6 @@
 package web.view.ukhorskaya.sessions;
 
-import com.intellij.codeInsight.completion.*;
+import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.execution.*;
 import com.intellij.execution.executors.DefaultRunExecutor;
 import com.intellij.execution.impl.RunManagerImpl;
@@ -11,7 +11,6 @@ import com.intellij.execution.process.ProcessOutputTypes;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.ProgramRunner;
 import com.intellij.execution.ui.RunContentDescriptor;
-import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.KeyboardShortcut;
 import com.intellij.openapi.actionSystem.ShortcutSet;
 import com.intellij.openapi.application.ApplicationManager;
@@ -19,7 +18,6 @@ import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.compiler.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.VisualPosition;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.module.ModuleManager;
@@ -37,8 +35,6 @@ import com.intellij.psi.PsiFile;
 import com.sun.net.httpserver.HttpExchange;
 import org.apache.commons.httpclient.HttpStatus;
 import web.view.ukhorskaya.JsonResponseForHighlighting;
-import web.view.ukhorskaya.LineOutOfUpdateException;
-import web.view.ukhorskaya.MyRecursiveVisitor;
 import web.view.ukhorskaya.MyRecursiveVisitorWithJson;
 import web.view.ukhorskaya.completion.MyCodeCompletionHandlerBase;
 import web.view.ukhorskaya.handlers.BaseHandler;
@@ -72,6 +68,8 @@ public abstract class HttpSession {
     private HttpExchange exchange;
 
     private long startTime;
+
+
 
     public void handle(HttpExchange exchange) {
         startTime = System.currentTimeMillis();
@@ -140,7 +138,7 @@ public abstract class HttpSession {
                 System.out.println("RESULT " + base.getResultString());
             }
         }, ModalityState.defaultModalityState());
-        writeResponse("[{\"content\": \"" + stringRef.get() + "\"}]", HttpStatus.SC_OK, true);
+        writeResponse(stringRef.get(), HttpStatus.SC_OK, true);
     }
 
     private void sendProjectSourceFile() {
