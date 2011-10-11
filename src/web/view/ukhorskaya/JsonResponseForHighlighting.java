@@ -3,7 +3,9 @@ package web.view.ukhorskaya;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.impl.IterationState;
 import com.intellij.openapi.editor.markup.TextAttributes;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
+import web.view.ukhorskaya.sessions.HttpSession;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -19,12 +21,22 @@ public class JsonResponseForHighlighting {
 
     private JSONArray jsonResult = new JSONArray();
     private Document myDocument;
+    private Map<Integer, String> tooltips = new HashMap<Integer, String>();
 
     private IterationState iterationState;
 
     public JsonResponseForHighlighting(Document myDocument, IterationState iterationState) {
         this.myDocument = myDocument;
         this.iterationState = iterationState;
+
+    }
+
+    public void setJsonResult(@NotNull JSONArray jsonResult) {
+        this.jsonResult = jsonResult;
+    }
+
+    public void setTooltips(@NotNull Map<Integer, String> tooltips) {
+        this.tooltips = tooltips;
     }
 
     public String getResult() {
@@ -32,15 +44,8 @@ public class JsonResponseForHighlighting {
             if (myDocument != null) {
                 String className = getErrorAttributeName();
                 if (className != null) {
-                    int lineNumberForElementStart = myDocument.getLineNumber(iterationState.getStartOffset());
-                    int charNumberForElementStart = iterationState.getStartOffset() - myDocument.getLineStartOffset(lineNumberForElementStart);
-                    int charNumberForElementEnd = iterationState.getEndOffset() - myDocument.getLineStartOffset(lineNumberForElementStart);
-
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("className", className);
-                    map.put("x", "{line: " + lineNumberForElementStart + ", ch: " + charNumberForElementStart + "}");
-                    map.put("y", "{line: " + lineNumberForElementStart + ", ch: " + charNumberForElementEnd + "}");
-                    jsonResult.put(map);
+                    String tooltip = tooltips.get(myDocument.getLineNumber(iterationState.getStartOffset()));
+                    jsonResult.put(HttpSession.getMapWithPositionsHighlighting(myDocument, iterationState.getStartOffset(), iterationState.getEndOffset(), className, tooltip));
                 }
                 iterationState.advance();
             }

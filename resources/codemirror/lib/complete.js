@@ -1,9 +1,14 @@
 (function () {
 
-    var isNecessairyToUpdate = false;
+    var gotToSymbolShortcutKeys = [17, 32];
+
+    var isNecessaryToUpdate = false;
+    var isPrintingInProgress = false;
+    var isCompletionInProgress = false;
 
     $(document).keydown(function(event) {
-        isNecessairyToUpdate = true;
+        isNecessaryToUpdate = true;
+        isPrintingInProgress = true;
     });
 
     // Minimal event-handling wrapper.
@@ -42,34 +47,67 @@
         lineNumbers: true,
         matchBrackets: true,
         mode: "text/x-java",
-        onKeyEvent: function(i, e) {
+        onKeyEvent: function(i, event) {
             // Hook into ctrl-space
-            if (e.keyCode == 32 && (e.ctrlKey || e.metaKey) && !e.altKey) {
-                e.stop();
+            if (isGotoKeysPressed(event, gotToSymbolShortcutKeys)) {
+                event.stop();
                 return beforeComplete();
             }
+            
         }
     });
 
+    function isGotoKeysPressed(event, array) {
+        var args = args || {};
+
+        for (var i = 0; i < array.length; ++i) {
+            args[i] = array[i];
+            if ((event.ctrlKey) && (args[i] == 17)) {
+                args[i] = true;
+            }
+            if ((event.shiftKey) && (args[i] == 16)) {
+                args[i] = true;
+            }
+            if ((event.altKey) && (args[i] == 18)) {
+                args[i] = true;
+            }
+            if ((event.metaKey) && (args[i] == 19)) {
+                args[i] = true;
+            }
+            if (args[i] == event.keyCode) {
+                args[i] = true;
+            }
+        }
+        for (var k = 0; k < array.length; ++k) {
+            if (args[k] != true) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     //editor.markText({line: 0, ch: 0}, {line: 0, ch: 5}, "newLine");
 
-    var isLoaded = true;
-    var completionInProgress = false;
+    var isLoadingHighlighting = true;
     var compilationInProgress = false;
 
     window.setInterval(function() {
-        //if ((isNecessairyToUpdate) && (!completionInProgress)) {
-        //if ((isNecessairyToUpdate)) {
-        isNecessairyToUpdate = false;
-        getErrors();
-        //}
+        //if ((isNecessaryToUpdate)) {
+        if (isNecessaryToUpdate && !isPrintingInProgress) {
+            isNecessaryToUpdate = false;
+            getErrors();
+        }
+    }, 800);
+
+    window.setInterval(function() {
+        isPrintingInProgress = false;
     }, 1000);
 
 
     function runOrCompile(param, text, error) {
         compilationInProgress = true;
         var i = editor.getValue();
-        var ajaxReg = $.ajax({
+        $.ajax({
             url: document.location.href + "?" + param + "=true",
             context: document.body,
             success: onCompileSuccess,
@@ -87,11 +125,11 @@
     }
 
     $("#stopH").click(function() {
-        isLoaded = true;
+        isLoadingHighlighting = true;
     });
 
     $("#startH").click(function() {
-        isLoaded = false;
+        isLoadingHighlighting = false;
     });
 
     $("#compile").click(function() {
@@ -103,6 +141,7 @@
     });
 
     var array = {};
+    var arrayLinesMarkers = {};
 
 
     function onCompileSuccess(data) {
@@ -118,13 +157,19 @@
             array[i]();
             i++;
         }
+        i = 0;
+        while (typeof arrayLinesMarkers[i] != "undefined") {
+            editor.clearMarker(arrayLinesMarkers[i]);
+            i++;
+        }
+
     }
 
     var now;
 
     function getErrors() {
-        if ((!compilationInProgress) && (!isLoaded)) {
-            isLoaded = true;
+        if ((!compilationInProgress) && (!isLoadingHighlighting)) {
+            isLoadingHighlighting = true;
             now = new Date().getTime();
             var i = editor.getValue();
             $.ajax({
@@ -135,7 +180,10 @@
                 dataType: "json",
                 type: "POST",
                 data: {text: i},
-                timeout: 10000
+                timeout: 10000,
+                error: function() {
+                    isLoadingHighlighting = false;
+                }
             });
         }
     }
@@ -144,33 +192,42 @@
     function onAjaxSuccess(data) {
         if (data != null) {
             var i = 0;
-            //document.getElementById("compilationResult0").innerHTML = "before remove " + (new Date().getTime() - now);
+            document.getElementById("compilationResult0").innerHTML = "before remove " + (new Date().getTime() - now);
             removeStyles();
-            //document.getElementById("compilationResult1").innerHTML = "after remove " + (new Date().getTime() - now);
+            document.getElementById("compilationResult1").innerHTML = "after remove " + (new Date().getTime() - now);
             while (typeof data[i] != "undefined") {
                 array[i] = editor.markText(eval('(' + data[i].x + ')'), eval('(' + data[i].y + ')'), data[i].className);
+                if ((data[i].className == 'greenLine') || (data[i].className == 'warning')) {
+                    var title = data[i].titleName;
+                    editor.setMarker(eval('(' + data[i].x + ')').line, '<img src="/icons/warning.png" title="' + title + '"/>%N%');
+                } else {
+                    editor.setMarker(eval('(' + data[i].x + ')').line, '<img src="/icons/error.png" title="' + title + '"/>%N%');
+                }
+                arrayLinesMarkers[i] = eval('(' + data[i].x + ')').line;
                 i++;
             }
-            //document.getElementById("compilationResult2").innerHTML = "after all " + (new Date().getTime() - now);
+            document.getElementById("compilationResult2").innerHTML = "after all " + (new Date().getTime() - now);
         }
-        isLoaded = false;
+        isLoadingHighlighting = false;
     }
 
     function beforeComplete() {
-        //if (!completionInProgress) {
-            completionInProgress = true;
-            var i = editor.getValue();
-            $.ajax({
-                //url: document.location.href + "?sendData=true&" + new Date().getTime() + "&lineNumber=" + lineNumber,
-                url: document.location.href + "?complete=true&cursorAt=" + editor.getCursor(true).line + "," + editor.getCursor(true).ch ,
-                context: document.body,
-                success: startComplete,
-                dataType: "json",
-                type: "POST",
-                data: {text: i},
-                timeout: 10000
-            });
-        //}
+        if (isCompletionInProgress) {
+        isCompletionInProgress = true;
+        var i = editor.getValue();
+        $.ajax({
+            //url: document.location.href + "?sendData=true&" + new Date().getTime() + "&lineNumber=" + lineNumber,
+            url: document.location.href + "?complete=true&cursorAt=" + editor.getCursor(true).line + "," + editor.getCursor(true).ch ,
+            context: document.body,
+            success: startComplete,
+            dataType: "json",
+            type: "POST",
+            data: {text: i},
+            timeout: 10000
+        });
+        }   else {
+            isCompletionInProgress = true;
+        }
     }
 
     function startComplete(data) {
@@ -178,10 +235,8 @@
         // We want a single cursor position.
         if (editor.somethingSelected()) return;
         // Find the token at the cursor
-        var cur = editor.getCursor(false), token = editor.getTokenAt(cur), tprop = token;
-
+        var cur = editor.getCursor(false), token = editor.getTokenAt(cur);
         //var completions = ideaKeywords;
-
 
 
         if (data == null) return;
@@ -189,19 +244,19 @@
             editor.replaceRange(str, {line: cur.line, ch: token.start}, {line: cur.line, ch: token.end});
         }
 
-        completionInProgress = false;
+        isCompletionInProgress = false;
         // When there is only one completion, use it directly.
         /*if (completions.length == 1) {
-            insert(completions[0]);
-            return true;
-        }*/
+         insert(completions[0]);
+         return true;
+         }*/
 
         // Build the select widget
         var complete = document.createElement("div");
         complete.className = "completions";
         var sel = complete.appendChild(document.createElement("select"));
         sel.multiple = true;
-		var i = 0;
+        var i = 0;
         while (typeof data[i] != "undefined") {
 
             var opt = sel.appendChild(document.createElement("option"));
@@ -210,8 +265,8 @@
             opt.appendChild(image);
             opt.appendChild(document.createTextNode(data[i].name));
             opt.appendChild(document.createTextNode(data[i].tail));
-			
-			i++;
+
+            i++;
         }
         sel.firstChild.selected = true;
         sel.size = Math.min(10, i);
@@ -257,7 +312,7 @@
             else if (code != 38 && code != 40) {
                 close();
                 editor.focus();
-                setTimeout(beforeComplete(), 50);
+                //setTimeout(beforeComplete(), 50);
             }
         });
         connect(sel, "dblclick", pick);
@@ -270,10 +325,9 @@
         return true;
     }
 
-    var ideaKeywords = ("").split(" ");
 
     $("#setKeywords").click(function() {
-        keywords = ("natalia ukhorskaya").split(" ");
+        var keywords = ("natalia ukhorskaya").split(" ");
     });
 
 

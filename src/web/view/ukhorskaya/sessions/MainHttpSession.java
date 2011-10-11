@@ -27,6 +27,7 @@ public class MainHttpSession extends HttpSession {
         final Ref<Integer> intPositionRef = new Ref<Integer>();
         final Ref<PsiFile> psiFileRef = new Ref<PsiFile>();
         final Ref<Editor> editorRef = new Ref<Editor>();
+        final Ref<Document> documentRef = new Ref<Document>();
 
         ApplicationManager.getApplication().invokeAndWait(new Runnable() {
             public void run() {
@@ -36,15 +37,26 @@ public class MainHttpSession extends HttpSession {
                 if (document == null) {
                     return;
                 }
-                Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, file, true);
+                documentRef.set(document);
+                Editor[] editors = EditorFactory.getInstance().getAllEditors();
+                if (editors.length != 0) {
+                    for (Editor e : editors) {
+                        if (e.getDocument() == document) {
+                            editorRef.set(e);
+                        }
+                    }
+                }
+                if (editorRef.isNull()) {
+                    Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, file, true);
+                    editorRef.set(editor);
+                }
 
-                editorRef.set(editor);
-                stateRef.set(new IterationState((EditorEx) editor, 0, false));
-                intPositionRef.set(editor.getCaretModel().getVisualLineEnd());
+                stateRef.set(new IterationState((EditorEx) editorRef.get(), 0, false));
+                intPositionRef.set(editorRef.get().getCaretModel().getVisualLineEnd());
             }
         }, ModalityState.defaultModalityState());
 
-        psiFile = psiFileRef.get();
+        currentPsiFile = psiFileRef.get();
         if (stateRef.isNull()) {
             if (file.getFileType().isBinary()) {
                 throw new IllegalArgumentException("This is binary file." + file.getUrl());
@@ -52,6 +64,7 @@ public class MainHttpSession extends HttpSession {
                 throw new IllegalArgumentException("Impossible to create an editor.");
             }
         }
+        currentDocument = documentRef.get();
         currentEditor = editorRef.get();
         iterationState = stateRef.get();
         intPositionState = intPositionRef.get();

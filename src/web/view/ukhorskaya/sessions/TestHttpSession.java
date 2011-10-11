@@ -35,7 +35,7 @@ public class TestHttpSession extends HttpSession {
     @Override
     public void setVariables(VirtualFile myfile) {
         try {
-            psiFile = file.get();
+            currentPsiFile = file.get();
             iterationState = state.get();
             intPositionState = position.get();
 
@@ -43,7 +43,7 @@ public class TestHttpSession extends HttpSession {
 
         }
         if (iterationState == null) {
-            if (psiFile instanceof PsiBinaryFile) {
+            if (currentPsiFile instanceof PsiBinaryFile) {
                 throw new NullPointerException("This is binary file.");
             } else {
                 throw new NullPointerException("Impossible to create an editor.");

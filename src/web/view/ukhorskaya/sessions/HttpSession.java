@@ -1,6 +1,12 @@
 package web.view.ukhorskaya.sessions;
 
+import com.intellij.codeInsight.completion.CodeCompletionHandlerBase;
 import com.intellij.codeInsight.completion.CompletionType;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
+import com.intellij.codeInsight.lookup.LookupElement;
+import com.intellij.codeInsight.lookup.LookupElementPresentation;
+import com.intellij.codeInsight.lookup.LookupManager;
+import com.intellij.codeInsight.lookup.impl.LookupImpl;
 import com.intellij.execution.*;
 import com.intellij.execution.executors.DefaultRunExecutor;
 import com.intellij.execution.impl.RunManagerImpl;
@@ -17,9 +23,13 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.compiler.*;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.VisualPosition;
+import com.intellij.openapi.editor.ex.RangeHighlighterEx;
 import com.intellij.openapi.editor.impl.IterationState;
+import com.intellij.openapi.editor.markup.MarkupModel;
+import com.intellij.openapi.editor.markup.RangeHighlighter;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectUtil;
@@ -28,20 +38,22 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.psi.PsiCompiledElement;
 import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.util.ui.EmptyIcon;
 import com.sun.net.httpserver.HttpExchange;
 import org.apache.commons.httpclient.HttpStatus;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import web.view.ukhorskaya.JsonResponseForHighlighting;
-import web.view.ukhorskaya.MyRecursiveVisitorWithJson;
-import web.view.ukhorskaya.completion.MyCodeCompletionHandlerBase;
+import web.view.ukhorskaya.autocomplete.IconHelper;
 import web.view.ukhorskaya.handlers.BaseHandler;
 
 import java.awt.event.InputEvent;
 import java.io.*;
 import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -59,16 +71,16 @@ public abstract class HttpSession {
     private static final KeyModifier META = new KeyModifier(InputEvent.META_DOWN_MASK + InputEvent.META_MASK, 19);
 
     protected int intPositionState;
-    protected PsiFile psiFile;
     protected IterationState iterationState;
     protected Project currentProject;
-    protected VirtualFile currentFile;
+    protected VirtualFile currentVirtualFile;
+    protected PsiFile currentPsiFile;
+    protected Document currentDocument;
     protected Editor currentEditor;
 
     private HttpExchange exchange;
 
     private long startTime;
-
 
 
     public void handle(HttpExchange exchange) {
@@ -99,14 +111,14 @@ public abstract class HttpSession {
     private void setGlobalVariables() {
         String requestURI = exchange.getRequestURI().getPath().substring(6);
         requestURI = requestURI.replace("%20", " ");
-        currentFile = VirtualFileManager.getInstance().findFileByUrl(requestURI);
+        currentVirtualFile = VirtualFileManager.getInstance().findFileByUrl(requestURI);
         String response;
-        if (currentFile == null) {
+        if (currentVirtualFile == null) {
             response = "File with path " + requestURI + " not found ";
             writeResponse(response, HttpStatus.SC_NOT_FOUND);
             return;
         }
-        currentProject = ProjectUtil.guessProjectForFile(currentFile);
+        currentProject = ProjectUtil.guessProjectForFile(currentVirtualFile);
     }
 
 
@@ -120,25 +132,86 @@ public abstract class HttpSession {
             position = (param.substring(param.indexOf("cursorAt=") + 9)).split(",");
         }
 
-        setVariables(currentFile);
+        setVariables(currentVirtualFile);
+        Document document = PsiDocumentManager.getInstance(currentProject).getDocument(currentPsiFile);
+
+        if (document == null) {
+            return;
+        }
+
+        /*ProblemsHolder problemsHolder = new ProblemsHolder(InspectionManager.getInstance(currentProject), currentPsiFile, true);
+        List<ProblemDescriptor> problemDescriptors = problemsHolder.getResults();
+        if (problemDescriptors != null) {
+            System.out.println("PROBLEM = " + problemDescriptors.get(0).getHighlightType());
+        }*/
 
         final VisualPosition visualPosition = new VisualPosition(Integer.parseInt(position[0]), Integer.parseInt(position[1]));
 
         final Ref<String> stringRef = new Ref<String>();
+        final Ref<LookupElement[]> lookupRef = new Ref<LookupElement[]>();
+
         ApplicationManager.getApplication().invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 System.out.println("begin setCaret()  = " + (System.currentTimeMillis() - startTime));
                 currentEditor.getCaretModel().moveToVisualPosition(visualPosition);
                 System.out.println("end setCaret()  = " + (System.currentTimeMillis() - startTime));
-                MyCodeCompletionHandlerBase base = new MyCodeCompletionHandlerBase(CompletionType.BASIC);
-                base.invokeCompletion(currentProject, currentEditor);
+                //MyCodeCompletionHandlerBase base = new MyCodeCompletionHandlerBase(CompletionType.BASIC);
+                //base.runCompletion(currentProject, currentEditor);
+
+                System.out.println("begin getCompletion()  = " + (System.currentTimeMillis() - startTime));
+                new CodeCompletionHandlerBase(CompletionType.BASIC).invokeCompletion(currentProject, currentEditor, 1, false);
                 System.out.println("end getCompletion()  = " + (System.currentTimeMillis() - startTime));
-                stringRef.set(base.getResultString());
-                System.out.println("RESULT " + base.getResultString());
+
+                LookupImpl lookup = (LookupImpl) LookupManager.getActiveLookup(currentEditor);
+                System.out.println("end getActiveLookup()  = " + (System.currentTimeMillis() - startTime));
+
+                LookupElement[] myItems = lookup == null ? null : lookup.getItems().toArray(new LookupElement[lookup.getItems().size()]);
+                System.out.println("end getItems()  = " + (System.currentTimeMillis() - startTime));
+                if (lookup != null) {
+                    lookup.hide();
+                }
+                lookupRef.set(myItems);
+                //myPrefix = lookup == null ? "" : lookup.itemPattern(lookup.getItems().get(0));
+                //stringRef.set(base.getResultString());
+                //System.out.println("RESULT " + base.getResultString());
             }
         }, ModalityState.defaultModalityState());
-        writeResponse(stringRef.get(), HttpStatus.SC_OK, true);
+
+        JSONArray resultString = new JSONArray();
+        if (lookupRef.get() != null) {
+            System.out.println("FINISHED");
+            for (LookupElement item : lookupRef.get()) {
+                /* if (i != 0) {
+                    resultString.append(" ");
+                }*/
+
+                LookupElementPresentation presentation = new LookupElementPresentation();
+                item.renderElement(presentation);
+                Map<String, String> map = new HashMap<String, String>();
+                if ((presentation.getIcon() != null) && !(presentation.getIcon() instanceof EmptyIcon)) {
+                    map.put("icon", "/fticons/" + IconHelper.getInstance().addIconToMap(presentation.getIcon()));
+                } else {
+                    map.put("icon", "");
+                }
+                if (presentation.getItemText() != null) {
+                    map.put("name", presentation.getItemText());
+                } else {
+                    map.put("name", "");
+
+                }
+
+                if (presentation.getTailText() != null) {
+                    map.put("tail", presentation.getTailText());
+                } else {
+                    map.put("tail", "");
+
+                }
+
+                resultString.put(map);
+            }
+        }
+        writeResponse(resultString.toString(), HttpStatus.SC_OK, true);
     }
 
     private void sendProjectSourceFile() {
@@ -200,7 +273,7 @@ public abstract class HttpSession {
                 @Override
                 public void run() {
                     try {
-                        VfsUtil.saveText(currentFile, finalResponse1.substring(5));
+                        VfsUtil.saveText(currentVirtualFile, finalResponse1.substring(5));
                     } catch (IOException e) {
                         LOG.error("Impossible to write to file in UTF-8");
                     }
@@ -241,37 +314,96 @@ public abstract class HttpSession {
     private String getContentWithDecoration() {
         System.out.println("begin setVariables()  = " + (System.currentTimeMillis() - startTime));
         try {
-            setVariables(currentFile);
+            setVariables(currentVirtualFile);
         } catch (IllegalArgumentException e) {
             return e.getMessage();
         }
         System.out.println("end setVariables()  = " + (System.currentTimeMillis() - startTime));
 
-        PsiElement mirrorFile = null;
-        if (psiFile instanceof PsiCompiledElement) {
-            mirrorFile = ((PsiCompiledElement) psiFile).getMirror();
-        }
+        /*PsiElement mirrorFile = null;
+        if (currentPsiFile instanceof PsiCompiledElement) {
+            mirrorFile = ((PsiCompiledElement) currentPsiFile).getMirror();
+        }*/
         //final Ref<MyRecursiveVisitor> visitorRef = new Ref<MyRecursiveVisitor>();
-        final Ref<MyRecursiveVisitorWithJson> visitorRef = new Ref<MyRecursiveVisitorWithJson>();
-        final PsiElement finalMirrorFile = mirrorFile;
+        // final Ref<MyRecursiveVisitorWithJson> visitorRef = new Ref<MyRecursiveVisitorWithJson>();
+        //final PsiElement finalMirrorFile = mirrorFile;
+
 
         final Ref<String> stringRef = new Ref<String>();
         System.out.println("getHighlighting = " + (System.currentTimeMillis() - startTime));
+        final Ref<RangeHighlighter[]> rangeHighlightersRef = new Ref<RangeHighlighter[]>();
+        ApplicationManager.getApplication().invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                MarkupModel markupModel = currentDocument.getMarkupModel(currentProject);
+                rangeHighlightersRef.set(markupModel.getAllHighlighters());
+            }
+        }, ModalityState.defaultModalityState());
+
+        final JSONArray jsonResult = new JSONArray();
+        final Map<Integer, String> tooltips = new HashMap<Integer, String>();
+        for (RangeHighlighter highlighter : rangeHighlightersRef.get()) {
+            HighlightInfo info = (HighlightInfo) highlighter.getErrorStripeTooltip();
+
+            if (((RangeHighlighterEx) highlighter).isAfterEndOfLine()) {
+                /*String title = null;
+                try {
+                    title = URLEncoder.encode(info.description, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }*/
+
+                jsonResult.put(HttpSession.getMapWithPositionsHighlighting(currentDocument, info.startOffset, info.endOffset, "redLine", info.description));
+            } else {
+                tooltips.put(currentDocument.getLineNumber(info.startOffset), info.description);
+            }
+        }
+
+
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             @Override
             public void run() {
-                JsonResponseForHighlighting responseForHighlighting = new JsonResponseForHighlighting(PsiDocumentManager.getInstance(ProjectUtil.guessProjectForFile(currentFile)).getDocument(psiFile), iterationState);
+
+
+                //JsonResponseForHighlighting responseForHighlighting = new JsonResponseForHighlighting(PsiDocumentManager.getInstance(currentProject).getDocument(currentPsiFile), iterationState, errorVisitor.getJsonResult());
+                JsonResponseForHighlighting responseForHighlighting = new JsonResponseForHighlighting(PsiDocumentManager.getInstance(currentProject).getDocument(currentPsiFile), iterationState);
+                if (jsonResult != null) {
+                    responseForHighlighting.setJsonResult(jsonResult);
+                }
+                if (tooltips != null) {
+                    responseForHighlighting.setTooltips(tooltips);
+                }
                 stringRef.set(responseForHighlighting.getResult());
             }
         });
 
         System.out.println("end highlighting = " + (System.currentTimeMillis() - startTime));
         return stringRef.get();
+        //return jsonResult.toString();
     }
 
 
     private void writeResponse(String responseBody, int errorCode) {
         writeResponse(responseBody, errorCode, false);
+    }
+
+    public static Map<String, String> getMapWithPositionsHighlighting(@NotNull Document document, int start, int end, String className, String title) {
+        int lineNumberForElementStart = document.getLineNumber(start);
+        int lineNumberForElementEnd = document.getLineNumber(end);
+        int charNumberForElementStart = start - document.getLineStartOffset(lineNumberForElementStart);
+        int charNumberForElementEnd = end - document.getLineStartOffset(lineNumberForElementStart);
+        if (start == end) {
+            charNumberForElementStart--;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("className", className);
+        if (title.contains("\"")) {
+            title = title.replaceAll("\\\"", "'");
+        }
+        map.put("titleName", title);
+        map.put("x", "{line: " + lineNumberForElementStart + ", ch: " + charNumberForElementStart + "}");
+        map.put("y", "{line: " + lineNumberForElementEnd + ", ch: " + charNumberForElementEnd + "}");
+        return map;
     }
 
     private void compileOrRunProject(final boolean isOnlyCompilation) {
