@@ -2,12 +2,13 @@ package web.view.ukhorskaya;
 
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.impl.IterationState;
-import com.intellij.openapi.editor.markup.TextAttributes;
+import com.intellij.openapi.util.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
+import org.json.JSONException;
+import web.view.ukhorskaya.css.GlobalCssMap;
 import web.view.ukhorskaya.sessions.HttpSession;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class JsonResponseForHighlighting {
 
     private JSONArray jsonResult = new JSONArray();
     private Document myDocument;
-    private Map<Integer, String> tooltips = new HashMap<Integer, String>();
+    private Map<Integer, Pair<String, String>> pairHashMap = new HashMap<Integer, Pair<String, String>>();
 
     private IterationState iterationState;
 
@@ -32,43 +33,40 @@ public class JsonResponseForHighlighting {
     }
 
     public void setJsonResult(@NotNull JSONArray jsonResult) {
-        this.jsonResult = jsonResult;
+        for (int i = 0; i < jsonResult.length(); ++i) {
+            try {
+                this.jsonResult.put(jsonResult.get(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public void setTooltips(@NotNull Map<Integer, String> tooltips) {
-        this.tooltips = tooltips;
+    public void setPairHashMap(@NotNull Map<Integer, Pair<String, String>> pairHashMap) {
+        this.pairHashMap = pairHashMap;
     }
 
     public String getResult() {
+        System.out.println("aaa");
         while (!iterationState.atEnd()) {
             if (myDocument != null) {
-                String className = getErrorAttributeName();
-                if (className != null) {
-                    String tooltip = tooltips.get(myDocument.getLineNumber(iterationState.getStartOffset()));
-                    jsonResult.put(HttpSession.getMapWithPositionsHighlighting(myDocument, iterationState.getStartOffset(), iterationState.getEndOffset(), className, tooltip));
+                String className = GlobalCssMap.getInstance().getClassFromTextAttribute(iterationState.getMergedAttributes());
+                //System.out.println(iterationState.getMergedAttributes() + " className " + className);
+
+
+                if ((className != null) && (!className.equals("class0"))) {
+                    Pair<String, String> pair = pairHashMap.get(myDocument.getLineNumber(iterationState.getStartOffset()));
+                    if (pair != null) {
+                        String tooltip = pair.getFirst();
+                        String severity = pair.getSecond();
+                        jsonResult.put(HttpSession.getMapWithPositionsHighlighting(myDocument, iterationState.getStartOffset(), iterationState.getEndOffset(), className, tooltip, severity));
+                    }
+                    jsonResult.put(HttpSession.getMapWithPositionsHighlighting(myDocument, iterationState.getStartOffset(), iterationState.getEndOffset(), className, "tooltip", "severity"));
+
                 }
                 iterationState.advance();
             }
         }
-       return jsonResult.toString();
-    }
-
-    private String getErrorAttributeName() {
-        TextAttributes attributes = iterationState.getMergedAttributes();
-        if (attributes.getEffectColor() != null) {
-            if (attributes.getEffectColor().equals(new Color(255, 0, 0))) {
-                return "redLine";
-            } else {
-                return "greenLine";
-            }
-        }
-        if (attributes.getForegroundColor().equals(new Color(255, 0, 0))) {
-            return "error";
-        }
-
-        if (attributes.getBackgroundColor().equals(new Color(246, 235, 188))) {
-            return "warning";
-        }
-        return null;
+        return jsonResult.toString();
     }
 }

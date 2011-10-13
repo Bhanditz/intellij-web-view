@@ -1,15 +1,32 @@
 (function () {
 
-    var gotToSymbolShortcutKeys = [17, 32];
+    var goToSymbolShortcutKeys = [17, 32];
 
     var isNecessaryToUpdate = false;
-    var isPrintingInProgress = false;
     var isCompletionInProgress = false;
 
+    var timer;
+
     $(document).keydown(function(event) {
-        isNecessaryToUpdate = true;
-        isPrintingInProgress = true;
+        if (event.code != 38 && event.code != 40) {
+            isNecessaryToUpdate = true;
+            if (timer) {
+                clearTimeout(timer);
+                timer = setTimeout(getHighlighting, 700);
+            }
+            else {
+                timer = setTimeout(getHighlighting, 700);
+            }
+
+        }
     });
+
+    function getHighlighting() {
+        if (isNecessaryToUpdate && !isCompletionInProgress) {
+            isNecessaryToUpdate = false;
+            getErrors();
+        }
+    }
 
     // Minimal event-handling wrapper.
     function stopEvent() {
@@ -49,11 +66,11 @@
         mode: "text/x-java",
         onKeyEvent: function(i, event) {
             // Hook into ctrl-space
-            if (isGotoKeysPressed(event, gotToSymbolShortcutKeys)) {
+            if (isGotoKeysPressed(event, goToSymbolShortcutKeys)) {
                 event.stop();
                 return beforeComplete();
             }
-            
+
         }
     });
 
@@ -90,19 +107,6 @@
 
     var isLoadingHighlighting = true;
     var compilationInProgress = false;
-
-    window.setInterval(function() {
-        //if ((isNecessaryToUpdate)) {
-        if (isNecessaryToUpdate && !isPrintingInProgress) {
-            isNecessaryToUpdate = false;
-            getErrors();
-        }
-    }, 800);
-
-    window.setInterval(function() {
-        isPrintingInProgress = false;
-    }, 1000);
-
 
     function runOrCompile(param, text, error) {
         compilationInProgress = true;
@@ -165,16 +169,18 @@
 
     }
 
+
     var now;
 
     function getErrors() {
         if ((!compilationInProgress) && (!isLoadingHighlighting)) {
             isLoadingHighlighting = true;
             now = new Date().getTime();
+            document.getElementById("compilationResult0").innerHTML = "begin " + (new Date().getTime() - now);
             var i = editor.getValue();
             $.ajax({
                 //url: document.location.href + "?sendData=true&" + new Date().getTime() + "&lineNumber=" + lineNumber,
-                url: document.location.href + "?sendData=true&" + new Date().getTime() + "&lineNumber=40" ,
+                url: document.location.href + "?sendData=true",
                 context: document.body,
                 success: onAjaxSuccess,
                 dataType: "json",
@@ -192,13 +198,13 @@
     function onAjaxSuccess(data) {
         if (data != null) {
             var i = 0;
-            document.getElementById("compilationResult0").innerHTML = "before remove " + (new Date().getTime() - now);
+
+            document.getElementById("compilationResult1").innerHTML = "onSuccess " + (new Date().getTime() - now);
             removeStyles();
-            document.getElementById("compilationResult1").innerHTML = "after remove " + (new Date().getTime() - now);
             while (typeof data[i] != "undefined") {
                 array[i] = editor.markText(eval('(' + data[i].x + ')'), eval('(' + data[i].y + ')'), data[i].className);
-                if ((data[i].className == 'greenLine') || (data[i].className == 'warning')) {
-                    var title = data[i].titleName;
+                var title = data[i].titleName;
+                if ((data[i].severity == 'WARNING') || (data[i].severity == 'TYPO')) {
                     editor.setMarker(eval('(' + data[i].x + ')').line, '<img src="/icons/warning.png" title="' + title + '"/>%N%');
                 } else {
                     editor.setMarker(eval('(' + data[i].x + ')').line, '<img src="/icons/error.png" title="' + title + '"/>%N%');
@@ -212,21 +218,21 @@
     }
 
     function beforeComplete() {
-        if (isCompletionInProgress) {
-        isCompletionInProgress = true;
-        var i = editor.getValue();
-        $.ajax({
-            //url: document.location.href + "?sendData=true&" + new Date().getTime() + "&lineNumber=" + lineNumber,
-            url: document.location.href + "?complete=true&cursorAt=" + editor.getCursor(true).line + "," + editor.getCursor(true).ch ,
-            context: document.body,
-            success: startComplete,
-            dataType: "json",
-            type: "POST",
-            data: {text: i},
-            timeout: 10000
-        });
-        }   else {
+        if (!isCompletionInProgress) {
             isCompletionInProgress = true;
+            var i = editor.getValue();
+            $.ajax({
+                //url: document.location.href + "?sendData=true&" + new Date().getTime() + "&lineNumber=" + lineNumber,
+                url: document.location.href + "?complete=true&cursorAt=" + editor.getCursor(true).line + "," + editor.getCursor(true).ch ,
+                context: document.body,
+                success: startComplete,
+                dataType: "json",
+                type: "POST",
+                data: {text: i},
+                timeout: 10000
+            });
+            //}   else {
+            //     isCompletionInProgress = true;
         }
     }
 
@@ -235,13 +241,17 @@
         // We want a single cursor position.
         if (editor.somethingSelected()) return;
         // Find the token at the cursor
-        var cur = editor.getCursor(false), token = editor.getTokenAt(cur);
+        var cur = editor.getCursor(), token = editor.getTokenAt(cur);
         //var completions = ideaKeywords;
 
 
         if (data == null) return;
         function insert(str) {
-            editor.replaceRange(str, {line: cur.line, ch: token.start}, {line: cur.line, ch: token.end});
+            if ((token.string == '.') || (token.string == ' ') || (token.string == '(')) {
+                editor.replaceRange(str, {line: cur.line, ch: token.end}, {line: cur.line, ch: token.end});
+            } else {
+                editor.replaceRange(str, {line: cur.line, ch: token.start}, {line: cur.line, ch: token.end});
+            }
         }
 
         isCompletionInProgress = false;

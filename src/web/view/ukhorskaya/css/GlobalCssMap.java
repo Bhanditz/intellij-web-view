@@ -5,7 +5,7 @@ import com.intellij.openapi.editor.markup.TextAttributes;
 import org.jetbrains.annotations.Nullable;
 import web.view.ukhorskaya.handlers.BaseHandler;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +66,7 @@ public class GlobalCssMap {
                 }
             }
         }
-        //generateCssStyles();
+        generateCssStyles();
     }
 
     private void addToMap(int i, Color c, Color b, EffectType t, int f, @Nullable Color lc) {
@@ -82,9 +82,9 @@ public class GlobalCssMap {
 
     private void putFontTypes() {
         fontTypes.add(0);
-        fontTypes.add(1);
-        fontTypes.add(2);
-        fontTypes.add(3);
+        fontTypes.add(1);  //bold
+        fontTypes.add(2);  //italic
+        fontTypes.add(3); //bold + italic
     }
 
     private void putEffectTypes() {
@@ -94,27 +94,27 @@ public class GlobalCssMap {
     }
 
     private void putColors() {
-        backgroundColors.add(new Color(255, 255, 215));
+        //backgroundColors.add(new Color(255, 255, 215));
         backgroundColors.add(new Color(255, 255, 255));
-        backgroundColors.add(new Color(255, 255, 204));
-        backgroundColors.add(new Color(255, 204, 204));
-        backgroundColors.add(new Color(226, 255, 226));
-        backgroundColors.add(new Color(246, 235, 188));
-        backgroundColors.add(new Color(239, 239, 239));
-        backgroundColors.add(new Color(237, 252, 237));
-        backgroundColors.add(new Color(247, 233, 233));
+        //backgroundColors.add(new Color(255, 255, 204));
+        //backgroundColors.add(new Color(255, 204, 204));
+        //backgroundColors.add(new Color(226, 255, 226));
+        backgroundColors.add(new Color(246, 235, 188)); //light yellow (unused variable)
+        //backgroundColors.add(new Color(239, 239, 239));
+        //backgroundColors.add(new Color(237, 252, 237));
+        //backgroundColors.add(new Color(247, 233, 233));
 
         foregroundColors.add(new Color(0, 0, 0));
-        foregroundColors.add(new Color(0, 0, 255)); //blue
-        foregroundColors.add(new Color(102, 14, 122));
+        //foregroundColors.add(new Color(0, 0, 255)); //blue
+        //foregroundColors.add(new Color(102, 14, 122)); //violet (System.out)
         foregroundColors.add(new Color(255, 0, 0)); //red
-        foregroundColors.add(new Color(0, 0, 128)); //navy
+        //foregroundColors.add(new Color(0, 0, 128)); //navy
         foregroundColors.add(new Color(128, 128, 128));
-        foregroundColors.add(new Color(0, 255, 0));    //green
-        foregroundColors.add(new Color(128, 128, 0)); //olive
-        foregroundColors.add(new Color(0, 128, 0));
-        foregroundColors.add(new Color(69, 131, 131));
-        foregroundColors.add(new Color(122, 122, 43));
+        //foregroundColors.add(new Color(0, 255, 0));
+        //foregroundColors.add(new Color(128, 128, 0)); //olive
+        foregroundColors.add(new Color(0, 128, 0)); //green ("aaa")
+        //foregroundColors.add(new Color(69, 131, 131));
+        //foregroundColors.add(new Color(122, 122, 43));
 
         lineColors.add(new Color(255, 0, 0)); //red
         lineColors.add(new Color(0, 128, 0));

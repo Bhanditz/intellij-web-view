@@ -18,6 +18,7 @@ public class MainHandler extends BaseHandler {
     public void handle(HttpExchange exchange) throws IOException {
         //if (!sendNonSourceFile(exchange)) {
         if (!sendNonSourceFile(exchange)) {
+            System.out.println(exchange.getRequestURI());
             HttpSession session = new MainHttpSession();
             session.handle(exchange);
         }
