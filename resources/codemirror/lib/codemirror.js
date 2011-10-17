@@ -1367,9 +1367,11 @@ var CodeMirror = (function() {
             to = clipPos(to);
             var accum = [];
 
-            function add(line, from, to, className) {
-                var line = lines[line], mark = line.addMark(from, to, className);
+            function add(lineNum, from, to, className) {
+
+                var line = lines[lineNum], mark = line.addMark(from, to, className, lineNum);
                 mark.line = line;
+
                 accum.push(mark);
             }
 
@@ -1396,6 +1398,7 @@ var CodeMirror = (function() {
                 if (start != null) changes.push({from: start, to: end + 1});
             };
         }
+
 
         function addGutterMarker(line, text, className) {
             if (typeof line == "number") line = lines[clipLine(line)];
@@ -2186,8 +2189,8 @@ var CodeMirror = (function() {
             copyStyles(pos, this.text.length, this.styles, st);
             return new Line(textBefore + this.text.slice(pos), st);
         },
-        addMark: function(from, to, style) {
-            var mk = this.marked, mark = {from: from, to: to, style: style};
+        addMark: function(from, to, style, lineNum) {
+            var mk = this.marked, mark = {from: from, to: to, style: style, lineNum: lineNum};
             if (this.marked == null) this.marked = [];
             this.marked.push(mark);
             this.marked.sort(function(a, b) {
@@ -2195,6 +2198,7 @@ var CodeMirror = (function() {
             });
             return mark;
         },
+
         removeMark: function(mark) {
             var mk = this.marked;
             if (!mk) return;
@@ -2269,6 +2273,12 @@ var CodeMirror = (function() {
                 if (style) html.push('<span class="', style, '">', htmlEscape(text), "</span>");
                 else html.push(htmlEscape(text));
             }
+            function spanWithId(text, style, lineId) {
+
+                if (!text) return;
+                if (style) html.push('<span class="', style, '" id="',lineId, '">', htmlEscape(text), "</span>");
+                else html.push(htmlEscape(text));
+            }
 
             var st = this.styles, allText = this.text, marked = this.marked;
             if (sfrom == sto) sfrom = null;
@@ -2306,6 +2316,7 @@ var CodeMirror = (function() {
                             if (sto != null) upto = Math.min(upto, sto);
                         }
                     }
+                    var lineNum = "";
                     while (mark && mark.to != null && mark.to <= pos) nextMark();
                     if (mark) {
                         if (mark.from > pos) upto = Math.min(upto, mark.from);
@@ -2313,12 +2324,20 @@ var CodeMirror = (function() {
                             extraStyle += " " + mark.style;
                             if (mark.to != null) upto = Math.min(upto, mark.to);
                         }
+                        if (mark.lineNum != null) {
+                            //alert(mark.line.line);
+                            lineNum = mark.lineNum;
+                        }
                     }
                     for (; ;) {
                         var end = pos + text.length;
                         var appliedStyle = style;
                         if (extraStyle) appliedStyle = style ? style + extraStyle : extraStyle;
-                        span(end > upto ? text.slice(0, upto - pos) : text, appliedStyle);
+                        if (lineNum != null) {
+                            spanWithId(end > upto ? text.slice(0, upto - pos) : text, appliedStyle, lineNum + " " + pos);
+                        } else {
+                            span(end > upto ? text.slice(0, upto - pos) : text, appliedStyle);
+                        }
                         if (end >= upto) {
                             text = text.slice(upto - pos);
                             pos = upto;
@@ -2481,6 +2500,7 @@ var CodeMirror = (function() {
         if (te.value.indexOf("\r") > -1) lineSep = "\r\n";
     }());
 
+    //TODO change tabSize
     var tabSize = 8;
     var mac = /Mac/.test(navigator.platform);
     var movementKeys = {};
