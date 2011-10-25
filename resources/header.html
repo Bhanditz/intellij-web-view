@@ -8,7 +8,7 @@
 
     <script src="/codemirror/mode/clike/clike.js?type=jquery_lib"></script>
 	
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	<script src="/jquery/jquery.min.js?type=jquery_lib"></script>
 	<script src="/jquery/js/jquery-ui-1.8.16.custom.min.js?type=jquery_lib" type="text/javascript"></script>
 	<script src="/jquery/development-bundle/jquery-1.6.2.js?type=jquery_lib"></script>
 
@@ -63,30 +63,17 @@
 <h1>Compiler</h1>
 
 <div style="margin-top: 10px;">
-    <img src="/execute.png" id="run"/>
-    <img src="/compile.png" id="compile"/>
+    <img src="/execute.png" id="run" title="aaa \n bbb"/>
+    <img src="/compile.png" id="compile" title="aaa"/>
 </div>
-<form><textarea id="code" name="code">
-package com.jetbrains.ukhorskaya;
-
-public class Test {    
-  public void getName() {		
-    String name = "lskdjfldfkd";  
-    System.out.println(name);
-  }
-
-    public static void main(String[] args) {
-        Test test = new Test();
-        test.getName();
-    }
-}
-</textarea></form>
+<form><textarea id="code" name="code">RESPONSEBODY</textarea></form>
 <div id="compilationResult"></div>
 <div id="compilationResult0"></div>
 <div id="compilationResult1"></div>
 <div id="compilationResult2"></div>
 <div id="keywords">nawwww</div>
 
+<button name="stopServer" id="stopServer">Stop server</button>
 <button name="stopH" id="stopH">Stop highlighting</button>
 <button name="startH" id="startH">Start highlighting</button>
 <button name="setKeywords" id="setKeywords">set keywords</button>

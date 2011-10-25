@@ -18,13 +18,14 @@ import java.net.InetSocketAddress;
  */
 public class IdeaHttpServer implements ApplicationComponent {
     private boolean isServerRunning = false;
-    private HttpServer server;
+    private static HttpServer server;
     private BaseHandler myHandler;
 
 
     public static Class<? extends BaseHandler> ourHandlerClass = MainHandler.class;
 
     public static IdeaHttpServer getInstance() {
+
         return ApplicationManager.getApplication().getComponent(IdeaHttpServer.class);
     }
 
@@ -54,6 +55,11 @@ public class IdeaHttpServer implements ApplicationComponent {
         server.stop(0);
         System.out.println("Server is stopped");
         isServerRunning = false;
+    }
+
+    public static void stopServer() {
+        IdeaHttpServer.server.stop(0);
+        System.out.println("Server is stopped");
     }
 
 

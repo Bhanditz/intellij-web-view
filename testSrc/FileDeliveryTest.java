@@ -245,7 +245,7 @@ public class FileDeliveryTest extends IdeaTestCase {
                         return;
                     }
                     myEditor = EditorFactory.getInstance().createEditor(document, myProject, currentFile, true);
-                    stateRef.set(new IterationState((EditorEx) myEditor, 0, false));
+                    stateRef.set(new IterationState((EditorEx) myEditor, 0, document.getTextLength(), false));
                     intPositionRef.set(myEditor.getCaretModel().getVisualLineEnd());
                 }
             });
@@ -304,7 +304,7 @@ public class FileDeliveryTest extends IdeaTestCase {
                 Document document = PsiDocumentManager.getInstance(myProject).getDocument(injectionRef.get());
                 EditorFactory.getInstance().releaseEditor(myEditor);
                 myEditor = EditorFactory.getInstance().createEditor(document, myProject, injectionRef.get().getFileType(), true);
-                stateRef.set(new IterationState((EditorEx) myEditor, 0, false));
+                stateRef.set(new IterationState((EditorEx) myEditor, 0, document.getTextLength(), false));
             }
         });
 

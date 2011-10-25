@@ -47,11 +47,11 @@ public class MainHttpSession extends HttpSession {
                     }
                 }
                 if (editorRef.isNull()) {
-                    Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, file, true);
+                    Editor editor = EditorFactory.getInstance().createEditor(document, currentProject, file, false);
                     editorRef.set(editor);
                 }
 
-                stateRef.set(new IterationState((EditorEx) editorRef.get(), 0, false));
+                stateRef.set(new IterationState((EditorEx) editorRef.get(), 0, document.getTextLength(), false));
                 intPositionRef.set(editorRef.get().getCaretModel().getVisualLineEnd());
             }
         }, ModalityState.defaultModalityState());

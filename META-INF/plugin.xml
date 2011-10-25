@@ -6,7 +6,7 @@
     <idea-version since-build="8000"/>
 
     <!-- Only for tests because flex plugin doesn't loaded wo this -->
-    <depends optional="false">com.intellij.flex</depends>
+    <!--<depends optional="false">com.intellij.flex</depends>-->
 
     <application-components>
         <!-- Add your application components here -->

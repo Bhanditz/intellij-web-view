@@ -30,6 +30,8 @@ public class GlobalCssMap {
 
     private List<Integer> fontTypes = new ArrayList<Integer>();
 
+    long startTime = System.currentTimeMillis();
+
     public static GlobalCssMap getInstance() {
         return MAP;
     }
@@ -43,9 +45,11 @@ public class GlobalCssMap {
     }
 
     private void fillCssMap() {
+
         putColors();
         putEffectTypes();
         putFontTypes();
+        System.out.println("put to map " + (System.currentTimeMillis() - startTime));
         int i = 0;
         for (Color c : foregroundColors) {
             for (Color b : backgroundColors) {
@@ -66,7 +70,8 @@ public class GlobalCssMap {
                 }
             }
         }
-        generateCssStyles();
+        System.out.println("generate map size=" + i + " - " + (System.currentTimeMillis() - startTime));
+        //generateCssStyles();
     }
 
     private void addToMap(int i, Color c, Color b, EffectType t, int f, @Nullable Color lc) {
@@ -132,22 +137,22 @@ public class GlobalCssMap {
             buffer.append("\nspan.");
             buffer.append(mapAttributes.get(attr)).append("{");
             if (!attr.getTextAttributes().getBackgroundColor().equals(new Color(0, 0, 0))) {
-                buffer.append("color: ").append(BaseHandler.getColor(attr.getTextAttributes().getForegroundColor())).append("; ");
+                buffer.append("color: ").append(BaseHandler.getColor(attr.getTextAttributes().getForegroundColor())).append(" !important; ");
             }
 
             buffer.append(BaseHandler.getFontType(attr.getTextAttributes().getFontType())).append(" ");
             if (attr.getTextAttributes().getEffectType() == EffectType.LINE_UNDERSCORE) {
-                buffer.append("text-decoration: underline; ").append("; ");
+                buffer.append("text-decoration: underline; ").append(";");
             }
             if (attr.getTextAttributes().getEffectType() == EffectType.WAVE_UNDERSCORE) {
                 if (attr.getTextAttributes().getEffectColor().equals(new Color(255, 0, 0))) {
-                    buffer.append("background: url(/wavyline-red.gif) repeat-x 100% 100%; padding-bottom: 2px; ").append("; ");
+                    buffer.append("background: url(/wavyline-red.gif) repeat-x 100% 100% !important; padding-bottom: 2px; ").append("; ");
                 } else if (attr.getTextAttributes().getEffectColor().equals(new Color(0, 128, 0))) {
-                    buffer.append("background: url(/wavyline-green.gif) repeat-x 100% 100%; padding-bottom: 2px; ").append("; ");
+                    buffer.append("background: url(/wavyline-green.gif) repeat-x 100% 100% !important; padding-bottom: 2px; ").append("; ");
                 }
             }
             if (!attr.getTextAttributes().getBackgroundColor().equals(new Color(255, 255, 255))) {
-                buffer.append("background-color: ").append(BaseHandler.getColor(attr.getTextAttributes().getBackgroundColor())).append("; ");
+                buffer.append("background-color: ").append(BaseHandler.getColor(attr.getTextAttributes().getBackgroundColor())).append(" !important; ");
             }
             buffer.append("}");
 
@@ -158,7 +163,9 @@ public class GlobalCssMap {
                 buffer = buffer.delete(position, buffer.length());
             }
         }
+        System.out.println("genearte string with css " + (System.currentTimeMillis() - startTime));
         System.out.println(buffer);
+        System.out.println("print css " + (System.currentTimeMillis() - startTime));
     }
 
     private static class MyTextAttributes {
@@ -166,6 +173,12 @@ public class GlobalCssMap {
 
         public MyTextAttributes(TextAttributes attributes) {
             myAttributes = attributes;
+            if (myAttributes.getBackgroundColor() == null) {
+                myAttributes.setBackgroundColor(new Color(255, 255, 255));
+            }
+            if (myAttributes.getForegroundColor() == null) {
+                myAttributes.setForegroundColor(new Color(0, 0, 0));
+            }
         }
 
         public TextAttributes getTextAttributes() {
@@ -185,18 +198,31 @@ public class GlobalCssMap {
                     (myAttributes.getForegroundColor().equals(newTextAttributes.getTextAttributes().getForegroundColor())) &&
                     (myAttributes.getBackgroundColor().equals(newTextAttributes.getTextAttributes().getBackgroundColor())) &&
                     (myAttributes.getEffectType() == newTextAttributes.getTextAttributes().getEffectType());
-            if (!((myAttributes.getEffectColor() != null)
+
+            if (((myAttributes.getEffectColor() != null) && (newTextAttributes.getTextAttributes().getEffectColor() != null) && (myAttributes.getEffectColor().equals(newTextAttributes.getTextAttributes().getEffectColor())) && result) ||
+                ((myAttributes.getEffectColor() == null) && (newTextAttributes.getTextAttributes().getEffectColor() == null) && result)) {
+                return true;
+            }
+            /*if (!((myAttributes.getEffectColor() != null)
                     && (newTextAttributes.getTextAttributes().getEffectColor() != null)
                     && (myAttributes.getEffectColor().equals(newTextAttributes.getTextAttributes().getEffectColor()))
             ) || !((myAttributes.getEffectColor() == null) && (newTextAttributes.getTextAttributes().getEffectColor() == null))) {
                 result = false;
-            }
-            return result;
+            }*/
+            //return result;
+            return false;
         }
 
         @Override
         public int hashCode() {
-            int hashCode = myAttributes.getForegroundColor().hashCode() + myAttributes.getBackgroundColor().hashCode() + myAttributes.getEffectType().hashCode() + myAttributes.getFontType();
+            int hashCode = 0;
+            if (myAttributes.getBackgroundColor() != null) {
+                hashCode += myAttributes.getBackgroundColor().hashCode();
+            }
+            if (myAttributes.getForegroundColor() != null) {
+                hashCode += myAttributes.getForegroundColor().hashCode();
+            }
+            hashCode += myAttributes.getEffectType().hashCode() + myAttributes.getFontType();
             if (myAttributes.getEffectColor() != null) {
                 hashCode += myAttributes.getEffectColor().hashCode();
             }

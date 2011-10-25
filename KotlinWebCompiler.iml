@@ -8,9 +8,9 @@
       <sourceFolder url="file://$MODULE_DIR$/testSrc" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="IDEA IC-107.322" jdkType="IDEA JDK" />
+    <orderEntry type="jdk" jdkName="IDEA IC-110.203" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="json" level="application" />
+    <orderEntry type="library" exported="" name="json" level="application" />
   </component>
 </module>
 

@@ -14,7 +14,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.ui.DeferredIcon;
 import com.intellij.ui.RowIcon;
-import web.view.ukhorskaya.handlers.BaseHandler;
 
 import javax.swing.*;
 import java.util.HashSet;
@@ -129,7 +128,7 @@ public class JsonResponse {
                 Module module = ModuleUtil.findModuleForFile(file, currentProject);
                 if (module != null) {
                     resultPresentation.module = module.getName();
-                    resultPresentation.moduleIcon = module.getModuleType().getNodeIcon(true);
+                    //resultPresentation.moduleIcon = module.getModuleType().getNodeIcon(true);
                 }
             }
         });
@@ -218,7 +217,7 @@ public class JsonResponse {
                 Module module = ModuleUtil.findModuleForFile(file, currentProject);
                 if (module != null) {
                     resultPresentation.module = module.getName();
-                    resultPresentation.moduleIcon = module.getModuleType().getNodeIcon(true);
+                   // resultPresentation.moduleIcon = module.getModuleType().getNodeIcon(true);
                 }
             }
         });

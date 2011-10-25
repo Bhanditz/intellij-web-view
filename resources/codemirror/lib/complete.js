@@ -133,6 +133,12 @@
         isLoadingHighlighting = true;
     });
 
+    $("#stopServer").click(function() {
+        $.ajax({
+            url: document.location.href + "?stop=true"
+        });
+    });
+
     $("#startH").click(function() {
         isLoadingHighlighting = false;
     });
